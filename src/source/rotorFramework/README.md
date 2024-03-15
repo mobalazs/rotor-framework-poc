@@ -11,6 +11,10 @@ Implemented and running in task-thread
 
 ![View Builder concept](docs/images/Rotor_Framework_ViewBuilder.jpeg)
 
+### Widget's readable identifier Limitation
+- Readable id of a widget has to be unique among siblings.
+- Maximum number of siblings 4096
+
 ### Plugins
 
 Coming soon...
@@ -36,7 +40,7 @@ Focus plugin is very complex but implements innovations which make it easy to us
 - **Focus bubbling** (alongside ancestors) by direction
 - **Focus capturing** (alongside descendants)
 - Relation between focusables and groups are calculated in runtime
-- No need to specify additional id dor groups od focusables, they are using the widget's readable id.
+- No need to specify additional id for groups or focusables, they are using the widget's readable id.
 
 
 ### Assets
