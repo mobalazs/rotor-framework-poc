@@ -1,4 +1,6 @@
 
+![View Builder concept](src/assets/images/channelIcons/channel-icon_HD.png)
+
 # Rotor POC Application
 
 ### Introduction
