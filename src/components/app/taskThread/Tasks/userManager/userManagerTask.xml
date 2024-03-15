@@ -1,7 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="UserManagerTask" extends="Task">
-    <interface>
-        <!-- Only for internal usage -->
-        <function name="Rotor_getState" />
-    </interface>
 </component>
