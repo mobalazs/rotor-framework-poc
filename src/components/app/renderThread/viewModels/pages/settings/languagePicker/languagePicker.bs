@@ -1,0 +1,55 @@
+namespace ViewModels
+
+    class LanguagePicker extends ViewModels.OptionList
+
+        override sub onCreateView()
+
+            m.userDispatcher = m.getDispatcher("user")
+
+            m.userDispatcher.addListener({
+                shouldUpdate: function(props, newState) as object
+                    return props.activeOptionKey <> newState.personalization.activeLanguageKey
+                end function,
+                mapStateToProps: sub(props, state)
+                    props.activeOptionKey = state.personalization.activeLanguageKey
+                end sub,
+                callback: "onUpdateView" ' as default
+            })
+
+            m.userDispatcher.getState(sub(props, state)
+                props.append({
+                    activeOptionKey: state.personalization.activeLanguageKey,
+                    optionKeys: state.languageKeys,
+                    optionviewModel: ViewModels.LanguagePickerItem,
+                    isAutoSelectOnFocusEnabled: true
+                })
+            end sub)
+
+        end sub
+
+        override sub onUpdateView()
+            super.onUpdateView()
+
+            ' update app language
+            translation = getAssets_translation()[m.props.activeOptionKey]
+            appFw = GetGlobalAA().appFw
+            appFw.plugins.tr.setAssets(translation)
+            appFw.plugins.theme.clearCache()
+            appFw.plugins.fields.clearCache()
+
+            subTree1 = m.getSubtreeClone("./**/pageMenu", ["tr", "fields.text"])
+            subTree2 = m.getSubtreeClone("./**/viewcontainer", ["tr", "fields.text"])
+            m.render([subTree1, subTree2])
+        end sub
+
+        override sub afterViewMounted()
+        end sub
+
+        override sub onDestroyView()
+            m.userDispatcher.destroy()
+            m.userDispatcher = invalid
+        end sub
+
+    end class
+
+end namespace

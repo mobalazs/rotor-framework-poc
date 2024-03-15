@@ -1,0 +1,272 @@
+' --------------------------------
+' | View handlers
+namespace Rotor.ViewBuilder
+    class postProcessBuffer
+
+        sub new()
+            ' initialize buffers for prioritized (root) and default (default) items
+            m.createLifeCycleBuffers()
+        end sub
+
+        buffers = {}
+
+        hookTypeIterationUsageFlags = {}
+
+        orderedLifeCycleHookType = [
+            Rotor.const.LifeCycleHookType.APPEND_CHILD, ' appendChild
+            Rotor.const.LifeCycleHookType.REINDEX_CHILD, ' reindexChild
+            Rotor.const.LifeCycleHookType.BEFORE_MOUNT, ' beforeMount
+            Rotor.const.LifeCycleHookType.CALLFN_MOUNTED, ' callFnMounted
+            Rotor.const.LifeCycleHookType.AFTER_MOUNTED, ' afterMounted
+            Rotor.const.LifeCycleHookType.BEFORE_UPDATE, ' beforeUpdate
+            Rotor.const.LifeCycleHookType.CALLFN_UPDATED, ' callFnUpdated
+            Rotor.const.LifeCycleHookType.AFTER_UPDATED, ' beforeUpdate
+            Rotor.const.LifeCycleHookType.AFTER_VIEW_MOUNTED, ' afterViewMounted
+            Rotor.const.LifeCycleHookType.BEFORE_DESTROY, ' beforeDestroy
+            Rotor.const.LifeCycleHookType.CALLFN_DESTROY, ' callFnDestroy
+            Rotor.const.LifeCycleHookType.REMOVE_CHILD, ' removeChild
+            Rotor.const.LifeCycleHookType.DELETE_WIDGET ' deleteWidget
+        ]
+
+        orderedHookPriorities = [
+            Rotor.const.HookPriorityTypes.DEFAULT,
+            Rotor.const.HookPriorityTypes.ROOT
+        ]
+
+        sub createLifeCycleBuffers()
+            for each priority in m.orderedHookPriorities
+                m.buffers[priority] = m.createBuffers()
+            end for
+        end sub
+
+        sub clearLifeCycleBuffers()
+            for each priority in m.orderedHookPriorities
+                m.clearBuffers(m.buffers[priority])
+            end for
+            ' clear itearation cache
+            for each hookType in m.hookTypeIterationUsageFlags
+                m.hookTypeIterationUsageFlags[hookType] = false
+            end for
+            m.hookTypeIterationUsageFlags[Rotor.const.LifeCycleHookType.AFTER_RENDER_READY] = false
+        end sub
+
+        ' List of all hooks for both viewBuilder and plugins
+        function createBuffers() as object
+            buffer = {}
+            for each hookType in m.orderedLifeCycleHookType
+                buffer[hookType] = CreateObject("roList")
+                m.hookTypeIterationUsageFlags[hookType] = false
+            end for
+            buffer[Rotor.const.LifeCycleHookType.AFTER_RENDER_READY] = CreateObject("roList")
+            m.hookTypeIterationUsageFlags[Rotor.const.LifeCycleHookType.AFTER_RENDER_READY] = false
+            return buffer
+        end function
+
+        sub clearBuffers(priorityContainer)
+            for each hookType in m.orderedLifeCycleHookType
+                priorityContainer[hookType].Clear()
+            end for
+            priorityContainer[Rotor.const.LifeCycleHookType.AFTER_RENDER_READY].Clear()
+        end sub
+
+        ' View Builder hooks routing
+        sub add (newProcesses as object, isHandledRootChild = false as boolean)
+
+            processesToAdd = Rotor.Utils.ensureArray(newProcesses)
+
+            for each process in processesToAdd
+                m.hookTypeIterationUsageFlags[process.hookType] = true
+
+                widget = process.widget
+                isProcessRoot = m.frameworkInstance.builder.widgetTree.isBranchOfAppend(widget) or m.frameworkInstance.builder.widgetTree.isBranchOfRemove(widget)
+                isPluginProcess = process?.isPlugin = true
+                priortyType = isProcessRoot = true and not isPluginProcess ? Rotor.const.HookPriorityTypes.ROOT : Rotor.const.HookPriorityTypes.DEFAULT
+
+                if isPluginProcess
+                    m.buffers[priortyType][process.hookType].AddTail(process)
+                else
+                    if process.hookType = Rotor.const.LifeCycleHookType.APPEND_CHILD or process.hookType = Rotor.const.LifeCycleHookType.REINDEX_CHILD
+                        m.buffers[priortyType][process.hookType].AddTail(process)
+                    else
+                        m.buffers[priortyType][process.hookType].AddHead(process)
+                    end if
+                end if
+
+            end for
+        end sub
+
+
+        sub init(frameworkInstance as object)
+            m.frameworkInstance = frameworkInstance
+        end sub
+
+        sub destroy()
+            m.frameworkInstance = invalid
+        end sub
+    end class
+
+    class PostProcessor
+
+        ' run plugins' and view builder's hooks
+        sub run(postProcessBuffer as object)
+
+            for each priorityType in postProcessBuffer.orderedHookPriorities
+                for each hookType in postProcessBuffer.orderedLifeCycleHookType
+                    if postProcessBuffer.hookTypeIterationUsageFlags[hookType] = true
+                        processList = postProcessBuffer.buffers[priorityType][hookType]
+                        processList.ResetIndex()
+                        process = processList.GetIndex()
+                        while process <> invalid
+                            m.executeGeneralProcess(process)
+                            process = processList.GetIndex()
+                        end while
+                    end if
+                end for
+            end for
+
+            for each priorityType in postProcessBuffer.orderedHookPriorities
+                hookType = Rotor.const.LifeCycleHookType.AFTER_RENDER_READY
+                if postProcessBuffer.hookTypeIterationUsageFlags[Rotor.const.LifeCycleHookType.AFTER_RENDER_READY] = true
+                    processList = postProcessBuffer.buffers.[priorityType][hookType]
+                    processList.ResetIndex()
+                    process = processList.GetIndex()
+                    while process <> invalid
+                        m.executeFinalProcess(process)
+                        process = processList.GetIndex()
+                    end while
+                end if
+            end for
+
+        end sub
+
+        sub executeFinalProcess(process as object)
+            widget = process.widget
+
+            if process?.isPlugin = true
+                pluginKey = process.pluginKey
+                hookType = Rotor.const.LifeCycleHookType.AFTER_RENDER_READY
+                pluginHook = m.frameworkInstance.builder.pluginAdapter.pluginHooks[hookType][pluginKey] ' array of handlers
+                m.runPluginHookHandler(hookType, pluginHook, widget)
+            end if
+
+        end sub
+
+        sub executeGeneralProcess(process as object)
+            HID = process.HID
+            widget = process.widget
+
+            if process?.isPlugin = true
+                pluginHook = m.frameworkInstance.builder.pluginAdapter.pluginHooks[process.hookType][process.pluginKey] ' array of handlers
+                if process.hookType = Rotor.const.LifeCycleHookType.BEFORE_UPDATE or process.hookType = Rotor.const.LifeCycleHookType.AFTER_UPDATED
+                    m.runPluginHookHandler(process.hookType, pluginHook, widget, process.newValue, process.oldValue)
+                else
+                    m.runPluginHookHandler(process.hookType, pluginHook, widget)
+                end if
+
+            else if process.hookType = Rotor.const.LifeCycleHookType.APPEND_CHILD
+                m.appendNodeAtZIndex(process)
+                widget.Delete("markedToAppend")
+
+            else if process.hookType = Rotor.const.LifeCycleHookType.REINDEX_CHILD
+                parentNode = widget.parent.node
+                parentNode.removeChild(widget.node)
+                m.appendNodeAtZIndex(process)
+
+            else if process.hookType = Rotor.const.LifeCycleHookType.REMOVE_CHILD
+                parentNode = widget.parent.node
+                parentNode.removeChild(widget.node)
+
+            else if process.hookType = Rotor.const.LifeCycleHookType.CALLFN_MOUNTED
+                if widget.afterWidgetMounted <> invalid
+                    widget.afterWidgetMounted(widget)
+                end if
+                if widget?.isViewModel = true
+                    widget.afterViewMounted()
+                end if
+
+            else if process.hookType = Rotor.const.LifeCycleHookType.CALLFN_UPDATED
+                if widget.afterWidgetUpdated <> invalid
+                    widget.afterWidgetUpdated(widget)
+                end if
+
+            else if process.hookType = Rotor.const.LifeCycleHookType.DELETE_WIDGET
+                ' destroy widget
+                if widget?.isViewModel = true
+                    widget.onDestroyView() ' view class destroy
+                end if
+                widget.dispatcherProvider = invalid
+                widget.frameworkInstance = invalid
+                m.frameworkInstance.builder.widgetTree.remove(HID)
+
+            else if process.hookType = Rotor.const.LifeCycleHookType.CALLFN_DESTROY
+                ' destroy context
+                if widget.context.destroy <> invalid
+                    widget.context.destroy()
+                    widget.context.Clear()
+                end if
+            end if
+        end sub
+
+        sub runPluginHookHandler(LifeCycleHookTypeType as string, pluginHook as object, widget = invalid as object, newValue = invalid as dynamic, oldvalue = invalid as dynamic)
+            pluginKey = pluginHook.pluginKey
+            scope = m.frameworkInstance.plugins[pluginKey]
+            if scope.isEnabled
+                if LifeCycleHookTypeType = Rotor.const.LifeCycleHookType.BEFORE_UPDATE
+                    pluginHook.handlerFn(scope, widget, newValue, oldvalue)
+                else
+                    pluginHook.handlerFn(scope, widget)
+                end if
+            end if
+        end sub
+
+
+        sub appendNodeAtZIndex (process as object)
+
+            widget = process.widget
+            zIndex = process.zIndex
+            node = widget.node
+            parentNode = widget.parent.node
+
+            if zIndex = invalid
+
+                parentNode.appendChild(node)
+
+            else
+
+                ' respect zIdnex when inserted
+                rootChildCount = parentNode.getChildCount()
+                siblingNodes = parentNode.getChildren(rootChildCount, 0)
+                inserted = false
+                index = rootChildCount - 1
+
+                while index >= 0 and inserted = false
+                    siblingNodeHID = siblingNodes[index].HID
+                    siblingWidget = siblingNodeHID <> invalid ? m.frameworkInstance.builder.widgetTree.get(siblingNodeHID) : invalid
+                    if Rotor.Utils.isInteger(siblingWidget?.zIndex) and siblingWidget?.zIndex <= zIndex
+                        inserted = true ' loop
+                    else
+                        index--
+                    end if
+                end while
+                index++
+                parentNode.insertChild(node, index) ' insert
+                widget.zIndex = zIndex ' store
+
+            end if
+        end sub
+
+        sub init(frameworkInstance as object)
+            m.frameworkInstance = frameworkInstance
+        end sub
+
+        sub destroy()
+            m.frameworkInstance = invalid
+        end sub
+
+    end class
+
+
+
+
+end namespace
+

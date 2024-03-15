@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="AppRender" extends="Group">
+    <interface>
+        <function name="initApplication" />
+    </interface>
+</component>

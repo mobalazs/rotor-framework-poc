@@ -1,0 +1,76 @@
+namespace Rotor.Utils
+
+    function isValid(value as dynamic) as boolean
+        return Type(value) <> "<uninitialized>" and value <> invalid
+    end function
+
+    function isAssociativeArray(value as dynamic) as boolean
+        return IsValid(value) and GetInterface(value, "ifAssociativeArray") <> invalid
+    end function
+
+    function isArray(arr as dynamic) as boolean
+        return IsValid(arr) and GetInterface(arr, "ifArray") <> invalid
+    end function
+
+    function isString(value as dynamic) as boolean
+        return isValid(value) and GetInterface(value, "ifString") <> invalid
+    end function
+
+    function isFunction(value as dynamic) as boolean
+        return isValid(value) and GetInterface(value, "ifFunction") <> invalid
+    end function
+
+    function isInteger(value As Dynamic) As Boolean
+        Return isValid(value) And GetInterface(value, "ifInt") <> invalid And (Type(value) = "roInt" Or Type(value) = "roInteger" Or Type(value) = "Integer")
+    end function
+
+    function min(a, b)
+        if a < b
+            return b
+        else
+            return a
+        end if
+    end function
+
+    function max(a, b)
+        if a < b
+            return b
+        else
+            return a
+        end if
+    end function
+
+    function getUUID() as string
+        if m.deviceInfoNode = invalid
+            m.deviceInfoNode = CreateObject("roDeviceInfo")
+        end if
+        return m.deviceInfoNode.GetRandomUUID()
+    end function
+
+    function getUUIDHex(length = 8 as Integer) as string
+        stack = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"]
+        uuid = ""
+        for i = 0 to length - 1
+            uuid += stack[rnd(16) - 1]
+        end for
+        return uuid
+    end function
+
+    function rotateSegment(x1 as float, y1 as float, x2 as float, y2 as float, rotation, center)
+        cosVal = Cos(rotation)
+        sinVal = Sin(rotation)
+        x1 = (cosVal * (x1 - center[0])) + (sinVal * (y1 - center[1])) + center[0]
+        y1 = (cosVal * (y1 - center[1])) - (sinVal * (x1 - center[0])) + center[1]
+        x2 = (cosVal * (x2 - center[0])) + (sinVal * (y2 - center[1])) + center[0]
+        y2 = (cosVal * (y2 - center[1])) - (sinVal * (x2 - center[0])) + center[1]
+
+         return {
+            x1: x1,
+            y1: y1,
+            x2: x2,
+            y2: y2
+        }
+
+    end function
+
+end namespace

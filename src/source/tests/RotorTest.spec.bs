@@ -1,0 +1,29 @@
+' base framework
+import "pkg:/source/rotorFramework/RotorFramework.bs"
+
+namespace tests
+
+	@suite
+	class RotorFrameworkTest extends tests.BaseTestSuite
+
+		private person
+
+		protected override sub beforeEach()
+			super.beforeEach()
+			' Create instance of Rotor ViewBuilder
+			m.fwInstance = new Rotor.Framework()
+
+		end sub
+
+		'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		@describe("Hello World")
+		'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+		@it("Check Instance of RotorFramework")
+		sub _()
+			m.assertEqual(m.fwInstance.name, "Rotor Framework", "Framework's name does not match with `Rotor Framework`")
+			m.assertAAHasKey(m.fwInstance, "builder", "Instace does not has `builder` property")
+		end sub
+
+	end class
+end namespace

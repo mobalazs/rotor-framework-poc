@@ -1,0 +1,105 @@
+
+' Framework
+import "pkg:/source/rotorFramework/RotorFramework.bs"
+
+' Import assets
+import "pkg:/assets/data/theme.brs"
+import "pkg:/assets/data/translation.brs"
+
+' constants
+import "pkg:/components/app/common/intentTypes.bs"
+
+' Import Views
+import "appViewModel.bs"
+import "../viewModels/busySpinner/busySpinner.bs"
+import "../viewModels/buttons/simpleButton.bs"
+import "../viewModels/layout/layout.bs"
+import "../viewModels/loadingScreen/loadingScreen.bs"
+import "../viewModels/optionList/optionList.bs"
+import "../viewModels/pageMenu/pageMenu.bs"
+import "../viewModels/pageMenu/pageMenuItem.bs"
+import "../viewModels/pages/basePage.bs"
+import "../viewModels/pages/homePage.bs"
+import "../viewModels/pages/moviesPage.bs"
+import "../viewModels/pages/playground1Page.bs"
+import "../viewModels/pages/playground2Page.bs"
+import "../viewModels/pages/seriesPage.bs"
+import "../viewModels/pages/settings/languagePicker/languagePicker.bs"
+import "../viewModels/pages/settings/languagePicker/languagePickerItem.bs"
+import "../viewModels/pages/settings/settingsPage.bs"
+import "../viewModels/pages/settings/settingWrapper.bs"
+import "../viewModels/pages/settings/themePicker/themePicker.bs"
+import "../viewModels/pages/settings/themePicker/themePickerItem.bs"
+
+
+
+sub init()
+    m.roDeviceInfo = CreateObject("roDeviceInfo")
+end sub
+
+
+sub initApplication(payload as object)
+
+
+    ' Ensure that this node is appended to node tree. Otherview you will not see the result on the screen.
+    ' This node will be set as root node of ViewBuilder, automatically.
+    scene = m.top.getScene()
+    scene.appendChild(m.top)
+
+
+    ' Initialize Rotor Framework
+    m.appFw = new Rotor.Framework({
+        tasks: ["AppTask"],
+        onTaskReady: onTaskReady, ' optional
+        debug: {
+            autoSetNodeId: true ' If true, you can find nodes in RALE much easier. (Available only in debug mode.)
+        }
+    })
+
+    ' * REGISTER PLUGINS
+
+    ' Pluginize your ViewBuilder on demand
+    m.appFw.registerPlugins([
+        new Rotor.DynamicAssetContextPlugin("theme"),
+        new Rotor.DynamicAssetContextPlugin("tr"),
+        new Rotor.FieldsPlugin("fields"),
+        new Rotor.FontStylePlugin("fontStyle"),
+        new Rotor.FocusPlugin("focus")
+        new Rotor.DispatcherProviderPlugin("dispatcher"),
+        new Rotor.ObserverPlugin("observer"),
+        new Rotor.OnReadyExpression("onReadyExpression"),
+    ])
+
+
+    ' Create our first ViewModel using View Builder Engine
+    ' Note that render is held back and buffered until the appTask starts.
+    m.appFw.render({
+        id: "layout",
+        viewModel: ViewModels.AppViewModel
+    })
+
+end sub
+
+' Example for onTasReady usage (this is optional. Render is deferred as default until all tasks are started, just liket this callback. This will be called before flush builder.)
+sub onTaskReady()
+    ' set the curret theme based on the current user's preference
+    m.usereDispatcher = m.appFw.getDispatcher("user")
+    userState = m.usereDispatcher.getState()
+    m.appFw.plugins.theme.setAssets(getAssets_theme()[userState.personalization.activeThemeKey])
+    m.appFw.plugins.tr.setAssets(getAssets_translation()[userState.personalization.activeLanguageKey])
+end sub
+
+function onKeyEvent(key as string, press as boolean) as boolean
+    if press = true
+
+        result = m.appFw.plugins.focus.onKeyEventHandler(key, press)
+
+        if result.handled
+            if result.isSelected = true
+                ' additional handler
+            end if
+            return result.handled
+        end if
+    end if
+    return false
+end function

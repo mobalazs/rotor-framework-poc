@@ -1,0 +1,182 @@
+
+namespace ViewModels
+
+    class LayoutViewModel extends ViewModel
+
+        sub showLoadingScreen()
+            m.render({
+                id: "loadingScreen",
+                viewModel: ViewModels.LoadingScreen
+            })
+        end sub
+
+        sub hideLoadingScreen()
+            m.erase("./loadingScreen")
+        end sub
+
+        sub prerenderPage(pageKey)
+            pageViewModel = m.pagesViewModels[pageKey]
+            m.render({
+                ' You can set the id, but it is set automatically to the m.id
+                children: {
+                    id: "viewContainer",
+                    children: {
+                        id: `page-${pageKey}`,
+                        viewModel: pageViewModel,
+                        props: {
+                            pageKey: pageKey
+                        }
+                    }
+                }
+            })
+        end sub
+
+        function customLayoutTemplate() as object
+            safeAreaOffsets = "{#theme=safeAreaOffsets}"
+            designResolution = "{#theme=designResolution}"
+
+            return {
+                ' You can set the id, but it is set automatically to the m.id
+                sgName: "Rectangle",
+                fields: {
+                    width: designResolution.w,
+                    height: designResolution.h,
+                    color: "0x000000FF"
+                },
+                children: [
+                    {
+                        id: "backgrounds",
+                        sgName: "Group",
+                        ' zIndex: 0,
+                        children: [
+                            {
+                                id: "decor",
+                                zIndex: 2,
+                                sgName: "Poster",
+                                fields: {
+                                    uri: "#theme.backgrounds.decor.posterUrl",
+                                    blendColor: "#theme.backgrounds.decor.blendColor",
+                                    translation: "#theme.backgrounds.decor.translation",
+                                    opacity: "#theme.backgrounds.decor.opacity",
+                                    rotation: "#theme.backgrounds.decor.rotation",
+                                    width: "#theme.backgrounds.decor.width",
+                                    height: "#theme.backgrounds.decor.height"
+                                }
+                            }, {
+                                id: "leftBg",
+                                sgName: "Poster",
+                                zIndex: 0,
+                                fields: {
+                                    width: designResolution.w,
+                                    height: designResolution.h,
+                                    uri: "#theme.backgrounds.leftBg.posterUrl",
+                                    blendColor: "#theme.backgrounds.leftBg.blendColor"
+                                }
+                            }, {
+                                id: "rightBg",
+                                sgName: "Poster",
+                                zIndex: 1,
+                                fields: {
+                                    rotation: 3.141592,
+                                    translation: [designResolution.w, designResolution.h],
+                                    width: designResolution.w,
+                                    height: designResolution.h,
+                                    uri: "#theme.backgrounds.rightBg.posterUrl",
+                                    blendColor: "#theme.backgrounds.rightBg.blendColor"
+                                }
+                            }
+                        ]
+                    }, {
+                        id: "separatorContainer",
+                        sgName: "Group",
+                        ' zIndex: 1,
+                        fields: {
+                            translation: [30, safeAreaOffsets.y]
+                        },
+                        children: [
+                            {
+                                id: "gradientBg",
+                                sgName: "Poster",
+                                zIndex: 0,
+                                fields: {
+                                    uri: "#theme.menu.pageMenu.bg.url",
+                                    width: "#theme.menu.pageMenu.bg.size.width",
+                                    height: "#theme.menu.pageMenu.bg.size.height",
+                                    blendColor: "#theme.menu.pageMenu.bg.color",
+                                    translation: "#theme.menu.pageMenu.bg.translation"
+                                }
+                            }, {
+                                id: "separator",
+                                sgName: "Rectangle",
+                                fields: {
+                                    height: "#theme.menu.pageMenu.verticalSeparetorLine.size.height",
+                                    width: "#theme.menu.pageMenu.verticalSeparetorLine.size.width",
+                                    color: "#theme.menu.pageMenu.verticalSeparetorLine.color",
+                                    translation: "#theme.menu.pageMenu.verticalSeparetorLine.translation"
+                                }
+                            }, {
+                                id: "appTitle",
+                                sgName: "Label",
+                                fontStyle: "#theme.fontStyles.H1",
+                                fields: {
+                                    text: "#tr.appTitle",
+                                    vertAlign: "right",
+                                    translation: "#theme.menu.pageMenu.appTitleTransition",
+                                    color: "#theme.colors.primary_2"
+                                }
+                            }
+                        ]
+                    }, {
+                        id: "pageMenuWrapper",
+                        ' zIndex: 3,
+                        sgName: "Group",
+                        children: [{
+                            id: "pageMenu",
+                            viewModel: ViewModels.PageMenu
+                        }]
+                    }, {
+                        id: "viewContainer",
+                        sgName: "Group",
+                        ' zIndex: 2,
+                        focus: {
+                            group: {
+                                left: "pageMenu"
+                            }
+                        },
+                        fields: {
+                            translation: [360, 200]
+                        }
+                    }
+                ]
+            }
+        end function
+
+        sub renderPageTransition(activePageKey as string, doesExistPage as boolean)
+            m.render({
+                id: "layout",
+                children: [
+                    {
+                        id: "viewContainer",
+                        children: not doesExistPage ? {
+                            id: `page-${activePageKey}`,
+                            viewModel: m.pagesViewModels[activePageKey],
+                            props: {
+                                pageKey: activePageKey
+                            }
+                        } : {}
+                    }, {
+                        ' update focus config
+                        id: "pageMenu",
+                        focus: {
+                            group: {
+                                right: `page-${activePageKey}`
+                            }
+                        }
+                    }
+                ]
+            })
+        end sub
+
+    end class
+
+end namespace

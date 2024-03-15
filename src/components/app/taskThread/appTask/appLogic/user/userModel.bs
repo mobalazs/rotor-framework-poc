@@ -1,0 +1,38 @@
+namespace Models
+    class UserModel extends Model
+
+        state = {
+            userName: "Guest User",
+            usertype: "guest",
+            personalization: {
+                activeThemeKey: "purpleTheme",
+                activeLanguageKey: "en_US"
+            },
+
+            ' Available themes - to this user
+            themeKeys: [
+                "purpleTheme",
+                "blueTheme",
+                "greenTheme",
+                "redTheme",
+                "yellowTheme"
+            ],
+
+            ' Available languages - to this user
+            languageKeys: [
+                "de_DE",
+                "en_US",
+                "es_ES",
+                "fr_FR",
+                ' "hu_HU",
+                "it_IT",
+                "nl_NL"
+                ' "pl_PL",
+                "pt_PT",
+                ' "sv_SE"
+            ]
+        }
+
+    end class
+
+end namespace

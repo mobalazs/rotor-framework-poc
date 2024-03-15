@@ -1,0 +1,104 @@
+namespace Reducers
+
+    class PreloaderReducer extends Reducer
+
+        sub new(modelInstance)
+            super(modelInstance)
+            m.init()
+        end sub
+
+        sub init()
+
+            m.applyMidleware([
+
+                ' (1) Logger middleware
+                function(intent, state) as Intent
+                    print `[INFO PRELOADER REDUCER] type: ${intent.type}`; intent?.payload?.preloadId <> invalid ? `, preloadId: ${intent.payload?.preloadId}` : ""
+                    return intent ' NEXT
+                end function,
+
+                ' (2) Aynchronous resources
+                function(intent, state) as Intent
+                    if intent.type = IntentType.PRELOADER.START_PRELOAD_RESOURCES
+
+                        m.startLoadingScreenMinTime()
+
+                    end if
+                    return invalid
+                end function,
+
+            ])
+
+        end sub
+
+        override function reducer(state as Object, intent as Intent)
+
+            if intent.type = IntentType.PRELOADER.ADD_ITEM
+                state.counter++
+                state.maxHit++
+
+            else if intent.type = IntentType.PRELOADER.COMPLETED_ITEM
+                state.counter--
+            end if
+
+            if state.counter = 0
+                state.resourcesReady = true
+            else
+                return invalid ' possibly to stop refresh state
+            end if
+
+            return state
+        end function
+
+
+        sub startLoadingScreenMinTime()
+
+            ' Dispatch increase preloader counter
+            m.preloaderDispatcher = m.getDispatcher("preloader")
+            m.preloaderDispatcher.dispatch({
+                type: IntentType.PRELOADER.ADD_ITEM,
+                payload: {
+                    preloadId: "loadingScreenMinTime"
+                }
+            })
+
+
+            ' Get minimum loading duration
+            appStoreDispatcher = m.getDispatcher("appStore")
+            appStoreState = appStoreDispatcher.getState()
+            loadingScreenMinTime = appStoreState.loadingScreenMinTime
+
+            ' Start async process
+            sleepDispatcher = m.getDispatcher("sleep")
+            sleepDispatcher.dispatch({
+                type: IntentType.SLEEP.START,
+                payload: {
+                    duration: loadingScreenMinTime
+                }
+            })
+
+            ' Listening to async
+            sleepDispatcher.addListener({
+                callback: sub()
+                    m.preloaderDispatcher.dispatch({
+                        type: IntentType.PRELOADER.COMPLETED_ITEM,
+                        payload: {
+                            preloadId: "loadingScreenMinTime"
+                        }
+                    })
+                end sub,
+                once: true
+            })
+        end sub
+
+
+
+        override sub destroy()
+            m.preloaderDispatcher.destryo()
+            m.preloaderDispatcher = invalid
+            super.destroy()
+        end sub
+
+    end class
+
+end namespace

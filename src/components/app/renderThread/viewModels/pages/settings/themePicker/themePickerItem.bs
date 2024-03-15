@@ -1,0 +1,111 @@
+namespace ViewModels
+
+    class ThemePickerItem extends ViewModel
+
+        override sub onUpdateView()
+            itemIconWidget = m.getWidget("itemIcon")
+            itemIconWidget.refresh("fields.blendColor")
+            itemLabel = m.getWidget("itemLabel")
+            itemLabel.refresh("fields.color")
+        end sub
+
+        override function template() as object
+
+            focus = {
+                onFocusChanged: sub (widget, isFocused as boolean) ' onSelected pass isFocused
+                    ' (1) spread the new value of isFocused
+                    ' widget.context.isFocused = isFocused ' This will be set automatically by plugin
+
+                    ' (2) want update design
+                    m.onUpdateView()
+
+                    ' (3) other specific things such as this below
+                    if isFocused = true and widget.props.isAutoSelectOnFocusEnabled = true
+                        widget.focus.onSelected(widget)
+                    end if
+                end sub,
+                onSelected: sub (widget) ' onSelected pass isFocused
+                    if widget.props.isActive = false
+                        widget.context.dispatcher.user.dispatch({
+                            type: IntentType.USER.SET_ACTIVE_THEME_KEY,
+                            payload: {
+                                activeThemeKey: widget.props.optionKey
+                            }
+                        })
+                    end if
+                end sub
+            }
+
+            return {
+                ' id: `option-${assetKey}`,
+                theme: ["menu.optionlistContent.themePickerItem", "settings.themePicker", "menu.shared.menuItemColor"],
+                sgName: "Group",
+                focus: focus,
+                context: {
+                    isFocused: false ' as default
+                },
+                dispatcher: "user",
+                fields: {
+                    rotation: "@context.theme.settings.themePicker.rotation",
+                    scaleRotateCenter: function(widget) as object
+                        themePickerTheme = widget.context.theme.settings.themePicker
+                        themePickerThemeTheme = widget.context.theme.menu.optionlistContent.themePickerItem
+                        return [themePickerTheme.labelWidth + themePickerThemeTheme.marginRight * 1.5, themePickerThemeTheme.height / 2]
+                    end function,
+                    translation: function(widget) as object ' expression example
+                        theme = widget.context.theme.menu.optionlistContent.themePickerItem
+                        return [0, widget.props.optionIndex * (theme.height + (theme.marginBottom ?? 0))]
+                    end function
+                },
+                children: [
+                    {
+                        id: "itemIcon",
+                        sgName: "Poster",
+                        fields: {
+                            width: "#theme.menu.shared.icon.size.width",
+                            height: "#theme.menu.shared.icon.size.height",
+                            uri: "#theme.settings.themePicker.icon.url",
+                            blendColor: function(widget) as string
+                                optionKey = widget.props.optionKey
+                                isActive = widget.props.isActive
+                                theme = widget.context.theme
+                                if widget.context.isFocused
+                                    return theme.settings.themePicker.colors_focused[optionKey]
+                                else
+                                    return isActive ? theme.settings.themePicker.colors_focused[optionKey] : theme.settings.themePicker.colors[optionKey]
+                                end if
+                            end function,
+                            translation: function(widget) ' expression example
+                                return [widget.context.theme.settings.themePicker.labelWidth + widget.context.theme.menu.optionlistContent.themePickerItem.marginRight, 0]
+                            end function
+                        }
+                    }, { ' old
+                        id: "itemLabel",
+                        sgName: "Label",
+                        tr: `themeSamples.${m.props.optionKey}`,
+                        fontStyle: "#theme.fontStyles.subMenuLabelFontStyle",
+                        fields: {
+                            color: function(widget) as string
+                                if widget.context.isFocused
+                                    return widget.context.theme.menu.shared.menuItemColor.focused
+                                else
+                                    return widget.props.isActive ? widget.context.theme.menu.shared.menuItemColor.active : widget.context.theme.menu.shared.menuItemColor.default
+                                end if
+                            end function,
+                            text: function(widget)
+                                return widget.context.tr.themeSamples[widget.props.optionKey]
+                            end function,
+                            width: "#theme.settings.themePicker.labelWidth",
+                            height: "#theme.menu.shared.icon.size.height",
+                            vertAlign: "center",
+                            horizAlign: "right"
+                        }
+                    }
+                ]
+            }
+
+        end function
+
+    end class
+
+end namespace

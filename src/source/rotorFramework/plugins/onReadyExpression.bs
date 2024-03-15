@@ -1,0 +1,42 @@
+import "../base/basePlugin.bs"
+
+'**
+' A Brighterscript class for handling custom fields in a widget.
+'
+' @extends BasePlugin class
+'/
+namespace Rotor
+    class OnReadyExpression extends BasePlugin
+
+        ' Constructor
+        sub new(key = "onReadyExpression" as string, params = invalid as object)
+            super(key)
+        end sub
+
+        ' Hooks to attach custom field handling to widget lifecycle events.
+        hooks = {
+
+            afterRenderReady: sub(scope as object, widget)
+                if Rotor.Utils.isFunction(widget[scope.key])
+                    widget[scope.key](widget)
+                end if
+            end sub,
+
+            beforeUpdate: sub(scope as object, widget as object, newValue, oldValue)
+                if Rotor.Utils.isFunction(newValue)
+                    widget[scope.key] = newValue
+                end if
+
+                if Rotor.Utils.isFunction(widget[scope.key])
+                    widget[scope.key](widget)
+                end if
+            end sub,
+
+            beforeDestroy: sub(scope as object, widget as object)
+                widget[scope.key] = invalid
+            end sub
+        }
+
+    end class
+
+end namespace

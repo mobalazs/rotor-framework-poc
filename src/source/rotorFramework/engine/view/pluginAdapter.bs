@@ -1,0 +1,95 @@
+namespace Rotor.ViewBuilder
+
+    class PluginHookClass
+        sub new(config)
+            m.append(config)
+        end sub
+        pluginKey as string
+        ' handlerFn as function
+
+    end class
+
+    class pluginAdapter
+
+        sub new()
+
+            ' dedicated plugin lifecycle hooks
+            for each hookType in [
+                    Rotor.const.LifeCycleHookType.BEFORE_MOUNT,
+                    Rotor.const.LifeCycleHookType.AFTER_MOUNTED,
+                    Rotor.const.LifeCycleHookType.BEFORE_UPDATE,
+                    Rotor.const.LifeCycleHookType.AFTER_UPDATED,
+                    Rotor.const.LifeCycleHookType.BEFORE_DESTROY,
+                    Rotor.const.LifeCycleHookType.AFTER_RENDER_READY
+                ]
+                m.pluginHooks[hookType] = {}
+            end for
+
+        end sub
+
+        ' Plugins has limited type of hooks to lyfecicles (check the list below)
+        pluginHooks = {}
+        pluginKeyList = CreateObject("roList")
+
+        frameworkInstance as object
+
+        sub registerPlugins (pluginConfig as object)
+
+            plugins = Rotor.Utils.ensureArray(pluginConfig)
+
+            for each plugin in plugins
+
+                ' Plugin key
+                pluginKey = plugin.key
+
+                ' add plugin key to tree context
+                ' obj = Rotor.Utils.wrapObject(pluginKey, {})
+
+                ' create workspace for plugin in root of widget tree
+                ' m.frameworkInstance.builder.widgetTree.tree.extendContext(obj)
+
+                ' Setup hooks
+                hooks = plugin.hooks
+                if Rotor.Utils.isValid(hooks) and hooks.Count() > 0
+
+                    for each hook in hooks
+                        pluginHook = new PluginHookClass({
+                            pluginKey: pluginKey,
+                            handlerFn: hooks[hook]
+                        })
+                        m.pluginHooks[hook][pluginKey] = pluginHook
+                    end for
+
+                end if
+
+                ' add plugin instance to viewBuilder
+                m.pluginKeyList.AddTail(pluginKey)
+                m.frameworkInstance.plugins[pluginKey] = plugin
+                m.frameworkInstance.plugins[pluginKey].frameworkInstance = m.frameworkInstance
+            end for
+
+        end sub
+
+        sub destroyPlugins()
+            if m.plugins.Count() > 0
+                for each plugin in m.plugins
+                    plugin.frameworkInstance = invalid
+                    destroy = plugin.destroy
+                    if Rotor.Utils.isFunction(plugin.destroy)
+                        destroy()
+                    end if
+                end for
+            end if
+        end sub
+
+        sub init(frameworkInstance as object)
+            m.frameworkInstance = frameworkInstance
+        end sub
+
+        sub destroy()
+            m.frameworkInstance = invalid
+        end sub
+
+    end class
+
+end namespace

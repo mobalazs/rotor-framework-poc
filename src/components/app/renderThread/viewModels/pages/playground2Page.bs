@@ -1,0 +1,99 @@
+namespace ViewModels
+
+    class Playground2Page extends ViewModel
+
+        timer = CreateObject("roTimespan")
+
+
+        override sub afterViewMounted()
+            print "[VIEWBUILDER MEASUREMENT] Playgorund 2 Page PROCESSES took: " + m.timer.TotalMilliseconds().ToStr() + " ms"
+        end sub
+
+        override function template() as object
+
+            m.timer.Mark()
+
+            children = []
+            for rowlIndex = 0 to 9
+                children.push({
+                    id: "id_" + rowlIndex.toStr(),
+                    sgName: "LayoutGroup",
+                    fields: {
+                        layoutDirection: "horiz",
+                        itemSpacings: [8]
+                    },
+                    children: []
+                })
+                for colIndex = 0 to 9
+                    item = {
+                        id: "id_" + rowlIndex.toStr() + "_" + colIndex.toStr(),
+                        viewModel: ViewModels.SimpleButton
+                    }
+                    children[rowlIndex].children.push(item)
+                end for
+            end for
+            children[0].children[0].id = "button-first"
+
+
+
+            return {
+                focus: {
+                    group: {
+                        forwardFocusId: "buttonGroup" ' Example for propagate focus
+                    }
+                },
+                children: [{
+                    sgName: "LayoutGroup",
+                    fields: {
+                        layoutDirection: "horiz",
+                        verticalAlignment: "bottom",
+                        itemSpacings: [30]
+                    },
+                    children: [
+                        {
+                            id: "viewTitle",
+                            sgName: "Label",
+                            tr: "menuItems." + m.props.pageKey,
+                            theme: "fontStyles.H2",
+                            fontStyle: "@context.theme.fontStyles.H2",
+                            fields: {
+                                text: "@context.tr.menuItems." + m.props.pageKey + ".text"
+                            }
+                        }, {
+                            id: "someInfo",
+                            sgName: "Label",
+                            theme: "fontStyles.caption4",
+                            fontStyle: "@context.theme.fontStyles.caption4",
+                            fields: {
+                                width: 1000,
+                                maxLines: 2,
+                                wrap: true,
+                                text: `Features: (1) Spatial navigation within group \n(2) Enter into group by spatial navigation.`
+                            }
+                        }
+                    ]
+                }, {
+
+                    id: "buttonGroup",
+                    sgName: "LayoutGroup",
+                    fields: {
+                        translation: [0, 70],
+                        itemSpacings: [8]
+                    },
+                    focus: {
+                        group: {
+                            defaultFocusId: "button-first",
+                            enableSpatialEnter: true
+                        }
+                    },
+                    children: children
+
+                }]
+            }
+
+
+        end function
+
+    end class
+
+end namespace

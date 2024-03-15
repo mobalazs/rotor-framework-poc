@@ -1,0 +1,266 @@
+' constants
+import "pkg:/source/rotorFramework/engine/constants.bs"
+
+' engine
+import "pkg:/source/rotorFramework/engine/view/builder.bs"
+import "pkg:/source/rotorFramework/engine/providers/dispatcherProvider.bs"
+import "pkg:/source/rotorFramework/engine/providers/dispatcherFacade.bs"
+
+' base classes
+import "pkg:/source/rotorFramework/base/baseWidget.bs"
+import "pkg:/source/rotorFramework/base/dispatcher.bs"
+import "pkg:/source/rotorFramework/base/dispatcherExternal.bs"
+import "pkg:/source/rotorFramework/base/baseStack.bs"
+import "pkg:/source/rotorFramework/base/baseViewModel.bs"
+
+' utils
+import "pkg:/source/rotorFramework/utils/generalUtils.bs"
+import "pkg:/source/rotorFramework/utils/nodeUtils.bs"
+import "pkg:/source/rotorFramework/utils/arrayUtils.bs"
+
+' plugins
+import "pkg:/source/rotorFramework/plugins/dispatcherProviderPlugin.bs"
+import "pkg:/source/rotorFramework/plugins/fieldsPlugin.bs"
+import "pkg:/source/rotorFramework/plugins/fontStylePlugin.bs"
+import "pkg:/source/rotorFramework/plugins/dynamicAssetContextPlugin.bs"
+import "pkg:/source/rotorFramework/plugins/observerPlugin.bs"
+import "pkg:/source/rotorFramework/plugins/focusPlugin.bs"
+import "pkg:/source/rotorFramework/plugins/onReadyExpression.bs"
+
+
+namespace Rotor
+    class Framework
+
+        name = "Rotor Framework"
+
+        version = "0.2"
+
+        'CONSTRUCTOR
+
+        config = {
+            tasks: [], ' required
+            onTaskReady: invalid, ' optional
+            rootNode: invalid, ' optional
+
+            debug: {
+                autoSetNodeId: false
+            }
+        }
+
+        threadType = Rotor.const.ThreadType.RENDER
+
+        builder as object
+        dispatcherProvider as object
+        plugins = {}
+        enableRendering = true
+        taskOperationalFlag = {}
+        taskSyncReadyFlag = {}
+        taskNodes = {}
+
+        sub new(config = {})
+
+            Rotor.Utils.deepExtendAA(m.config, config)
+
+            m.builder = new Rotor.ViewBuilder.Builder()
+
+            m.dispatcherProvider = new Rotor.DispatcherProvider(m.threadType)
+
+            globalScope = GetGlobalAA()
+            globalScope.rotor_framework_helper = {
+                threadType: m.threadType,
+                frameworkInstance: m
+            }
+
+            m.builder.init(m)
+
+            ' set root node
+            if m.config.rootNode = invalid
+                rootNode = globalScope.top
+                m.config.rootNode = rootNode
+            else
+                rootNode = m.config.rootNode
+            end if
+            m.builder.widgetTree.setRootNode(rootNode)
+
+            ' Prepare render for syncing with tasks
+            rootNode.addField("rotorSync", "assocarray", true)
+            rootNode.observeFieldScoped("rotorSync", "Rotor_syncCallback")
+
+            ' prepare tasks for syncing
+            if config.tasks <> invalid
+                m.enableRendering = false ' disable rendering until task sync ready, then call renderQueueBufferFlush()
+                taskNames = Rotor.Utils.ensureArray(config.tasks)
+                for each taskName in taskNames
+                    m.setupTaskForSyncing(taskName, rootNode)
+                end for
+            end if
+
+        end sub
+
+        ' * Public View Builder methods
+
+        public sub render(payload as object, params = {} as object)
+            m.builder.render(payload, params)
+        end sub
+
+        public sub erase(payload as dynamic)
+            m.builder.erase(payload)
+        end sub
+
+        public sub registerPlugins(plugins as object)
+            m.builder.pluginAdapter.registerPlugins(plugins)
+        end sub
+
+        public function findWidgets(searchPattern as string, HID = "0" as string) as object
+            return m.builder.widgetTree.find(searchPattern, HID)
+        end function
+
+        public function getWidget(searchPattern as string, HID = "0" as string) as object
+            return m.builder.widgetTree.get(searchPattern, HID)
+        end function
+
+        public function getSubtreeClone(searchPattern as string, keyPathList = [] as Object, parentHID = "0" as string) as object
+            return m.builder.widgetTree.getSubtreeClone(searchPattern, keyPathList, parentHID)
+        end function
+
+        public function getRootNode() as object
+            return m.builder.widgetTree.getRootNode()
+        end function
+
+        public function getDispatcher(dispatcherId as string) as object
+            return m.dispatcherProvider.getFacade(dispatcherId, GetGlobalAA())
+        end function
+
+
+        sub setupTaskForSyncing(taskName as string, parentNode)
+            rootNode = m.getRootNode()
+            taskNode = parentNode.createChild(taskName)
+            taskId = Rotor.Utils.getUUIDHex(16)
+
+            m.taskNodes[taskId] = taskNode ' collection for later usage
+            m.taskOperationalFlag[taskId] = false ' collection for later usage
+
+            Rotor.Utils.setCustomFields(taskNode, {
+                taskId: taskId,
+                rootNode: rootNode
+            })
+
+            ' taskNode.observeFieldScoped("rotorSync", "Rotor_syncCallback")
+            taskNode.control = "RUN"
+        end sub
+
+
+        ' DESTROY
+        public sub destroy()
+            m.builder.destroy()
+            m.builder.destroy()
+            m.dispatcherProvider.destroy()
+            m.storeProvider.destroy()
+
+            m.taskNode = invalid
+
+
+            globalScope = GetGlobalAA()
+            globalScope.rotor_framework_helper = {
+                frameworkInstance: invalid
+            }
+            m.config.rootNode = invalid
+        end sub
+
+    end class
+
+    sub syncCallback(msg)
+        ' extraInfo = msg.GetInfo()
+        ' fieldId = msg.getField()
+        sync = msg.getData() ' @type:AA
+
+        globalScope = GetGlobalAA()
+        m.frameworkInstance = globalScope.rotor_framework_helper.frameworkInstance
+
+        taskNode = sync.taskNode
+        taskId = taskNode.taskId
+
+        if sync.type = Rotor.const.ThreadSyncType.TASK_SYNCING
+
+            ' check additional tasks
+            if sync.tasks <> invalid
+                taskNames = Rotor.Utils.ensureArray(sync.tasks)
+                for each taskName in taskNames
+                    m.frameworkInstance.setupTaskForSyncing(taskName, taskNode)
+                end for
+            end if
+
+            ' register incoming dispatchers
+            dispatcherIds = sync.dispatcherIds
+            m.frameworkInstance.dispatcherProvider.registerExternalDispatchers(dispatcherIds, taskNode)
+
+
+            ' update task status
+            taskId = taskNode.taskId
+            m.frameworkInstance.taskOperationalFlag[taskId] = true
+
+            ' Check if all nodes ready (very basic logic (< future improvement)
+            allTasksRunning = true
+            for each flag in m.frameworkInstance.taskOperationalFlag.Items()
+                allTasksRunning = allTasksRunning and flag.value
+            end for
+
+            ' if allTasksRunning then create external dispatchers in all tasks
+            if allTasksRunning = true
+                collection = {}
+                dispatcherIds = m.frameworkInstance.dispatcherProvider.getAll().keys()
+                for each item in m.frameworkInstance.taskNodes.Items()
+                    taskNode = item.value
+                    for each dispatcherId in dispatcherIds
+                        dispatcherInstance = m.frameworkInstance.dispatcherProvider.get(dispatcherId)
+                        externalTaskNode = dispatcherInstance.taskNode
+
+                        if not taskNode.isSameNode(externalTaskNode)
+                            m.frameworkInstance.taskSyncReadyFlag[taskNode.taskId] = false ' collection for later usage
+
+                            if collection[taskNode.taskId] = invalid then collection[taskNode.taskId] = []
+
+                            collection[taskNode.taskId].push({
+                                dispatcherId: dispatcherId,
+                                externalTaskNode: externalTaskNode
+                            })
+                        end if
+
+                    end for
+                end for
+
+                if collection.Count() > 0
+                    for each taskId in collection
+                        taskNode = m.frameworkInstance.taskNodes[taskId]
+                        taskNode.setField("rotorSync", {
+                            type: Rotor.const.ThreadSyncType.REGISTER_EXTERNAL_DISPATCHER,
+                            extarnalDispatcherList: collection[taskId]
+                        })
+                    end for
+                end if
+
+            end if
+
+        else if sync.type = Rotor.const.ThreadSyncType.TASK_SYNCED
+
+            m.frameworkInstance.taskSyncReadyFlag[taskId] = true
+
+            ' Check if all nodes ready (very basic logic (< future improvement)
+            allTasksSynced = true
+            for each flag in m.frameworkInstance.taskSyncReadyFlag.Items()
+                allTasksSynced = allTasksSynced and flag.value
+            end for
+
+            if allTasksSynced = true
+                m.frameworkInstance.taskNodes.Clear()
+                if Rotor.Utils.isFunction(m.frameworkInstance.config.onTaskReady)
+                    Rotor.Utils.callbackScoped(m.frameworkInstance.config.onTaskReady, GetGlobalAA())
+                end if
+                m.frameworkInstance.builder.renderQueueBufferFlush()
+            end if
+
+        end if
+
+    end sub
+
+end namespace

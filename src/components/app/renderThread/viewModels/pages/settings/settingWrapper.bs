@@ -1,0 +1,204 @@
+namespace ViewModels
+
+    class SettingWrapper extends ViewModel
+
+        override function template() as object
+
+            wrappedTemplate = m.props.wrappedTemplate
+            titleTrPath = m.props.titleTrPath ?? "default"
+
+            paddingRight = (m.props?.paddingRight ?? m.props?.padding) ?? 0
+            paddingLeft = (m.props?.paddingLeft ?? m.props?.padding) ?? 0
+            paddingTop = (m.props?.paddingTop ?? m.props?.padding) ?? 0
+            paddingBottom = (m.props?.paddingBottom ?? m.props?.padding) ?? 0
+            marginLeft = (m.props?.marginLeft ?? m.props?.padding) ?? 0
+            marginTop = (m.props?.marginTop ?? m.props?.padding) ?? 0
+
+            showArrows = m.props?.showArrows ?? false
+            showDecor = m.props?.showDecor ?? false
+            bgRotation = m.props?.bgRotation ?? 0
+
+            isRotated = bgRotation <> 0
+
+            ' Example for using precomiled theme
+            titleHeight = "{#theme=fontStyles.H1}".size - 10
+            focus = {
+                group: {
+                    onFocusChanged: sub(widget, isFocused)
+                        labelWidget = widget.getWidget("settingTitle") ' below id equal
+                        labelWidget.context.isFocused = isFocused
+                        labelWidget.node.color = isFocused = true ? widget.context.theme.colors.primary_2 : widget.context.theme.colors.primary
+
+                        if widget.context.showArrows
+                            rcArrows = widget.getWidget("rcArrows") ' below id equal
+                            rcArrows.node.visible = isFocused
+                        end if
+                    end sub
+                }
+            }
+            focus = Rotor.Utils.deepExtendAA(focus, m.props.focus)
+
+            return {
+                sgName: "Group",
+                theme: "colors",
+                focus: focus,
+                zIndex: m.props.zIndex,
+                context: {
+                    isRotated: isRotated,
+                    showArrows: showArrows
+                },
+                fields: {
+                    translation: [marginLeft, marginTop]
+                },
+                children: [
+                    {
+                        id: "settingTitle",
+                        sgName: "Label",
+                        tr: titleTrPath,
+                        theme: "colors",
+                        fontStyle: "#theme.fontStyles.H4",
+                        context: {
+                            isFocused: false
+                        },
+                        fields: {
+                            color: function(widget) as string
+                                color = widget.context.isFocused = true ? widget.context.theme.colors.primary_2 : widget.context.theme.colors.primary
+                                return color
+                            end function,
+                            opacity: 0.9,
+                            text: "@context.tr." + titleTrPath
+                        }
+                    }, {
+                        id: "rotatedBackgroundWrapper",
+                        sgName: "Group",
+                        fields: {
+                            translation: [0, titleHeight]
+                        },
+                        children: isRotated ? {
+                            id: "rotatedBackground",
+                            sgName: "Rectangle",
+                            theme: "colors",
+                            fields: {
+                                rotation: bgRotation,
+                                color: "@context.theme.colors.background_2",
+                                translation: [0, 0]
+                            }
+                        } : {}
+                    }, {
+                        id: "contentWrapper",
+                        sgName: "Rectangle",
+                        fields: {
+                            color: "#theme.colors.background_2",
+                            translation: [0, titleHeight]
+                        },
+                        context: {
+                            paddingTop: (paddingTop ?? 0),
+                            paddingRight: (paddingRight ?? 0),
+                            paddingBottom: (paddingBottom ?? 0),
+                            paddingLeft: (paddingLeft ?? 0),
+                            showArrows: showArrows,
+                            isRotated: bgRotation <> 0,
+                            titleHeight: titleHeight
+                        },
+                        onReadyExpression: sub(widget)
+                            isRotated = widget.context.isRotated
+
+                            context = widget.context
+                            node = widget.node
+                            child = node.getChild(1)
+                            b = child.boundingRect()
+
+                            width = b.width + context.paddingRight + context.paddingLeft + (context.isRotated ? context.paddingLeft : 0)
+                            height = b.height + (isRotated ? - context.paddingBottom * 2 : context.paddingBottom + context.paddingTop)
+                            node.height = height
+                            node.width = width
+
+                            if context.showArrows
+
+                                navArrowsWrapper = m.getWidget("../rcArrows")
+                                navArrowsWrapper.node.translation = [20, context.titleHeight - 10]
+
+                            end if
+
+                            if isRotated
+
+                                rotatedBackgroungWrapper = m.getWidget("../rotatedBackgroundWrapper")
+                                rotatedBackgroungWrapper.node.clippingRect = [0, b.y, b.x + width - context.paddingLeft, b.y + b.height + context.paddingTop * 2]
+
+                                rotatedBackgroung = m.getWidget("../rotatedBackgroundWrapper/rotatedBackground")
+                                rotatedBackgroung.node.width = width + context.paddingRight * 3
+                                rotatedBackgroung.node.height = height + context.paddingTop
+
+                            end if
+
+                        end sub,
+                        children: [{
+                                id: "decorSampleWrapper",
+                                sgName: "Group",
+                                children: showDecor ? {
+                                    id: "decorSample",
+                                    sgName: "Poster",
+                                    fields: {
+                                        uri: "#theme.backgrounds.decor.posterUrl",
+                                        blendColor: "#theme.colors.primary_2",
+                                        loadWidth: 150,
+                                        loadHeight: 100,
+                                        translation: [180, 0],
+                                        loadDisplayMode: "limitSize"
+                                    }
+                                } : {}
+                            }, {
+                                sgName: "Group",
+                                fields: {
+                                    translation: [paddingLeft ?? 0, paddingTop ?? 0]
+                                },
+                                children: wrappedTemplate
+                            }
+                        ]
+                    },
+                    {
+                        id: "rcArrows",
+                        sgName: "LayoutGroup",
+                        fields: {
+                            visible: false,
+                            itemSpacings: [0],
+                            horizAlignment: "center"
+                        },
+                        children: showArrows ? [{
+                            id: "rcArrowUp",
+                            sgName: "Poster",
+                            fields: {
+                                uri: "#theme.settings.rcArrowIcon.url",
+                                blendColor: "#theme.colors.primary_2",
+                                width: "#theme.settings.rcArrowIcon.size.width",
+                                height: "#theme.settings.rcArrowIcon.size.height",
+                                translation: [60, 60],
+                                rotation: 3.141592
+                            }
+                        }, {
+                            sgName: "Label",
+                            fontStyle: "#theme.fontStyles.hintLarge",
+                            fields: {
+                                text: "AUTO  SELECT",
+                                color: "#theme.colors.primary",
+                                height: 23,
+                                rotation: 3.141592 / 2
+                            }
+                        }, {
+                            id: "rcArrowDown",
+                            sgName: "Poster",
+                            fields: {
+                                uri: "#theme.settings.rcArrowIcon.url",
+                                blendColor: "#theme.colors.primary_2",
+                                width: "#theme.settings.rcArrowIcon.size.width",
+                                height: "#theme.settings.rcArrowIcon.size.height"
+                            }
+                        }] : []
+                    }
+
+                ]
+            }
+        end function
+
+    end class
+end namespace

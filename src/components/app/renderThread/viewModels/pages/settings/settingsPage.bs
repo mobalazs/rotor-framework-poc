@@ -1,0 +1,78 @@
+namespace ViewModels
+
+    class SettingsPage extends ViewModel
+
+        override function template() as object
+
+            return {
+                focus: {
+                    group: {
+                        forwardFocusId: "themePicker"
+                    }
+                },
+                children: [
+                    {
+                        id: "viewTitle",
+                        sgName: "Label",
+                        tr: "menuItems." + m.props.pageKey,
+                        theme: "fontStyles.H2",
+                        fontStyle: "@context.theme.fontStyles.H2",
+                        fields: {
+                            text: "@context.tr.menuItems." + m.props.pageKey + ".text"
+                        }
+                    },{
+                        id: "sectionGroup",
+                        sgName: "Group",
+                        fields: {
+                            translation: [0, 100]
+                        },
+                        children: [{
+                            id: "themePickerWrapper",
+                            viewModel: ViewModels.SettingWrapper,
+                            props: {
+                                titleTrPath: "settings.themePicker.headlineText",
+                                padding: 30,
+                                paddingTop: 110,
+                                bgRotation: -0.2,
+                                marginLeft: 100,
+                                showArrows: true,
+                                showDecor: true,
+                                focus: {
+                                    group: {
+                                        right: "languagePicker"
+                                    }
+                                },
+                                wrappedTemplate: {
+                                    id: "themePicker",
+                                    viewModel: ViewModels.ThemePicker
+                                }
+                            }
+                        }, {
+                            id: "languagePickerWrapper",
+                            viewModel: ViewModels.SettingWrapper,
+                            props: {
+                                titleTrPath: "settings.languagePicker.headlineText",
+                                padding: 30,
+                                marginLeft: 440,
+                                showArrows: true,
+                                focus: {
+                                    group: {
+                                        left: "themePicker"
+                                    }
+                                },
+                                wrappedTemplate: {
+                                    id: "languagePicker",
+                                    viewModel: ViewModels.LanguagePicker
+                                }
+                            }
+                        }
+                        ]
+                    }
+                ]
+            }
+
+        end function
+
+    end class
+
+end namespace

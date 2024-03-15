@@ -1,0 +1,46 @@
+
+namespace Models
+
+    class AppStore extends Model
+
+        state = {
+
+            activePageKey: "settings",
+            loadingScreenMinTime: 2, ' sec
+
+            pageList: [
+                "home",
+                "movies",
+                "series",
+                "playground1",
+                "playground2",
+                "settings"
+            ],
+
+            ' Available pages
+            pageSettings: {
+                home: {
+                    enablePrerender: true
+                },
+                movies: {
+                    enablePrerender: false
+                },
+                series: {
+                    enablePrerender: false
+                },
+                playground1: {
+                    enablePrerender: false
+                },
+                playground2: {
+                    enablePrerender: true
+                },
+                settings: {
+                    enablePrerender: true
+                }
+            }
+        }
+
+
+    end class
+
+end namespace

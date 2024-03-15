@@ -1,0 +1,202 @@
+namespace Rotor.ViewBuilder
+
+    function createWidget(postProcessBuffer as object, config as object, parentHID = "0" as string) as object
+
+        ViewModelClass = config.viewModel
+        config.delete("viewModel")
+
+        ' Store widget
+        widget = m.frameworkInstance.builder.widgetTree.add({
+            id: config.id,
+            parentHID: parentHID
+        }, ViewModelClass)
+        HID = widget.HID
+
+        ' * Method decorators
+
+        if config.afterWidgetMounted <> invalid
+            widget.afterWidgetMounted = config.afterWidgetMounted
+        end if
+
+        if config.afterWidgetUpdated <> invalid
+            widget.afterWidgetUpdated = config.afterWidgetUpdated
+        end if
+
+        widget.refresh = sub(featureKeyPaths as object)
+            iterateKeyPaths = Rotor.Utils.ensureArray(featureKeyPaths)
+            refreshObject = {
+                ' id: m.id, ' not required
+                ' HID: m.HID ' will be applied by render
+            }
+            for each keyPath in iterateKeyPaths
+                refreshObject.append(Rotor.Utils.getCloneByKeyPath(m, keyPath))
+            end for
+            m.render(refreshObject)
+        end sub
+
+        widget.getWidget = function(searchPattern as string) as object
+            return GetGlobalAA().rotor_framework_helper.frameworkInstance.builder.widgetTree.get(searchPattern, m.HID)
+        end function
+
+        widget.findWidgets = function(searchPattern as string) as object
+            return GetGlobalAA().rotor_framework_helper.frameworkInstance.builder.widgetTree.find(searchPattern, m.HID)
+        end function
+
+        widget.getSubtreeClone = function(searchPattern = "" as string, keyPathList = [] as object) as object
+            if searchPattern = "" then searchPattern = m.HID
+            globalScope = GetGlobalAA()
+            return globalScope.rotor_framework_helper.frameworkInstance.builder.widgetTree.getSubtreeClone(searchPattern, keyPathList, m.parentHID)
+        end function
+
+        widget.render = sub(payloads as dynamic, params = {} as object)
+            for each payload in Rotor.Utils.ensureArray(payloads)
+                if payload.DoesExist("id") = false and payload.DoesExist("HID") = false
+                    payload.id = m.id ' confortable
+                    payload.HID = m.HID ' and performance
+                end if
+            end for
+            globalScope = GetGlobalAA()
+            globalScope.rotor_framework_helper.frameworkInstance.builder.render(payloads, params)
+        end sub
+
+        widget.erase = sub(payloads as dynamic)
+            globalScope = GetGlobalAA()
+            globalScope.rotor_framework_helper.frameworkInstance.builder.erase(payloads, m.parentHID)
+        end sub
+
+        widget.getDispatcher = function(dispatcherId as string) as object
+            return GetGlobalAA().rotor_framework_helper.frameworkInstance.dispatcherProvider.getFacade(dispatcherId, m)
+        end function
+
+        ' Extend config from View template
+        if widget.isViewModel = true
+            props = config?.props ?? {}
+            props.id = config.id
+            widget.props = props
+            widget.onCreateView()
+            template = widget.template()
+            if template <> invalid and template.Count() > 0
+                config.append(template)
+                config.id = widget.id ' widget id has the highest pripriority
+            end if
+        end if
+
+        ' get finalized chidlren, will be passed to processor
+        if config.children = invalid then config.children = {}
+        children = config.children
+
+        ' some plugin would like to check it
+
+        Rotor.Utils.deepExtendAA(widget.context, config.context ?? {})
+
+        ' Create node
+        sgName = Rotor.Utils.isString(config.sgName) ? config.sgName : "Group"
+        node = CreateObject("roSGNode", sgName)
+        widget.sgName = sgName
+        widget.node = node
+
+        widget.markedToAppend = true
+
+        #if debug
+            if m.frameworkInstance.config.debug.autoSetNodeId = true
+                Rotor.Utils.setCustomFields(widget.node, {
+                    id: widget.id,
+                    HID: widget.HID
+                },
+                true, false)
+            end if
+        #end if
+
+        ' * Plugins
+
+
+        ' Add plugin specific decorators to widget
+        widgetAddon = {}
+
+        pluginKeyList = m.frameworkInstance.builder.pluginAdapter.pluginKeyList
+        pluginKeyList.ResetIndex()
+        pluginKey = pluginKeyList.GetIndex()
+        while pluginKey <> invalid
+
+            if config.doesExist(pluginKey)
+
+                ' plugin :: hooks
+                for each LifeCycleHookType in [Rotor.const.LifeCycleHookType.BEFORE_MOUNT, Rotor.const.LifeCycleHookType.AFTER_MOUNTED, Rotor.const.LifeCycleHookType.AFTER_RENDER_READY]
+                    if m.frameworkInstance.builder.pluginAdapter.pluginHooks[LifeCycleHookType].DoesExist(pluginKey)
+                        widget[pluginKey] = config[pluginKey]
+                        postProcessBuffer.add({
+                            isPlugin: true,
+                            HID: HID,
+                            widget: widget,
+                            hookType: LifeCycleHookType,
+                            isView: widget?.isView ?? false,
+                            pluginKey: pluginKey
+                        })
+                    end if
+                end for
+
+                ' plugin :: addons
+                plugin = m.frameworkInstance.plugins[pluginKey]
+                if Rotor.Utils.isValid(plugin["widgetMethods"])
+                    if widgetAddon.plugins = invalid then widgetAddon.plugins = {}
+                    if widgetAddon.plugins[pluginKey] = invalid then widgetAddon.plugins[pluginKey] = {
+                        pluginKey: pluginKey,
+                        id: widget.id,
+                        HID: widget.HID,
+                        isView: widget?.isView ?? false,
+                        parentHID: widget.parentHID
+                        ' future improvement: make more widget params available
+                    }
+                    widgetAddon.plugins[pluginKey].append(plugin["widgetMethods"])
+                end if
+
+            end if
+
+            pluginKey = pluginKeyList.GetIndex()
+        end while
+
+        ' APPEND ADDONS
+        if widgetAddon.Count() > 0
+            widget.append(widgetAddon)
+        end if
+
+
+
+        appendChildProcess = {
+            hookType: Rotor.const.LifeCycleHookType.APPEND_CHILD,
+            HID: HID,
+            widget: widget
+        }
+        if config.zIndex <> invalid
+            appendChildProcess.zIndex = config.zIndex
+        end if
+
+        postProcessBuffer.add(appendChildProcess)
+
+        if Rotor.Utils.isFunction(widget.afterWidgetMounted) or widget?.isViewModel = true
+            postProcessBuffer.add({
+                hookType: Rotor.const.LifeCycleHookType.CALLFN_MOUNTED,
+                HID: HID,
+                widget: widget
+            })
+        end if
+
+        ' if widget?.isViewModel = true
+        '     postProcessBuffer.add({
+        '         hookType: Rotor.const.LifeCycleHookType.AFTER_VIEW_MOUNTED,
+        '         HID: HID
+        '     })
+        ' end if
+
+
+
+        return {
+            HID: HID,
+            children: children,
+            parentHID: parentHID,
+            id: widget.id
+        }
+
+    end function
+
+end namespace

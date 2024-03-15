@@ -1,0 +1,76 @@
+
+namespace ViewModels
+
+    ' Note that this component is created to be extended and reused.
+    ' It implements a sub-cycle to manage focusable, selectable list of elements
+    class OptionList extends ViewModel
+
+        override function template() as object
+
+            return {
+                sgName: "Group",
+
+                ' Focus group which responsible for spatial navigaition whithin group.
+                focus: {
+                    group: {
+                        defaultFocusId: `option-${m.props.activeOptionKey}`,
+                        enableSpatialEnter: false
+                    }
+                },
+                children: m.generateOptions(m.props)
+            }
+        end function
+
+        function generateOptions(props as object)
+
+            if props.optionKeys = invalid or props.optionKeys.Count() = 0 then return {}
+
+            optionsTemplate = []
+            optionCount = props.optionKeys.Count()
+
+            for optionIndex = 0 to optionCount - 1
+
+
+                optionKey = props.optionKeys[optionIndex] ' This is the point where optionKey turn into optionKey
+                optionId = "option-" + optionKey
+
+                isActive = optionKey = props.activeOptionKey
+
+                optionsTemplate.push({
+                    id: optionId, ' required property
+                    viewModel: props.optionViewModel, ' required property
+                    props: {
+                        optionKey: optionKey,
+                        optionIndex: optionIndex,
+                        optionCount: optionCount,
+
+                        isAutoSelectOnFocusEnabled: props.isAutoSelectOnFocusEnabled,
+                        isActive: isActive,
+                        activeOptionKey: props.activeOptionKey
+                    }
+                })
+            end for
+
+            return optionsTemplate
+        end function
+
+        override sub onDestroyView()
+        end sub
+
+
+        override sub onUpdateView()
+            ' This logic is responsible for set prev option to inactive to new option to active
+            for each childId in m.children
+                isActive = m.props.activeOptionKey = m.children[childId].props.optionKey
+                isChanged = m.children[childId].isActive <> isActive
+                if isChanged
+                    m.children[childId].props.isActive = isActive
+                    m.children[childId].onUpdateView()
+                end if
+            end for
+        end sub
+
+
+
+    end class
+end namespace

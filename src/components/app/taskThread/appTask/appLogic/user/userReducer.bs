@@ -1,0 +1,25 @@
+
+namespace Reducers
+
+    class UserReducer extends Reducer
+
+        sub new(modelInstance)
+            super(modelInstance)
+        end sub
+
+        override function reducer(state, intent)
+
+            if intent.type = IntentType.USER.SET_ACTIVE_LANGUAGE_KEY
+                state.personalization.activeLanguageKey = intent.payload.activeLanguageKey
+
+            else intent.type = IntentType.USER.SET_ACTIVE_THEME_KEY
+                state.personalization.activeThemeKey = intent.payload.activeThemeKey
+
+            end if
+
+            return state
+        end function
+
+    end class
+
+end namespace

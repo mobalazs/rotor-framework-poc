@@ -1,0 +1,183 @@
+interface Intent
+    type as string
+    payload as object
+end interface
+
+class Dispatcher
+
+    middlewares = []
+    isExternal = false
+
+    sub new(dispatcherId = "" as string, reducerInstance = invalid as object)
+
+        if dispatcherId = "" then dispatcherId = Rotor.Utils.getUUIDHex()
+        m.dispatcherId = dispatcherId
+
+        globalScope = GetGlobalAA()
+        m.taskNode = globalScope.top
+
+        m.reducerInstance = reducerInstance
+        m.modelInstance = m.reducerInstance.modelInstance
+
+        ' for task thread (only notification, data will be passed by task function interface)
+        ' fieldId = m.dispatcherId
+        ' m.taskNode.addField(fieldId, "assocarray", true)
+
+        ' for render thread (notification and data)
+        m.taskNode.addField(m.dispatcherId, "node", true)
+
+        m.exposeState()
+
+        ' REGISTER DISPATCER
+        frameworkInstance = globalScope.appFw
+        frameworkInstance.dispatcherProvider.registerDispatcher(m, dispatcherId) ' selft registration
+
+    end sub
+
+    sub exposeState()
+
+        ' for task thread (only notification, data will be passed by task function interface)
+        ' fieldId = m.dispatcherId
+        ' m.taskNode.setField(fieldId, m.modelInstance.state)
+
+        ' for render thread (notification and data)
+        newState = Rotor.Utils.createContentNode(m.modelInstance.state)
+        m.taskNode.setField(m.dispatcherId, newState)
+
+    end sub
+
+    listeners = []
+
+    sub dispatch(intent as Intent)
+
+        if intent.Count() > 1 and intent.payload = invalid then throw "[WARNING] Intent payload is invalid."
+
+
+        ' fieldId = m.dispatcherId
+        ' state = m.taskNode.getField(fieldId)
+
+        ' ? "-----------"
+        ' ? m.taskNode.threadinfo().currentThread.type
+        ' ? m.taskNode.[fieldId].threadinfo().currentThread.type
+        ' ? state.threadinfo().currentThread.type
+
+        currentState = m.modelInstance.state
+        newState = m.reducerInstance.reduce(currentState, intent)
+
+        ' If intention has been dropped by a middleware
+        if newState = invalid then return
+
+        m.exposeState()
+
+        ' m.notifyListeners()
+
+    end sub
+
+    ' function cloneNode(oldNode as Object) as Object
+    '     newNode = createObject("roSGNode", "ContentNode") 'subtyped node should automatically have all the fields of the original node
+    '     newNode.setFields(oldNode.getFields())
+    '     return newNode
+    ' end function
+
+    sub notifyListeners(state as object)
+
+        listenerCount = m.listeners.Count()
+        listenerIndex = 0
+        while listenerIndex < listenerCount
+            listener = m.listeners[listenerIndex]
+
+            callback = listener.callback
+            scope = listener.listenerScope
+
+            shouldUpdate = Rotor.Utils.isFunction(listener.shouldUpdate) ? listener.shouldUpdate(scope.state, state) : true
+
+            if shouldUpdate
+
+                if Rotor.Utils.isFunction(listener.mapStateToState)
+                    listener.mapStateToState(scope.state, state)
+                end if
+
+                ' populate props, available across all widgets of viewModel's
+                if callback <> invalid
+                    if listener.passState
+                        Rotor.Utils.callbackScoped(callback, scope, state)
+                    else
+                        Rotor.Utils.callbackScoped(callback, scope)
+                    end if
+                end if
+
+                if listener?.once = true
+
+                    m.listeners.Delete(listenerIndex)
+                    listenerCount--
+                else
+                    listenerIndex++
+                end if
+
+            else
+                listenerIndex++
+            end if
+
+        end while
+    end sub
+
+    sub addListener(listenerConfig as object, listenerId as string, listenerScope as object)
+        m.listeners.push({
+            listenerId: listenerId,
+            listenerScope: listenerScope,
+
+            ' mapStateToState: listenerConfig?.mapStateToState, ; should not happen in task thread
+            shouldUpdate: listenerConfig?.shouldUpdate ?? true,
+            callback: listenerConfig?.callback ?? "onUpdate",
+            passState: listenerConfig?.passState ?? false,
+            once: listenerConfig?.once ?? false
+        })
+    end sub
+
+    sub removeAllListenesrByListenerId(listenerId as string)
+        listenerCount = m.listeners.Count()
+        listenerIndex = listenerCount - 1
+        while listenerIndex >= 0
+            if m.listeners[listenerIndex].listenerId = listenerId
+                m.listeners[listenerIndex].listenerScope = invalid
+                m.listeners.delete(listenerIndex)
+            else
+                listenerIndex--
+            end if
+        end while
+    end sub
+
+    function getState(mapStateToProps = invalid as Dynamic, callerScope = invalid as object) as object
+
+        isRenderTrhead = m.threadType = Rotor.const.ThreadType.RENDER
+
+        if isRenderTrhead ' and Rotor.Utils.isFunction(mapStateToProps)
+            throw "This should has not happened."
+        else
+            ' fieldId = m.dispatcherId
+            ' state = m.taskNode.getField(fieldId)
+            return m.modelInstance.state
+        end if
+    end function
+
+    sub destroy()
+        ' remove all listeners
+        if m.listeners.Count() > 0
+            for each listener in m.listeners
+                listener.scope = invalid
+                listener.callback = invalid
+            end for
+        end if
+        m.listeners.Clear()
+
+        frameworkInstance = GetGlobalAA().globalScope.rotor_framework_helper.frameworkInstance
+        frameworkInstance.disptcherProvider.deregisterDispatcher(m.dispatcherId)
+
+        m.taskNode = invalid
+        m.modelInstance = invalid
+        m.reducerInstance = invalid
+    end sub
+
+end class
+
+

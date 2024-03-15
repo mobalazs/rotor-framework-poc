@@ -1,0 +1,87 @@
+namespace Rotor
+
+    namespace const
+
+        const GROUP_CONFIG_KEY = "group"
+
+        enum Direction
+            UP = "up"
+            RIGHT = "right"
+            DOWN = "down"
+            LEFT = "left"
+        end enum
+
+        enum Segment
+            TOP = "top"
+            RIGHT = "right"
+            BOTTOM = "bottom"
+            LEFT = "left"
+        end enum
+
+        enum PluginLifeCycleHookType
+            ' 03_
+            BEFORE_MOUNT = "beforeMount"
+            ' 05_
+            AFTER_MOUNTED = "afterMounted"
+            ' 06_
+            BEFORE_UPDATE = "beforeUpdate"
+            ' 07_
+            AFTER_UPDATED = "afterUpdated"
+            ' 10_
+            BEFORE_DESTROY = "beforeDestroy"
+            ' 14_
+            AFTER_RENDER_READY = "afterRenderReady"
+        end enum
+
+        enum LifeCycleHookType
+            ' 01_
+            APPEND_CHILD = "appendChild"
+            ' 02_
+            REINDEX_CHILD = "reindexChild"
+            ' 03_
+            BEFORE_MOUNT = "beforeMount"
+            ' 04_
+            CALLFN_MOUNTED = "callFnMounted"
+            ' 05_
+            AFTER_MOUNTED = "afterMounted"
+            ' 06_
+            BEFORE_UPDATE = "beforeUpdate"
+            ' 07_
+            AFTER_UPDATED = "afterUpdated"
+            ' 06_
+            CALLFN_UPDATED = "callFnUpdated"
+            ' 09_
+            AFTER_VIEW_MOUNTED = "afterViewMounted"
+            ' 10_
+            BEFORE_DESTROY = "beforeDestroy"
+            ' 11_
+            CALLFN_DESTROY = "callFnDestroy"
+            ' 12_
+            REMOVE_CHILD = "removeChild"
+            ' 13_
+            DELETE_WIDGET = "deleteWidget"
+            ' 14_
+            AFTER_RENDER_READY = "afterRenderReady"
+        end enum
+
+
+        enum HookPriorityTypes
+            ROOT = "rootBuffer"
+            DEFAULT = "defaultBuffer"
+        end enum
+
+        enum ThreadSyncType
+            TASK_SYNCING = "taskSyncing"
+            REGISTER_EXTERNAL_DISPATCHER = "registerExternalDispatcher"
+            TASK_SYNCED = "taskSynced"
+            DISPATCH = "dispatch"
+        end enum
+
+        enum ThreadType
+            RENDER = "render"
+            TASK = "task"
+        end enum
+
+    end namespace
+
+end namespace

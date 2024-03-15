@@ -1,0 +1,98 @@
+namespace ViewModels
+
+    class PageMenuItem extends ViewModel
+
+        override sub onUpdateView()
+            itemIconWidget = m.getWidget("itemIcon")
+            itemIconWidget.refresh("fields.blendColor")
+            itemLabel = m.getWidget("itemLabel")
+            itemLabel.refresh("fields.color")
+        end sub
+
+        override function template() as object
+
+            focus = {
+                onFocusChanged: sub (widget, isFocused as boolean) ' onSelected pass isFocused
+                    ' (1) spread the new value of isFocused
+                    ' widget.context.isFocused = isFocused ' This will be set automatically by plugin
+
+                    ' (2) want update design
+                    m.onUpdateView()
+
+                    ' (3) other specific things such as this below
+                    if isFocused = true and widget.props.isAutoSelectOnFocusEnabled = true
+                        widget.focus.onSelected(widget)
+                    end if
+                end sub,
+                onSelected: sub (widget) ' onSelected pass isFocused
+                    widget.context.dispatcher.appStore.dispatch({
+                        type: IntentType.APP_STORE.SET_ACTIVE_PAGE_KEY,
+                        payload: {
+                            activePageKey: widget.props.optionKey
+                        }
+                    })
+                end sub
+            }
+
+            return {
+                theme: "menu",
+                sgName: "Group",
+                focus: focus,
+                context: {
+                    isFocused: false ' as default
+                },
+                dispatcher: "appStore",
+                fields: {
+                    translation: function(widget) as object
+                        theme = widget.context.theme.menu.optionlistContent.pageMenuItem
+                        return [0, widget.props.optionIndex * (theme.height + (theme.marginBottom ?? 0))]
+                    end function
+                },
+                children: [
+                    {
+                        id: "itemIcon",
+                        sgName: "Poster",
+                        fields: {
+                            blendColor: function(widget) as string
+                                if widget.context.isFocused
+                                    return widget.context.theme.menu.shared.menuItemColor.focused
+                                else
+                                    return widget.props.isActive ? widget.context.theme.menu.shared.menuItemColor.active : widget.context.theme.menu.shared.menuItemColor.default
+                                end if
+                            end function,
+                            width: "#theme.menu.shared.icon.size.width",
+                            height: "#theme.menu.shared.icon.size.height",
+                            uri: `#theme.menu.pageMenu.menuIcons.${m.props.optionKey}.url`,
+                            translation: function(widget) ' expression example
+                                theme = widget.context.theme.menu.optionlistContent.pageMenuItem
+                                return [theme.labelWidth + theme.marginRight, 0]
+                            end function
+                        }
+                    }, {
+
+                        id: "itemLabel",
+                        sgName: "Label",
+                        fontStyle: "#theme.menu.shared.menuLabelFontStyle",
+                        fields: {
+                            color: function(widget) as string
+                                if widget.context.isFocused
+                                    return widget.context.theme.menu.shared.menuItemColor.focused
+                                else
+                                    return widget.props.isActive ? widget.context.theme.menu.shared.menuItemColor.active : widget.context.theme.menu.shared.menuItemColor.default
+                                end if
+                            end function,
+                            text: `#tr.menuItems.${m.props.optionKey}.text`,
+                            width: "#theme.menu.optionlistContent.pageMenuItem.labelWidth",
+                            height: "#theme.menu.shared.icon.size.height",
+                            vertAlign: "center",
+                            horizAlign: "right"
+                        }
+                    }
+                ]
+            }
+
+        end function
+
+    end class
+
+end namespace

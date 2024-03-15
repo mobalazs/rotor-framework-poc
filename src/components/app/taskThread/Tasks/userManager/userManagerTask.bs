@@ -1,0 +1,30 @@
+' Rotor Framework Task
+import "pkg:/source/rotorFramework/RotorFrameworkTask.bs"
+
+' Import common contants
+import "pkg:/components/app/common/intentTypes.bs"
+
+' Import Models and Reducers
+' import "app/appStore.bs"
+' import "app/appStoreReducer.bs"
+' import "user/userModel.bs"
+' import "user/userReducer.bs"
+' import "preloader/preloaderModel.bs"
+' import "preloader/preloaderReducer.bs"
+
+sub init()
+    m.top.functionName = "task"
+    m.appFw = new Rotor.FrameworkTask()
+end sub
+
+
+sub task()
+
+
+    ' User Manager logic
+    ' appStore = new Models.AppStore()
+    ' appStoreReducer = new Reducers.AppStoreReducer(appStore)
+    ' m.appStoreDispatcher = new Dispatcher("appStore", appStoreReducer)
+
+    m.appFw.sync()
+end sub

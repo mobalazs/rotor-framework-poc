@@ -1,0 +1,39 @@
+' Rotor Framework Task
+import "pkg:/source/rotorFramework/RotorFrameworkTask.bs"
+
+' Import common contants
+import "pkg:/components/app/common/intentTypes.bs"
+
+sub init()
+    m.top.functionName = "task"
+    m.appFw = new Rotor.FrameworkTask()
+end sub
+
+
+' EXAMPLE FOR creating model, reducer and dispatcer withouth any additional bs files.
+sub task()
+
+    ' MODEL
+    intialState = {
+        isReady: false
+    }
+    modelInstance = new Model(intialState)
+
+    ' REDUCER
+    reducerInstance = new Reducer(modelInstance)
+    reducerInstance.reducer = function(state, intent)
+
+        if intent.type = IntentType.SLEEP.START
+            sleep(intent.payload?.duration * 1000 ?? 1000)
+            state.isReady = true
+        end if
+
+        return state
+    end function
+
+    ' ... finally create dispatcher
+    m.sleepDispatcher = new Dispatcher("sleep", reducerInstance)
+
+    m.appFw.sync()
+
+end sub

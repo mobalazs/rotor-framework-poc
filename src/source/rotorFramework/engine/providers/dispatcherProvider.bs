@@ -1,0 +1,48 @@
+
+namespace Rotor
+
+    class DispatcherProvider extends Rotor.BaseStack
+
+        threadType as string
+
+        sub new(threadType as string)
+            super()
+            m.threadType = threadType
+        end sub
+
+        ' return a facede of the requested dispatcher
+        function getFacade(dispatcherId as string, listenerScope = invalid as object) as object
+            listenerId = listenerScope?.HID ?? Rotor.Utils.getUUIDHex()
+
+            dispatcherTaskNode = m.stack.LookupCI(dispatcherId)
+            dispatcherFacadeInstance = new Rotor.DispatcherFacade(dispatcherTaskNode, dispatcherId, listenerId, listenerScope)
+
+            return dispatcherFacadeInstance
+        end function
+
+        override sub registerDispatcher(dispatcherInstance, id as string)
+            m.set(id, dispatcherInstance)
+            m[id] = dispatcherInstance
+            #if debug
+                if m.threadType = Rotor.const.ThreadType.RENDER and dispatcherInstance.isExternal = false
+                    throw { message: "[WARNING] Do not create dispatcher in render thread. It would increase the number of thread randezvous." }
+                end if
+            #end if
+        end sub
+
+        sub registerExternalDispatchers(dispatcherIds as dynamic, taskNode as object)
+            dispatcherIds = Rotor.Utils.ensureArray(dispatcherIds)
+            for each dispatcherId in dispatcherIds
+                dispatcherInstance = new Rotor.DispatcherExternal(dispatcherId, taskNode, m.threadType)
+                m.set(dispatcherId, dispatcherInstance)
+            end for
+        end sub
+
+        sub deregisterDispatcher(dispatcherId as dynamic)
+            dispatcherInstance = m.get()
+            dispatcherInstance.destroy()
+            m.remove(dispatcherId)
+        end sub
+
+    end class
+end namespace

@@ -1,0 +1,45 @@
+{
+  "name": "mml-roku",
+  "version": "1.0.0",
+  "description": "Rotor Framework POC",
+  "scripts": {
+    "precompiler": "ts-node-cwd scripts/precompilers/generateAssetJsonFromJs.ts",
+    "build": "npm run precompiler && bsc --createPackage=false",
+    "build-tests": "npm run precompiler && bsc --project bsconfig-tests.json --createPackage=false",
+    "lint": "npx bslint --project bsconfig.json  --lintConfig bslint.json",
+    "watch": "npm run build -- --watch",
+    "release": "npm run precompiler && bsc --createPackage=false",
+    "package": "npm run precompiler && bsc --create-package",
+    "linter": "npm run precompiler && bsc --create-package --copy-to-staging false"
+  },
+  "ropm": {
+    "rootDir": "src",
+    "packageRootDir": "dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mobalazs/magic-whitelabel.git"
+  },
+  "keywords": [
+    "brightscript",
+    "framework",
+    "poc",
+    "whitelabel",
+    "playground"
+  ],
+  "author": "Balázs Molnár",
+  "license": "CC-BY-ND",
+  "bugs": {
+    "url": "https://github.com/mobalazs/magic-whitelabel/issues"
+  },
+  "homepage": "https://github.com/mobalazs/magic-whitelabel#readme",
+  "devDependencies": {
+    "@rokucommunity/bslint": "^0.8.10",
+    "@types/node": "^20.8.2",
+    "brighterscript": "^0.65.25",
+    "obj-keypath": "^1.1.0",
+    "rooibos-roku": "^5.10.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}

@@ -1,0 +1,69 @@
+namespace ViewModels
+
+    class LanguagePickerItem extends ViewModel
+
+        override sub onUpdateView()
+            itemLabel = m.getWidget("itemLabel")
+            itemLabel.refresh("fields.color")
+        end sub
+
+        override function template() as object
+
+            focus = {
+                onFocusChanged: sub (widget, isFocused as boolean) ' onSelected pass isFocused
+                    m.onUpdateView()
+                    if isFocused = true and widget.props.isAutoSelectOnFocusEnabled = true
+                        widget.focus.onSelected(widget)
+                    end if
+                end sub,
+
+                onSelected: sub (widget) ' onSelected pass isFocused
+                    if widget.props.isActive = false
+
+                        widget.context.dispatcher.user.dispatch({
+                            type: IntentType.USER.SET_ACTIVE_LANGUAGE_KEY,
+                            payload: {
+                                activeLanguageKey: widget.props.optionKey
+                            }
+                        })
+                    end if
+                end sub
+            }
+
+            return {
+                theme: ["menu.optionlistContent.languagePickerItem", "settings.languagePicker", "menu.shared.menuItemColor"],
+                sgName: "Group",
+                focus: focus,
+                dispatcher: "user",
+                fields: {
+                    translation: function(widget) as object ' expression example
+                        theme = widget.context.theme.menu.optionlistContent.languagePickerItem
+                        return [0, widget.props.optionIndex * (theme.height + (theme.marginBottom ?? 0))]
+                    end function
+                },
+                children: {
+                    id: "itemLabel",
+                    sgName: "Label",
+                    fontStyle: "#theme.fontStyles.subMenuLabelFontStyle",
+                    fields: {
+                        color: function(widget) as string
+                            if widget.context.isFocused
+                                return widget.context.theme.menu.shared.menuItemColor.focused
+                            else
+                                return widget.props.isActive ? widget.context.theme.menu.shared.menuItemColor.active : widget.context.theme.menu.shared.menuItemColor.default
+                            end if
+                        end function,
+                        text: "#tr.languages." + m.props.optionKey,
+                        width: "#theme.settings.languagePicker.labelWidth",
+                        height: "#theme.menu.shared.icon.size.height",
+                        vertAlign: "center",
+                        horizAlign: "center"
+                    }
+                }
+            }
+
+        end function
+
+    end class
+
+end namespace

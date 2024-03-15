@@ -1,0 +1,60 @@
+
+namespace ViewModels
+
+    class LoadingScreen extends ViewModel
+
+        override function template() as object
+
+            designResolution = "{#theme=designResolution}"
+
+            if m.props.isSpinnerVisilbe = invalid then m.props.isSpinnerVisilbe = true
+
+            return {
+                sgName: "Rectangle",
+                theme: ["colors"],
+                context: { designResolution: designResolution },
+                fields: {
+                    color: "@context.theme.colors.black",
+                    width: designResolution.w,
+                    height: designResolution.h
+                },
+                children: [
+                    {
+                        sgName: "LayoutGroup",
+                        fields: {
+                            itemSpacings: [10],
+                            horizAlignment: "center",
+                            vertAlignment: "center",
+                            translation: function(widget) as object
+                                return [widget.context.designResolution.w / 2, widget.context.designResolution.h / 2] ' I dont like LayoutGroup, but it can be useful
+                            end function
+                        },
+                        children: [{
+                            sgName: "Label",
+                            theme: "fontStyles.H1",
+                            fontStyle: "#theme.fontStyles.H1",
+                            fields: {
+                                text: "LOADING",
+                                color: "#theme.colors.white"
+                            }
+                        }, {
+                            id: "defaultSpinner",
+                            viewModel: ViewModels.BusySpinner
+                        }, {
+                            id: "lastMinuteLabel",
+                            sgName: "Label",
+                            fontStyle: "#theme.fontStyles.H2",
+                            fields: {
+                                visible: false,
+                                text: "Just a second..."
+                            }
+                        }]
+                    }
+                ]
+            }
+
+        end function
+
+    end class
+
+end namespace

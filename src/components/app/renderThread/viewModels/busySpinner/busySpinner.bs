@@ -1,0 +1,70 @@
+
+namespace ViewModels
+
+    class BusySpinner extends ViewModel
+
+        override sub afterViewMounted()
+            m.startSpinner()
+        end sub
+
+        override sub onDestroyView()
+            m.stopSpinner()
+        end sub
+
+
+        override function template() as object
+
+            return {
+                id: "defaultSpinner",
+                sgName: "BusySpinner",
+                theme: "busySpinner",
+                fields: {
+                    uri: "@context.theme.busySpinner.url",
+                    width: "@context.theme.busySpinner.size.w",
+                    height: "@context.theme.busySpinner.size.h",
+                    visible: true
+                },
+                children: {
+                    id: "innerSpinner",
+                    sgName: "BusySpinner",
+                    fields: {
+                        uri: "#theme.busySpinner.url",
+                        translation: [4, 4],
+                        clockwise: false,
+                        opacity: 0.5,
+                        spinInterval: 0.8,
+                        visible: true
+                    }
+                }
+            }
+        end function
+
+        sub startSpinner()
+            m.node.control = "start"
+
+            innerPosterNode = m.children.innerSpinner.node
+            innerPosterNode.control = "start"
+
+            innerPosterNodePoster = innerPosterNode.getChild(0) ' sorry, it is a natively appended poster
+
+            innerPosterNodePoster.width = m.context.theme.busySpinner.size.w - 8
+            innerPosterNodePoster.height = m.context.theme.busySpinner.size.h - 8
+
+            m.node.visible = true
+        end sub
+
+        sub stopSpinner()
+            m.node.visible = false
+
+            m.node.control = "stop"
+
+            innerPosterNode = m.children.innerSpinner.node
+            innerPosterNode.control = "stop"
+
+        end sub
+
+
+
+
+    end class
+end namespace

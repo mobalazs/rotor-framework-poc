@@ -1,0 +1,51 @@
+namespace ViewModels
+
+    class Playground1Page extends ViewModel
+
+        override function template() as object
+            return {
+                focus: {
+                    group: {
+                        defaultFocusId: "button-1-default"
+                    }
+                },
+                children: {
+                    sgName: "LayoutGroup",
+                    fields: {
+                        itemSpacings: [5]
+                    },
+                    children: [
+                        {
+                            sgName: "Label",
+                            tr: "helloWorld",
+                            fields: {
+                                text: "@context.tr.helloWorld"
+                            }
+                        },
+                        {
+                            id: "button-1-default",
+                            viewModel: ViewModels.SimpleButton,
+                            props: {
+                                width: 300
+                            }
+
+                        },
+                        {
+                            id: "button-2-simple",
+                            viewModel: ViewModels.SimpleButton
+
+                        },
+                        {
+                            viewModel: ViewModels.SimpleButton
+
+                        },
+                        {
+                            viewModel: ViewModels.SimpleButton
+
+                        }
+                    ]
+                }
+            }
+        end function
+    end class
+end namespace

@@ -1,0 +1,69 @@
+
+namespace ViewModels
+
+    class SimpleButton extends ViewModel
+
+        override function template() as object
+
+            return {
+                sgName: "Group",
+                theme: "buttons.simpleButton",
+                fields: {
+                    translation: m.props.translation ?? [0, 0]
+                },
+                focus: {
+                    isEnabled: true,
+                    onFocusChanged: sub (widget, isFocused as boolean)
+
+                        theme = widget.context.theme.buttons.simpleButton
+                        bg = widget.getWidget("buttonBg")
+                        label = widget.getWidget("buttonBg/buttonLabel")
+
+                        if isFocused
+                            bg.node.blendColor = theme.bgColor_focused
+                            label.node.color = theme.textColor_focused
+                        else
+                            bg.node.blendColor = theme.bgColor
+                            label.node.color = theme.textColor
+                        end if
+
+                    end sub
+                },
+                children: {
+                    id: "buttonBg",
+                    sgName: "Poster",
+                    fields: {
+                        blendColor: "#theme.buttons.simpleButton.bgColor",
+                        width: function(widget)
+                            return widget.props.width ?? widget.context.theme.buttons.simpleButton.width
+                        end function,
+                        height: "#theme.buttons.simpleButton.height",
+                        uri: "#theme.buttons.simpleButton.posterUrl"
+                    },
+                    children: {
+                        id: "buttonLabel",
+                        sgName: "Label",
+                        fontStyle: "#theme.buttons.simpleButton.fontStyle",
+                        fields: {
+                            text: m.props.text ?? m.props.id,
+                            color: "#theme.buttons.simpleButton.textColor",
+                            horizAlign: "left",
+                            vertAlign: "center",
+                            width: function(widget)
+                                return (widget.props.width ?? widget.context.theme.buttons.simpleButton.width) - 2 * widget.context.theme.buttons.simpleButton.padding
+                            end function,
+                            height: function(widget)
+                                return widget.context.theme.buttons.simpleButton.height - 2 * widget.context.theme.buttons.simpleButton.padding
+                            end function,
+                            translation: function(widget)
+                                return [widget.context.theme.buttons.simpleButton.padding, widget.context.theme.buttons.simpleButton.padding]
+                            end function
+                        }
+                    }
+                }
+            }
+        end function
+
+    end class
+
+end namespace

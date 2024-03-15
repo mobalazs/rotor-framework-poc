@@ -1,0 +1,30 @@
+' namespace ViewModels
+
+    class ViewModel extends Rotor.BaseWidget
+        isViewModel = true
+
+        context = {}
+
+        ' This ViewModel will be decorated by Rotor ViewBuilder Engine, for more information please check BaseWidget Class.
+
+        sub onCreateView()
+        end sub
+
+        sub afterViewMounted()
+        end sub
+
+        sub onUpdateView()
+        end sub
+
+        sub onDestroyView() ' call by View Builder
+        end sub
+
+        ' default template
+        function template() as object
+            return {}
+        end function
+
+
+    end class
+
+' end namespace

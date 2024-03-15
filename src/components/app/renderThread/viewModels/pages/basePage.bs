@@ -1,0 +1,75 @@
+
+class BasePage extends ViewModel
+
+    ' Default template but will be overriden on each pages in real situation
+    override function template() as object
+
+        ' 150 button button ( 3 pages, 10 rows per page, 50 content per rows )
+        children = []
+        for rowlIndex = 0 to 3
+            children.push({
+                id: "id_" + rowlIndex.toStr(),
+                sgName: "LayoutGroup",
+                fields: {
+                    layoutDirection: "horiz",
+                    itemSpacings: [8]
+                },
+                children: []
+            })
+            for colIndex = 0 to 6
+                id = "id_" + rowlIndex.toStr() + "_" + colIndex.toStr()
+                item = {
+                    id: "id_" + rowlIndex.toStr() + "_" + colIndex.toStr(),
+                    viewModel: ViewModels.SimpleButton,
+                    props: {
+                        text: `${m.props.pageKey}-${id}`
+                    }
+                }
+                children[rowlIndex].children.push(item)
+            end for
+        end for
+        children[0].children[0].id = "first"
+
+
+
+        return {
+            focus: {
+                group: {
+                    forwardFocusId: "buttonGroup" ' Example for propagate focus
+                }
+            },
+            children: [
+                {
+                    id: "viewTitle",
+                    sgName: "Label",
+                    tr: "menuItems." + m.props.pageKey,
+                    theme: "fontStyles.H2",
+                    fontStyle: "@context.theme.fontStyles.H2",
+                    fields: {
+                        text: "@context.tr.menuItems." + m.props.pageKey + ".text"
+                    }
+                }, {
+
+                    id: "buttonGroup",
+                    sgName: "LayoutGroup",
+                    fields: {
+                        translation: [0, 70],
+                        itemSpacings: [8]
+                        ' scale: [0.33, 0.33]
+                    },
+                    focus: {
+                        group: {
+                            defaultFocusId: "button-first",
+                            enableSpatialEnter: true
+                        }
+                    },
+                    children: children
+
+                }
+            ]
+        }
+
+
+    end function
+
+end class

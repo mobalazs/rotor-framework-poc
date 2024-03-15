@@ -1,0 +1,36 @@
+{
+    "rootDir": "src",
+    "files": [
+        "source/**/*",
+        "components/**/*",
+        "manifest",
+        "assets/**/*",
+        "!**/*.spec.bs"
+    ],
+    "stagingDir": "dist",
+    // "sourceRoot": "src",
+
+    "createPackage": false,
+
+    "emitDefinitions": true,
+    "sourceMap": true,
+
+    "autoImportComponentScript": true, // When enabled, every xml component will search for a .bs or .brs file with the same name in the same folder, and add it as a script import if found. Disabled by default
+
+
+    // "plugins": [ "@rokucommunity/bslint"],
+    "require": ["ts-node/register"],
+    "plugins": [
+        // "./scripts/bsPlugins/annotationPlugin.ts",
+        "./scripts/bsPlugins/replaceAssertKeysPlugin.ts",
+        "@rokucommunity/bslint",
+        "rooibos-roku"
+    ],
+    "diagnosticFilters": [
+        {
+            "src": "**/roku_modules/**/*.*"
+            },{
+            "src": "**/debug/rale/**/*.*"
+        }
+    ]
+}

@@ -1,0 +1,7 @@
+namespace ViewModels
+
+    class MoviesPage extends BasePage
+
+    end class
+
+end namespace

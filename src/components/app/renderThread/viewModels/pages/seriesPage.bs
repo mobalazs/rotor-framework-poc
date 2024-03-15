@@ -1,0 +1,7 @@
+namespace ViewModels
+
+    class SeriesPage extends BasePage
+
+    end class
+
+end namespace

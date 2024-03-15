@@ -1,0 +1,63 @@
+namespace ViewModels
+
+    class ThemePicker extends ViewModels.OptionList
+
+        override sub onCreateView()
+
+            m.userDispatcher = m.getDispatcher("user")
+
+            m.userDispatcher.addListener({
+                shouldUpdate: function(props, newState) as object
+                    return props.activeOptionKey <> newState.personalization.activeThemeKey
+                end function,
+                mapStateToProps: sub(props, state)
+                    props.activeOptionKey = state.personalization.activeThemeKey
+                end sub,
+                callback: "onUpdateView" ' as default
+            })
+
+            m.userDispatcher.getState(sub(props, state)
+                props.append({
+                    activeOptionKey: state.personalization.activeThemeKey,
+                    optionKeys: state.themeKeys,
+                    optionviewModel: ViewModels.ThemePickerItem,
+                    isAutoSelectOnFocusEnabled: true
+                })
+            end sub)
+
+        end sub
+
+        override sub afterViewMounted()
+        end sub
+
+        override sub onUpdateView()
+            super.onUpdateView() ' Do the job on options (children)
+            m.updateTheme()
+        end sub
+
+        sub updateTheme()
+            ' update app design
+
+            theme = getAssets_theme()[m.props.activeOptionKey]
+            appFw = GetGlobalAA().appFw
+            appFw.plugins.theme.setAssets(theme)
+            appFw.plugins.theme.clearCache()
+            appFw.plugins.fields.clearCache()
+
+            subTree1 = m.getSubtreeClone("./**/backgrounds/leftBg", ["theme", "fields.blendColor", "fields.uri", "fields.translation"])
+            subTree2 = m.getSubtreeClone("./**/backgrounds/rightBg", ["theme", "fields.blendColor", "fields.uri", "fields.translation"])
+            subTree3 = m.getSubtreeClone("./**/backgrounds/decor", ["theme", "fields"])
+            subTree4 = m.getSubtreeClone("./**/pageMenu", ["theme", "fields.color", "fields.blendColor"])
+            subTree5 = m.getSubtreeClone("./**/separatorContainer", ["theme", "fields.color", "fields.blendColor"])
+            subTree6 = m.getSubtreeClone("./**/viewcontainer", ["theme", "fields.blendColor", "fields.blendColor", "fields.color", "fields.uri"])
+            m.render([subTree1, subTree2, subTree3, subTree4, subTree5, subTree6])
+        end sub
+
+        override sub onDestroyView()
+            m.userDispatcher.destroy()
+            m.userDispatcher = invalid
+        end sub
+
+    end class
+
+end namespace

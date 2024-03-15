@@ -1,0 +1,55 @@
+namespace ViewModels
+
+    class PageMenu extends ViewModels.OptionList
+
+        override sub onCreateView()
+
+            m.appStoreDispatcher = m.getDispatcher("appStore")
+
+            ' LISTENER (Props will be set by mapStateToProps before callback fire)
+            m.appStoreDispatcher.addListener({
+                shouldUpdate: function(props, newState) as object
+                    return props.activeOptionKey <> newState.activePageKey
+                end function,
+                mapStateToProps: sub(props, state)
+                    props.activeOptionKey = state.activePageKey
+                end sub,
+                callback: "onUpdateView" ' as default (and note that this is an inherited method from OptionList)
+            })
+
+            ' SET INITIAL PROPS
+            m.appStoreDispatcher.getState(sub(props, state)
+                props.append({
+                    activeOptionKey: state.activePageKey,
+                    optionKeys: state.pageList,
+                    optionviewModel: ViewModels.PageMenuItem,
+                    isAutoSelectOnFocusEnabled: false
+                })
+            end sub)
+
+        end sub
+
+        override sub afterViewMounted()
+            ' trigger alignment update
+            m.render({
+                theme: ["menu.pageMenu", "safeAreaOffsets"],
+                onReadyExpression: sub(widget)
+                    context = widget.context
+                    node = widget.node
+                    b = node.boundingRect()
+                    xOffset = context.theme.menu.pageMenu.bg.size.width - b.width
+                    yOffset = (context.theme.menu.pageMenu.verticalSeparetorLine.size.height - b.height) / 2 + context.theme.safeAreaOffsets.y
+                    node.translation = [xOffset, yOffset]
+                end sub
+            })
+        end sub
+
+
+        override sub onDestroyView()
+            m.appStoreDispatcher.destroy()
+            m.appStoreDispatcher = invalid
+        end sub
+
+    end class
+
+end namespace

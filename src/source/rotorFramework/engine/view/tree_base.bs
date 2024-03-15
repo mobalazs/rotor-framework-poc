@@ -1,0 +1,197 @@
+namespace Rotor.ViewBuilder
+
+    class TreeRoot
+
+        node as object
+
+        children = {}
+
+        context = {}
+
+        HID = "0"
+        vmHID = "0"
+        isViewModel =  true
+        childrenHIDhash = {}
+
+        sub destroy()
+        end sub
+
+    end class
+
+    class WidgetTreeBase
+
+        sub new()
+            m.tree = new TreeRoot()
+            m.tree_HIDHash = new Rotor.BaseStack()
+        end sub
+
+        negatedGroup = /\[!\](.*?)\]/i ' negated range for glob patter search
+        groupConditionPattern = /{(.*?)}/i ' group conditions for glob patter search
+
+        sub init()
+        end sub
+
+        sub destroy()
+        end sub
+
+        function add(config as object, ViewModelClass = invalid) as object
+
+            if Rotor.Utils.isValid(ViewModelClass) ' Custom View extends Widget
+                widget = new ViewModelClass()
+                ' widget.isViewModel = true ' commented because this is a default property
+            else
+                widget = new Rotor.BaseWidget() ' Standard Widget
+            end if
+
+            id = config.id
+
+            ' Parse config properties
+            widget.id = id
+            widget.childrenHIDhash = {} ' preapare local HID cache
+            widget.isRootChild = config.parentHID = "0" ' detect root
+            widget.children = {} ' default
+
+            ' Check if has parent widget
+            if widget.isRootChild
+                parent = m.tree
+            else
+                parent = m.get(config.parentHID)
+            end if
+            widget.parentHID = config.parentHID
+
+            ' register as child by readable id
+            parent.children[LCase(id)] = widget
+
+            ' register as child by readable HID (Hierarchical Identifier)
+            HID = m.generateHID(parent)
+            parent.childrenHIDhash[HID] = true ' local cache for HID
+            widget.HID = HID
+            widget.parent = parent ' link parent widget
+
+            if widget?.isViewModel = true
+                widget.vmHID = widget.HID ' start new VM reference in hierarchy
+            else
+                widget.vmHID = parent.vmHID ' populate down the current VM reference in hierarchy
+                VM = m.getByHID(parent.vmHID)
+                widget.props = VM.props ' symlink :D to ancestor's viewModel's props (sharing props across descendant widgets)
+                widget.context = VM.context ' symlink to ancestor ViewModel's context
+            end if
+
+
+            ' Buld the tree with the widget
+            m.tree_HIDHash.set(HID, widget)
+
+            return widget
+        end function
+
+        function generateHID(parent) as string
+            tryCounter = 32
+            newHID = ""
+            ' Performance way
+            while tryCounter > 0 and newHID = ""
+                newHID = parent.HID + Rotor.Utils.getUUIDHex(3)
+                if parent.childrenHIDhash.DoesExist(newHID) = true
+                    newHID = ""
+                end if
+                tryCounter--
+            end while
+            ' Ok, then try another way (very rare scenario)
+            if newHID = ""
+                for decValue = 0 to 4095
+                    hexValue = stri(decValue, 16)
+                    newHID = parent.HID + hexValue
+                    if parent.childrenHIDhash.DoesExist(newHID) = true
+                        newHID = ""
+                        exit for
+                    end if
+                end for
+            end if
+            return newHID
+        end function
+
+        function get(searchPattern as string, HID = "0" as string) as object
+            untilFirstItem = true
+            results = m.find(searchPattern, HID, untilFirstItem)
+            if results = invalid
+                return invalid
+            else
+                return results.shift()
+            end if
+        end function
+
+        function getByHID(HID as string) as object
+            return HID = "0" ? m.tree : m.tree_HIDHash.get(HID)
+        end function
+
+        function hasByHID(HID as string) as boolean
+            return m.tree_HIDHash.has(HID)
+        end function
+
+        sub remove (HID as string)
+            widget = m.getByHID(HID)
+            if widget = invalid then return
+
+            ' remnove from parent
+            parentHID = widget.parentHID
+            parent = widget.isRootChild ? m.tree : m.getTreeItem(parentHID)
+            parent.children.Delete(widget.id)
+            parent.childrenHIDhash.Delete(widget.HID)
+
+            m.tree_HIDHash.remove(HID)
+
+            widget.parent = invalid
+            widget.context = invalid
+            widget.props = invalid
+
+            widget.node = invalid
+
+            widget.Clear()
+
+        end sub
+
+        ' * Helpers
+
+        function isBranchOfRemove(widget as object) as boolean
+            if false = widget.DoesExist("markedToRemove") then return false
+            if widget.isRootChild = true
+                return true
+            end if
+
+            return widget.parent.DoesExist("markedToRemove") ? false : true
+        end function
+
+        function isBranchOfAppend(widget as object) as boolean
+            if false = widget.DoesExist("markedToAppend") then return false
+            if widget.isRootChild = true
+                return true
+            end if
+            return widget.parent.DoesExist("markedToAppend") ? false : true
+        end function
+
+        function getTreeItem(HID)
+            return HID = "" ? m.tree : m.getByHID(HID)
+        end function
+
+        function checkRegexIncluded(part as string) as object
+            if Left(part, 6) = "regex:"
+                return {
+                    isRegex: true,
+                    regex: CreateObject("roRegex", Right(part, Len(part) - 6), "i")
+                }
+            else
+                return {
+                    isRegex: false
+                }
+            end if
+        end function
+
+        sub setRootNode (node as object)
+            m.tree.node = node
+        end sub
+
+        function getRootNode() as object
+            return m.tree.node
+        end function
+    end class
+
+end namespace

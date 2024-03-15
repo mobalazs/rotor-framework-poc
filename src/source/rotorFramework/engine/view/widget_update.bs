@@ -1,0 +1,98 @@
+namespace Rotor.ViewBuilder
+
+
+    function updateWidget(postProcessBuffer as object, widget as object, newConfig as object) as object
+        HID = widget.HID
+
+        isChanged = false
+
+        ' Generic full update flow   (should be updated with prepared skeleton, instead of this kind of update as part of performance optimalization)
+        if widget.isViewModel = true and newConfig.viewModel <> invalid
+            template = widget.template(newConfig.props)
+            template.id = newConfig.id
+            newConfig.delete("viewModel")
+            newConfig.append(template)
+        end if
+
+        ' update props
+        if newConfig.DoesExist("props")
+            isChanged = true
+            Rotor.Utils.deepExtendAA(widget.props, newConfig.props)
+        end if
+
+        pluginKeyList = m.frameworkInstance.builder.pluginAdapter.pluginKeyList
+        pluginKeyList.ResetIndex()
+        pluginKey = pluginKeyList.GetIndex()
+        while pluginKey <> invalid
+
+            if newConfig.doesExist(pluginKey)
+                for each LifeCycleHookType in [Rotor.const.LifeCycleHookType.BEFORE_UPDATE, Rotor.const.LifeCycleHookType.AFTER_UPDATED, Rotor.const.LifeCycleHookType.AFTER_RENDER_READY]
+                    if m.frameworkInstance.builder.pluginAdapter.pluginHooks[LifeCycleHookType].DoesExist(pluginKey)
+
+                        isChanged = true
+
+                        process = {
+                            isPlugin: true,
+                            HID: HID,
+                            widget: widget,
+                            hookType: LifeCycleHookType,
+                            isView: widget?.isView ?? false,
+                            pluginKey: pluginKey
+                        }
+
+                        if LifeCycleHookType = Rotor.const.LifeCycleHookType.BEFORE_UPDATE or LifeCycleHookType = Rotor.const.LifeCycleHookType.AFTER_UPDATED
+                            newValue = newConfig[pluginKey]
+                            oldValue = widget[pluginKey]
+                            ' Change is depend on plugin ;)
+                            process.append({
+                                oldValue: oldValue,
+                                newValue: newValue
+                            })
+                        end if
+
+                        postProcessBuffer.add(process)
+
+                    end if
+                end for
+            end if
+
+            pluginKey = pluginKeyList.GetIndex()
+        end while
+
+         ' modify built-in widget context (if not handled by any plugin)
+        if newConfig.DoesExist("context")
+
+            Rotor.Utils.deepExtendAA(widget.context, newConfig.context)
+            isChanged = true
+        end if
+
+        ' Store node new zIndex
+        if Rotor.Utils.isInteger(newConfig.zIndex)
+            isChanged = true
+            postProcessBuffer.add({
+                hookType: Rotor.const.LifeCycleHookType.REINDEX_CHILD,
+                HID: HID,
+                widget: widget,
+                zIndex: newConfig.zIndex
+            })
+        end if
+
+
+
+        if isChanged = true and Rotor.Utils.isFunction(widget.afterWidgetUpdated)
+            postProcessBuffer.add({
+                hookType: Rotor.const.LifeCycleHookType.CALLFN_UPDATED,
+                HID: HID,
+                widget: widget
+            })
+        end if
+
+        return {
+            children: newConfig.children,
+            HID: HID
+        }
+
+    end function
+
+
+end namespace
