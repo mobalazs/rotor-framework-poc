@@ -93,9 +93,6 @@ but you'll find some very useful diagrams that try to describe the concepts.
 
 ## Contribute
 
-Many thanks to George Cook for the thorough code review.  
-Gratitude to Arturo Cuya for the encouragement.
-
 For any questions ping me ([@Balázs Molnár](https://rokudevelopers.slack.com/team/U05UR749546)) on the Roku Developers Slack channel.
 
 
@@ -106,7 +103,7 @@ For any questions ping me ([@Balázs Molnár](https://rokudevelopers.slack.com/t
 This project uses icons from the Android Asset Studio, which are licensed under the **Apache License 2.0**. For more information about the icons and the license, please visit the following website: Android Asset Studio: https://github.com/romannurik/AndroidAssetStudio
 ##### App icon:
 Modified image of the original: https://www.publicdomainpictures.net/en/view-image.php?image=152257&picture=main-rotor-of-puma-helicopter  
-Lynn Greyling has released this “Main Rotor Of Puma Helicopter” image under **Public Domain** license. It means that you can use and modify it for your personal and commercial projects. If you intend to use an image you find here for commercial use, please be aware that some photos do require a model or a property release. Pictures featuring products should be used with care.
+Lynn Greyling has released this “Main Rotor Of Puma Helicopter” image under **Public Domain** license. It means that you can use and modify it for your personal and commercial projects.
 
 ###### Theme decoration images
 All theme decoration images were downloaded from https://www.rawpixel.com and under **Public Domain** license.  
