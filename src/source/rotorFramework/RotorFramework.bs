@@ -149,6 +149,16 @@ namespace Rotor
             taskNode.control = "RUN"
         end sub
 
+        sub taskSyncFinished()
+
+            m.taskNodes.Clear()
+            if Rotor.Utils.isFunction(m.config.onTaskReady)
+                Rotor.Utils.callbackScoped(m.fconfig.onTaskReady, GetGlobalAA())
+            end if
+            m.builder.renderQueueBufferFlush()
+
+        end sub
+
 
         ' DESTROY
         public sub destroy()
@@ -237,6 +247,8 @@ namespace Rotor
                             extarnalDispatcherList: collection[taskId]
                         })
                     end for
+                else
+                    m.frameworkInstance.taskSyncFinished()
                 end if
 
             end if
@@ -244,7 +256,6 @@ namespace Rotor
         else if sync.type = Rotor.const.ThreadSyncType.TASK_SYNCED
 
             m.frameworkInstance.taskSyncReadyFlag[taskId] = true
-
             ' Check if all nodes ready (very basic logic (< future improvement)
             allTasksSynced = true
             for each flag in m.frameworkInstance.taskSyncReadyFlag.Items()
@@ -252,15 +263,13 @@ namespace Rotor
             end for
 
             if allTasksSynced = true
-                m.frameworkInstance.taskNodes.Clear()
-                if Rotor.Utils.isFunction(m.frameworkInstance.config.onTaskReady)
-                    Rotor.Utils.callbackScoped(m.frameworkInstance.config.onTaskReady, GetGlobalAA())
-                end if
-                m.frameworkInstance.builder.renderQueueBufferFlush()
+                m.frameworkInstance.taskSyncFinished()
             end if
 
         end if
 
     end sub
+
+
 
 end namespace
