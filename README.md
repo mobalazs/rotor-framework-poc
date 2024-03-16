@@ -5,27 +5,71 @@
 
 ### Introduction
 
-This project started out as a hobby, aiming to enhance - or at least maintain - my programming skills. There's no doubt that the Roku platform and development are my passions. After 5-6 months of nighttime and weekend development (with only leisure time available alongside my full-time job), I explored several well-known frameworks. I wanted to blend a modern top-level architecture with my well-functioning View Builder. Surprisingly, the tool I created was similar to Flutter, using remarkably similar terminology. It's been two months since then, and I've implemented a multi-threaded MVI architecture. Development continues...
+Modern frameworks like React, Flutter, and state manager like Redux weren't arbitrarily created; they address specific development challenges, validating their relevance. Applying these principles to Roku platform design ensures efficient development, scalability, and user satisfaction.  
+I believe that these modern development patterns can be adapted to Roku while respecting the platform's limitations and official development guidelines.
 
-I hope you will enjoy the early stage of this framework which would provide new approach of developing complex roku applications.
+This project was created to prove the feasibility of a Roku-friendly reactive application. The Rotor framework consists of two subsystems that work together: 
+* ViewBuilder 
+* Multi-thread MVI pattern
 
-### POC application
+#### Builder Example:
 
-The aim of the Proof of Concept Application is to comprehensively showcase the capabilities of the framework, open up the wide horizon of usability, and implement examples.
+```js
+    m.appFw.render({
+        sgName: "LayoutGroup",
+        fields: {
+            translation: [90, 60],
+            itemSpacings: [60]
+        },
+        children: [
+            {
+                sgName: "Label",
+                fields: {
+                    text: "Simple TodoList Example (driven by Rotor Framewrok)",
+                    font: "font:LargeSystemFont"
+                }
+            },
+            {
+                id: "todoList",
+                viewModel: ViewModels.TodoList
+            }
+        ]
+    })
+```
 
-#### Roadmap:
+#### MVI Example; at ViewModel level:
 
-- Framework source must be outsourced - from this repository - into a separate repository once the framework's R&D is completed.
+```js
+    override sub onCreateView()
 
-    #### Framework R&D todos:
-    - Animator lib
-    - Code Quality Improvements
-    - More comments in code
-    - Unit tests
-    - Documentation, Guide
+        m.props.list = []
 
-- The POC application should evolve into a business-ready white-label application.
-- Unifiable ViewModels - implemented in the application - should be outsourced into a separate component (widget) library.
+        m.todoListDispatcher = m.getDispatcher("todoList")
+        m.todoListDispatcher.addListener({
+
+            mapStateToProps: sub(props, state)
+                props.list = state.list
+                props.counter = state.counter
+            end sub
+
+        })
+
+    end sub
+```
+
+#### MVI Example; at Widget level:
+
+```js
+    onSelected: sub(widget)
+        widget.context.dispatcher.todoList.dispatch({
+            type: IntentType.TODO_LIST.ADD_TODO,
+            payload: {
+                description: m.props.description
+            }
+        })
+    end sub
+```
+
 
 #### How to run POC App
 - Rename `.vscode/sample.settings.json` to `.vscode/settings.json`
