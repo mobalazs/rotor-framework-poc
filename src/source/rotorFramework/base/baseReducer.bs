@@ -32,15 +32,14 @@ class Reducer
         ' Resolve middlewares
         mwIndex = 0
         mwCount = m.middlewares.Count()
-        res = intent
-        while res <> invalid and mwIndex < mwCount
+        while intent <> invalid and mwIndex < mwCount
             middlewareFnScoped = m.middlewares[mwIndex]
             m.middlewareFnScoped = middlewareFnScoped
-            res = m.middlewareFnScoped(intent, state)
-            if res <> invalid then intent = res
+            intent = m.middlewareFnScoped(intent, state)
             mwIndex++
         end while
         m.middlewareFnScoped = invalid ' invalidate scoped fn
+        if intent = invalid then return invalid
 
         ' Resolve Reducer
         newState = m.reducer(state, intent)
