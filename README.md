@@ -101,10 +101,11 @@ For any questions ping me ([@Balázs Molnár](https://rokudevelopers.slack.com/t
 
 ##### Icons:
 This project uses icons from the Android Asset Studio, which are licensed under the **Apache License 2.0**. For more information about the icons and the license, please visit the following website: Android Asset Studio: https://github.com/romannurik/AndroidAssetStudio
-Image editor with which I modified the original: GIMP
+
 ##### App icon:
 Modified image of the original: https://www.publicdomainpictures.net/en/view-image.php?image=152257&picture=main-rotor-of-puma-helicopter  
-Lynn Greyling has released this “Main Rotor Of Puma Helicopter” image under **Public Domain** license. It means that you can use and modify it for your personal and commercial projects. 
+Lynn Greyling has released this “Main Rotor Of Puma Helicopter” image under **Public Domain** license. It means that you can use and modify it for your personal and commercial projects.  
+Image editor with which I modified the original: GIMP
 
 ##### Theme decoration images
 All theme decoration images were downloaded from https://www.rawpixel.com and under **Public Domain** license.  
