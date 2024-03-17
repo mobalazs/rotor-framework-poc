@@ -41,12 +41,12 @@ namespace ViewModels
                             id: "defaultSpinner",
                             viewModel: ViewModels.BusySpinner
                         }, {
-                            id: "lastMinuteLabel",
+                            id: "lastMomentLabel",
                             sgName: "Label",
                             fontStyle: "#theme.fontStyles.H2",
                             fields: {
                                 visible: false,
-                                text: "Just a second..."
+                                text: "Just a moment..."
                             }
                         }]
                     }

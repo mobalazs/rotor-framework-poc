@@ -128,8 +128,8 @@ namespace ViewModels
             ' During pre-rendering we should not run animation at all
             loadingScreen = m.getWidget("./loadingScreen")
             loadingScreen.erase("defaultSpinner")
-            lastMinuteLabel = loadingScreen.getWidget("lastMinuteLabel")
-            lastMinuteLabel.render({
+            lastMomentLabel = loadingScreen.getWidget("lastMomentLabel")
+            lastMomentLabel.render({
                 fields: {
                     visible: true,
                     enableRenderTracking: true
