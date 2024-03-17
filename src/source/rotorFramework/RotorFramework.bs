@@ -153,7 +153,7 @@ namespace Rotor
 
             m.taskNodes.Clear()
             if Rotor.Utils.isFunction(m.config.onTaskReady)
-                Rotor.Utils.callbackScoped(m.fconfig.onTaskReady, GetGlobalAA())
+                Rotor.Utils.callbackScoped(m.config.onTaskReady, GetGlobalAA())
             end if
             m.builder.renderQueueBufferFlush()
 

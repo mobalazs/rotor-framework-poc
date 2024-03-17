@@ -23,8 +23,10 @@ namespace Reducers
 
                         m.startLoadingScreenMinTime()
 
+                        return invalid
                     end if
-                    return invalid
+
+                    return intent
                 end function,
 
             ])
@@ -62,11 +64,11 @@ namespace Reducers
                 }
             })
 
-
             ' Get minimum loading duration
             appStoreDispatcher = m.getDispatcher("appStore")
             appStoreState = appStoreDispatcher.getState()
             loadingScreenMinTime = appStoreState.loadingScreenMinTime
+            appStoreDispatcher.destroy()
 
             ' Start async process
             sleepDispatcher = m.getDispatcher("sleep")
