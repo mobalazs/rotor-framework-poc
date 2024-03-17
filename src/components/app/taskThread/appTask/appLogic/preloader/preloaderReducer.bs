@@ -21,7 +21,7 @@ namespace Reducers
                 function(intent, state) as Intent
                     if intent.type = IntentType.PRELOADER.START_PRELOAD_RESOURCES
 
-                        m.startLoadingScreenMinTime()
+                        m.fetchResources()
 
                         return invalid
                     end if
@@ -53,7 +53,7 @@ namespace Reducers
         end function
 
 
-        sub startLoadingScreenMinTime()
+        sub fetchResources() ' simulation
 
             ' Dispatch increase preloader counter
             m.preloaderDispatcher = m.getDispatcher("preloader")
