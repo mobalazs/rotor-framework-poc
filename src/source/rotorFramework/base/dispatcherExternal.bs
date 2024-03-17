@@ -62,7 +62,10 @@ namespace Rotor
                     end if
 
                     if listener?.once = true
-
+                        ' cleanup
+                        listener.listenerScope = invalid
+                        listener.callback = invalid
+                        ' delete
                         m.listeners.Delete(listenerIndex)
                         listenerCount--
                     else
@@ -96,8 +99,10 @@ namespace Rotor
         sub removeAllListenesrByListenerId(listenerId as string)
             listenerCount = m.listeners.Count()
             listenerIndex = listenerCount - 1
-            while listenerIndex >= 0
+            while listenerIndex >= 0 and m.listeners.Count() > 0
                 if m.listeners[listenerIndex].listenerId = listenerId
+                    m.listeners[listenerIndex].mapStateToProps = invalid
+                    m.listeners[listenerIndex].callback = invalid
                     m.listeners[listenerIndex].listenerScope = invalid
                     m.listeners.delete(listenerIndex)
                 else
@@ -140,7 +145,7 @@ namespace Rotor
             frameworkInstance = GetGlobalAA().rotor_framework_helper.frameworkInstance
             if m.listeners.Count() > 0
                 for each listener in m.listeners
-                    listener.scope = invalid
+                    listener.listenerScope = invalid
                     listener.callback = invalid
                 end for
 
@@ -152,8 +157,6 @@ namespace Rotor
                 end if
             end if
             m.listeners.Clear()
-
-            m.state = invalid
 
             frameworkInstance.disptcherProvider.deregisterDispatcher(m.dispatcherId)
 

@@ -16,14 +16,12 @@ namespace Rotor.ViewBuilder
             Rotor.const.LifeCycleHookType.APPEND_CHILD, ' appendChild
             Rotor.const.LifeCycleHookType.REINDEX_CHILD, ' reindexChild
             Rotor.const.LifeCycleHookType.BEFORE_MOUNT, ' beforeMount
-            Rotor.const.LifeCycleHookType.CALLFN_MOUNTED, ' callFnMounted
+            Rotor.const.LifeCycleHookType.MOUNTED, ' mounted
             Rotor.const.LifeCycleHookType.AFTER_MOUNTED, ' afterMounted
             Rotor.const.LifeCycleHookType.BEFORE_UPDATE, ' beforeUpdate
-            Rotor.const.LifeCycleHookType.CALLFN_UPDATED, ' callFnUpdated
+            Rotor.const.LifeCycleHookType.UPDATED, ' callFnUpdated
             Rotor.const.LifeCycleHookType.AFTER_UPDATED, ' beforeUpdate
-            Rotor.const.LifeCycleHookType.AFTER_VIEW_MOUNTED, ' afterViewMounted
             Rotor.const.LifeCycleHookType.BEFORE_DESTROY, ' beforeDestroy
-            Rotor.const.LifeCycleHookType.CALLFN_DESTROY, ' callFnDestroy
             Rotor.const.LifeCycleHookType.REMOVE_CHILD, ' removeChild
             Rotor.const.LifeCycleHookType.DELETE_WIDGET ' deleteWidget
         ]
@@ -176,7 +174,7 @@ namespace Rotor.ViewBuilder
                 parentNode = widget.parent.node
                 parentNode.removeChild(widget.node)
 
-            else if process.hookType = Rotor.const.LifeCycleHookType.CALLFN_MOUNTED
+            else if process.hookType = Rotor.const.LifeCycleHookType.MOUNTED
                 if widget.afterWidgetMounted <> invalid
                     widget.afterWidgetMounted(widget)
                 end if
@@ -184,26 +182,21 @@ namespace Rotor.ViewBuilder
                     widget.afterViewMounted()
                 end if
 
-            else if process.hookType = Rotor.const.LifeCycleHookType.CALLFN_UPDATED
+            else if process.hookType = Rotor.const.LifeCycleHookType.UPDATED
                 if widget.afterWidgetUpdated <> invalid
                     widget.afterWidgetUpdated(widget)
                 end if
+                ' Note thet onUpdateView is nota called automatically.
 
             else if process.hookType = Rotor.const.LifeCycleHookType.DELETE_WIDGET
-                ' destroy widget
-                if widget?.isViewModel = true
-                    widget.onDestroyView() ' view class destroy
+                if widget.beforeWidgetDestroy <> invalid
+                    widget.beforeWidgetDestroy()
                 end if
-                widget.dispatcherProvider = invalid
-                widget.frameworkInstance = invalid
+                if widget?.isViewModel = true
+                    widget.onDestroyView()
+                end if
                 m.frameworkInstance.builder.widgetTree.remove(HID)
 
-            else if process.hookType = Rotor.const.LifeCycleHookType.CALLFN_DESTROY
-                ' destroy context
-                if widget.context.destroy <> invalid
-                    widget.context.destroy()
-                    widget.context.Clear()
-                end if
             end if
         end sub
 

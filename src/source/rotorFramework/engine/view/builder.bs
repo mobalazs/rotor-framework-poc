@@ -88,7 +88,7 @@ namespace Rotor.ViewBuilder
                 m.isRenderProcesssing = false
             end if
 
-            ' print "[DEBUG][MEASUREMENT]*** INFO --- Unparented roots Count      = ";GetGlobalAA().top.getRoots().Count()
+            print "[DEBUG][MEASUREMENT]*** INFO --- Unparented roots Count      = ";GetGlobalAA().top.getRoots().Count()
 
         end sub
 

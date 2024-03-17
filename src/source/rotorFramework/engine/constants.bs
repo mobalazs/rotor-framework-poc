@@ -19,48 +19,26 @@ namespace Rotor
         end enum
 
         enum PluginLifeCycleHookType
-            ' 03_
             BEFORE_MOUNT = "beforeMount"
-            ' 05_
             AFTER_MOUNTED = "afterMounted"
-            ' 06_
             BEFORE_UPDATE = "beforeUpdate"
-            ' 07_
             AFTER_UPDATED = "afterUpdated"
-            ' 10_
             BEFORE_DESTROY = "beforeDestroy"
-            ' 14_
             AFTER_RENDER_READY = "afterRenderReady"
         end enum
 
         enum LifeCycleHookType
-            ' 01_
             APPEND_CHILD = "appendChild"
-            ' 02_
             REINDEX_CHILD = "reindexChild"
-            ' 03_
             BEFORE_MOUNT = "beforeMount"
-            ' 04_
-            CALLFN_MOUNTED = "callFnMounted"
-            ' 05_
+            MOUNTED = "mounted"
             AFTER_MOUNTED = "afterMounted"
-            ' 06_
             BEFORE_UPDATE = "beforeUpdate"
-            ' 07_
+            UPDATED = "updated"
             AFTER_UPDATED = "afterUpdated"
-            ' 06_
-            CALLFN_UPDATED = "callFnUpdated"
-            ' 09_
-            AFTER_VIEW_MOUNTED = "afterViewMounted"
-            ' 10_
             BEFORE_DESTROY = "beforeDestroy"
-            ' 11_
-            CALLFN_DESTROY = "callFnDestroy"
-            ' 12_
             REMOVE_CHILD = "removeChild"
-            ' 13_
             DELETE_WIDGET = "deleteWidget"
-            ' 14_
             AFTER_RENDER_READY = "afterRenderReady"
         end enum
 

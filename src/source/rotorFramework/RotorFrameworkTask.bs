@@ -20,11 +20,8 @@ import "pkg:/source/rotorFramework/utils/arrayUtils.bs"
 namespace Rotor
     class FrameworkTask
 
-        name = "Rotor Framework Task"
-
-        version = "0.2"
-
-        'CONSTRUCTOR
+        name = "Rotor Framework"
+        version = "0.2.1"
 
         config = {
             tasks: invalid, ' optional
@@ -90,10 +87,10 @@ namespace Rotor
 
                             state = msg.getData()
                             ' if Right(fieldId, 6) = "_model"
-                                ' dispatcherId = Left(fieldId, Len(fieldId) - 6)
+                            ' dispatcherId = Left(fieldId, Len(fieldId) - 6)
                             ' else
-                                ' throw "This should has not happened."
-                                dispatcherId = fieldId
+                            ' throw "This should has not happened."
+                            dispatcherId = fieldId
                             ' end if
 
                             dispatcherInstance = m.dispatcherProvider.get(dispatcherId)

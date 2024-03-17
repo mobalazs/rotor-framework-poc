@@ -14,6 +14,7 @@ namespace Rotor
 
         afterWidgetMounted as Function ' widget's lifecycle callback
         afterWidgetUpdated as Function ' widget's lifecycle callback
+        beforeWidgetDestroy as Function ' widget's lifecycle callback
 
         ' Public methods
 

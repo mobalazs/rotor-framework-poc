@@ -77,11 +77,9 @@ namespace Rotor.ViewBuilder
             })
         end if
 
-
-
         if isChanged = true and Rotor.Utils.isFunction(widget.afterWidgetUpdated)
             postProcessBuffer.add({
-                hookType: Rotor.const.LifeCycleHookType.CALLFN_UPDATED,
+                hookType: Rotor.const.LifeCycleHookType.UPDATED,
                 HID: HID,
                 widget: widget
             })

@@ -28,14 +28,6 @@ namespace Rotor.ViewBuilder
             pluginKey = pluginKeyList.GetIndex()
         end while
 
-        if Rotor.Utils.isFunction(widget.context.destroy)
-            postProcessBuffer.add({
-                hookType: Rotor.const.LifeCycleHookType.CALLFN_DESTROY,
-                HID: HID,
-                widget: widget
-            })
-        end if
-
         postProcessBuffer.add({
             hookType: Rotor.const.LifeCycleHookType.DELETE_WIDGET,
             HID: HID,

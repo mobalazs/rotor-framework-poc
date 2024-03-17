@@ -175,20 +175,11 @@ namespace Rotor.ViewBuilder
 
         if Rotor.Utils.isFunction(widget.afterWidgetMounted) or widget?.isViewModel = true
             postProcessBuffer.add({
-                hookType: Rotor.const.LifeCycleHookType.CALLFN_MOUNTED,
+                hookType: Rotor.const.LifeCycleHookType.MOUNTED,
                 HID: HID,
                 widget: widget
             })
         end if
-
-        ' if widget?.isViewModel = true
-        '     postProcessBuffer.add({
-        '         hookType: Rotor.const.LifeCycleHookType.AFTER_VIEW_MOUNTED,
-        '         HID: HID
-        '     })
-        ' end if
-
-
 
         return {
             HID: HID,

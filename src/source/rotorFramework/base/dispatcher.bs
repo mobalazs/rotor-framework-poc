@@ -107,7 +107,8 @@ class Dispatcher
                 end if
 
                 if listener?.once = true
-
+                    listener.listenerScope = invalid
+                    listener.callback = invalid
                     m.listeners.Delete(listenerIndex)
                     listenerCount--
                 else
@@ -137,10 +138,12 @@ class Dispatcher
     sub removeAllListenesrByListenerId(listenerId as string)
         listenerCount = m.listeners.Count()
         listenerIndex = listenerCount - 1
-        while listenerIndex >= 0
+        while listenerIndex >= 0 and m.listeners.Count() > 0
             if m.listeners[listenerIndex].listenerId = listenerId
+                m.listeners[listenerIndex].mapStateToProps = invalid
+                m.listeners[listenerIndex].callback = invalid
                 m.listeners[listenerIndex].listenerScope = invalid
-                m.listeners.delete(listenerIndex)
+            m.listeners.delete(listenerIndex)
             else
                 listenerIndex--
             end if
@@ -164,7 +167,7 @@ class Dispatcher
         ' remove all listeners
         if m.listeners.Count() > 0
             for each listener in m.listeners
-                listener.scope = invalid
+                listener.listenerScope = invalid
                 listener.callback = invalid
             end for
         end if

@@ -139,6 +139,9 @@ namespace Rotor.ViewBuilder
 
             m.tree_HIDHash.remove(HID)
 
+            widget.dispatcherProvider = invalid
+            widget.frameworkInstance = invalid
+
             widget.parent = invalid
             widget.context = invalid
             widget.props = invalid
