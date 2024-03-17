@@ -17,7 +17,6 @@ namespace Rotor.ViewBuilder
                     postProcessBuffer.add({
                         isPlugin: true,
                         isView: widget?.isView ?? false,
-                        HID: HID,
                         widget: widget,
                         hookType: LifeCycleHookType,
                         pluginKey: pluginKey
@@ -30,7 +29,6 @@ namespace Rotor.ViewBuilder
 
         postProcessBuffer.add({
             hookType: Rotor.const.LifeCycleHookType.DELETE_WIDGET,
-            HID: HID,
             widget: widget
         })
 
@@ -38,7 +36,6 @@ namespace Rotor.ViewBuilder
         if isBranchOfRemove
             postProcessBuffer.add({
                 hookType: Rotor.const.LifeCycleHookType.REMOVE_CHILD,
-                HID: HID,
                 widget: widget
             })
         end if
