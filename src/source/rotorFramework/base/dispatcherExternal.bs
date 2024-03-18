@@ -82,7 +82,6 @@ namespace Rotor
         sub addListener(listenerConfig as object, listenerId as string, listenerScope as object)
             if m.isStateObserved = false
                 m.setupObserver()
-                m.isStateObserved = true
             end if
             m.listeners.push({
                 listenerId: listenerId,
@@ -109,6 +108,9 @@ namespace Rotor
                     listenerIndex--
                 end if
             end while
+            if m.isStateObserved = true and m.listeners.Count() > 0
+                m.removeObserver()
+            end if
         end sub
 
         function getState(mapStateToProps = invalid as Dynamic, callerScope = invalid as object) as object
@@ -139,6 +141,18 @@ namespace Rotor
                 frameworkInstance = GetGlobalAA().rotor_framework_helper.frameworkInstance
                 frameworkInstance.addObserver(fieldId, m.taskNode)
             end if
+            m.isStateObserved = true
+        end sub
+
+        sub removeObserver()
+            if m.threadType = Rotor.const.ThreadType.RENDER
+                m.taskNode.unobserveFieldScoped(m.dispatcherId)
+            else
+                fieldId = m.dispatcherId
+                frameworkInstance = GetGlobalAA().rotor_framework_helper.frameworkInstance
+                frameworkInstance.removeObserver(fieldId, m.taskNode)
+            end if
+            m.isStateObserved = false
         end sub
 
         sub destroy()

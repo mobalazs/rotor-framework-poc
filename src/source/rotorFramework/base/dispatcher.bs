@@ -143,7 +143,7 @@ class Dispatcher
                 m.listeners[listenerIndex].mapStateToProps = invalid
                 m.listeners[listenerIndex].callback = invalid
                 m.listeners[listenerIndex].listenerScope = invalid
-            m.listeners.delete(listenerIndex)
+                m.listeners.delete(listenerIndex)
             else
                 listenerIndex--
             end if
@@ -151,16 +151,7 @@ class Dispatcher
     end sub
 
     function getState(mapStateToProps = invalid as Dynamic, callerScope = invalid as object) as object
-
-        isRenderTrhead = m.threadType = Rotor.const.ThreadType.RENDER
-
-        if isRenderTrhead ' and Rotor.Utils.isFunction(mapStateToProps)
-            throw "This should has not happened."
-        else
-            ' fieldId = m.dispatcherId
-            ' state = m.taskNode.getField(fieldId)
-            return m.modelInstance.state
-        end if
+        return m.modelInstance.state
     end function
 
     sub destroy()

@@ -86,12 +86,7 @@ namespace Rotor
                         else
 
                             state = msg.getData()
-                            ' if Right(fieldId, 6) = "_model"
-                            ' dispatcherId = Left(fieldId, Len(fieldId) - 6)
-                            ' else
-                            ' throw "This should has not happened."
                             dispatcherId = fieldId
-                            ' end if
 
                             dispatcherInstance = m.dispatcherProvider.get(dispatcherId)
                             dispatcherInstance.notifyListeners(state)
