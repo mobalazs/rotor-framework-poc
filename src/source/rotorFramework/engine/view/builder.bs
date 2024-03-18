@@ -88,10 +88,14 @@ namespace Rotor.ViewBuilder
                 m.isRenderProcesssing = false
             end if
 
-            ' print "[DEBUG][MEASUREMENT]*** INFO --- Unparented roots Count      = ";GetGlobalAA().top.getRoots().Count()
-            ' unparentedCount = GetGlobalAA().top.getRoots().Count()
-            ' unparented = GetGlobalAA().top.getRootsMeta()
-            ' if unparentedCount >= 8 then stop
+            print " /// [CUSTOM DEBUG] view/builder.bs [93] :: unparentedRootCount : "; GetGlobalAA().top.getRoots().Count()
+            #if debug
+                unparentedRootCount = GetGlobalAA().top.getRoots().Count()
+                if unparentedRootCount >= 8
+                    throw { message: `[WARNING] Unparented roots count = ${unparentedRootCount}` }
+                    ' unparented = GetGlobalAA().top.getRootsMeta()
+                end if
+            #end if
 
         end sub
 

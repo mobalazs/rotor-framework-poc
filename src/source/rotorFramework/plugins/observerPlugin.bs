@@ -233,7 +233,7 @@ namespace Rotor
                 if Rotor.Utils.isString(m.callback)
                     m.listenerScope[m.callback](m.listenerScope, payload)
                 else if Rotor.Utils.isFunction(m.callback)
-                    Rotor.Utils.callbackScoped(m.callback, m.listenerScope, payload)
+                    Rotor.Utils.callbackScoped(m.callback, m.listenerScope, m.listenerScope, payload)
                 end if
             end sub
 
