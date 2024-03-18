@@ -150,7 +150,6 @@ namespace Rotor.ViewBuilder
         end sub
 
         sub executeGeneralProcess(process as object)
-            HID = process.HID
             widget = process.widget
 
             if process?.isPlugin = true
@@ -195,7 +194,7 @@ namespace Rotor.ViewBuilder
                 if widget?.isViewModel = true
                     widget.onDestroyView()
                 end if
-                m.frameworkInstance.builder.widgetTree.remove(HID)
+                m.frameworkInstance.builder.widgetTree.remove(widget.HID)
 
             end if
         end sub

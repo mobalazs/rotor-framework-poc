@@ -33,7 +33,6 @@ namespace Rotor.ViewBuilder
 
                         process = {
                             isPlugin: true,
-                            HID: HID,
                             widget: widget,
                             hookType: LifeCycleHookType,
                             isView: widget?.isView ?? false,
@@ -71,7 +70,6 @@ namespace Rotor.ViewBuilder
             isChanged = true
             postProcessBuffer.add({
                 hookType: Rotor.const.LifeCycleHookType.REINDEX_CHILD,
-                HID: HID,
                 widget: widget,
                 zIndex: newConfig.zIndex
             })
@@ -80,7 +78,6 @@ namespace Rotor.ViewBuilder
         if isChanged = true and Rotor.Utils.isFunction(widget.afterWidgetUpdated)
             postProcessBuffer.add({
                 hookType: Rotor.const.LifeCycleHookType.UPDATED,
-                HID: HID,
                 widget: widget
             })
         end if

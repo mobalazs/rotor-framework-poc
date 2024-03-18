@@ -126,7 +126,6 @@ namespace Rotor.ViewBuilder
                         widget[pluginKey] = config[pluginKey]
                         postProcessBuffer.add({
                             isPlugin: true,
-                            HID: HID,
                             widget: widget,
                             hookType: LifeCycleHookType,
                             isView: widget?.isView ?? false,
@@ -164,7 +163,6 @@ namespace Rotor.ViewBuilder
 
         appendChildProcess = {
             hookType: Rotor.const.LifeCycleHookType.APPEND_CHILD,
-            HID: HID,
             widget: widget
         }
         if config.zIndex <> invalid
@@ -176,7 +174,6 @@ namespace Rotor.ViewBuilder
         if Rotor.Utils.isFunction(widget.afterWidgetMounted) or widget?.isViewModel = true
             postProcessBuffer.add({
                 hookType: Rotor.const.LifeCycleHookType.MOUNTED,
-                HID: HID,
                 widget: widget
             })
         end if
