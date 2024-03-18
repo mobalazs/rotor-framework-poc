@@ -111,4 +111,9 @@ Image editor with which I modified the original: GIMP
 All theme decoration images were downloaded from https://www.rawpixel.com and under **Public Domain** license.  
 such as the pink flamingo sticker: https://www.rawpixel.com/image/6283207/png-sticker-public-domain
 
+##### Fonts
+Fonts: Kingsbridge font family. Kingsbridge is trademark of Typodermic Fonts Inc.  
+Fonts are under “desktop license”. Download link: Free commercial use fonts https://typodermicfonts.com/downloads/
+
+
 
