@@ -4,7 +4,6 @@ namespace Rotor
 
         sub new(key = "observer")
             super(key)
-            m.init()
         end sub
 
         hooks = {

@@ -66,6 +66,9 @@ namespace Rotor.ViewBuilder
                 m.pluginKeyList.AddTail(pluginKey)
                 m.frameworkInstance.plugins[pluginKey] = plugin
                 m.frameworkInstance.plugins[pluginKey].frameworkInstance = m.frameworkInstance
+                if Rotor.Utils.isFunction(m.frameworkInstance.plugins[pluginKey].init)
+                    m.frameworkInstance.plugins[pluginKey].init()
+                end if
             end for
 
         end sub

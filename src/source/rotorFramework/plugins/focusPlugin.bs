@@ -14,7 +14,6 @@ namespace Rotor
         ' Constructor
         sub new(key = "focus" as string)
             super(key)
-            m.init()
         end sub
 
         ' Hooks to attach font style attribute handling to widget lifecycle events.
