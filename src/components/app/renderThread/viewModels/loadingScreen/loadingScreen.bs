@@ -88,8 +88,10 @@ namespace ViewModels
 
         ' ViewModel lifecycle hoook
         override sub onDestroyView()
-            m.preloaderDispatcher.destroy()
-            m.preloaderDispatcher = invalid
+            if m.props.shouldPreloadResources = true
+                m.preloaderDispatcher.destroy()
+                m.preloaderDispatcher = invalid
+            end if
         end sub
 
 
