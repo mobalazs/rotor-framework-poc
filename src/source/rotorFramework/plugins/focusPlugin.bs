@@ -23,23 +23,14 @@ namespace Rotor
             end sub,
 
             beforeUpdate: sub(scope as object, widget as object, newValue, oldValue = {})
-                ' In this plugin, we would like to extend old config on update
-                ' if Rotor.Utils.isDifferent(oldValue, newValue)
-                if oldValue <> invalid
-                    scope.removeFocusConfig(widget.HID, oldValue)
-                end if
-                newValue = Rotor.Utils.deepExtendAA(widget[scope.key], newValue)
+                scope.removeFocusConfig(widget.HID)
 
+                newValue = Rotor.Utils.deepExtendAA(widget[scope.key], newValue)
                 scope.setFocusConfig(widget, widget[scope.key])
-                ' end if
             end sub,
 
             beforeDestroy: sub(scope as object, widget as object)
-                config = widget[scope.key]
-                if config <> invalid
-                    scope.removeFocusConfig(widget.HID, config)
-                end if
-                widget[scope.key].Clear()
+                scope.removeFocusConfig(widget.HID)
             end sub
         }
 
@@ -68,9 +59,7 @@ namespace Rotor
             m.globalFocusHID = ""
             m.globalFocusId = ""
             m.measurementCheckHIDs = []
-            globalScope = GetGlobalAA()
-            frameworkInstance = globalScope.rotor_framework_helper.frameworkInstance
-            m.widgetTree = frameworkInstance.builder.widgetTree
+            m.widgetTree = m.frameworkInstance.builder.widgetTree
             m.focusableStack = new Rotor.FocusPluginHelper.FocusableStack()
             m.groupStack = new Rotor.FocusPluginHelper.GroupStack()
             m.distanceCalculator = new Rotor.FocusPluginHelper.ClosestSegmentToPointCalculatorClass()
@@ -150,12 +139,11 @@ namespace Rotor
         end function
 
 
-        sub removeFocusConfig(HID as string, config as object)
-            ' Remove configured groups
-            if config.doesExist(Rotor.const.GROUP_CONFIG_KEY) and m.groupStack.has(HID)
+        sub removeFocusConfig(HID as string)
+            ' Remove group
+            if m.groupStack.has(HID)
                 m.groupStack.remove(HID)
             end if
-
             ' Remove Focusable
             if m.focusableStack.has(HID)
                 m.focusableStack.remove(HID)
