@@ -10,6 +10,7 @@ namespace ViewModels
             if m.props.isSpinnerVisilbe = invalid then m.props.isSpinnerVisilbe = true
 
             return {
+                zIndex: 1,
                 sgName: "Rectangle",
                 theme: ["colors"],
                 context: { designResolution: designResolution },
@@ -54,6 +55,88 @@ namespace ViewModels
             }
 
         end function
+
+        ' ViewModel lifecycle hoook
+        override sub afterViewMounted()
+
+            if m.props.shouldPreloadResources = true
+
+                ' Get dispatcher facade
+                m.preloaderDispatcher = m.getDispatcher("preloader")
+
+                ' Listening for preloader
+                m.preloaderDispatcher.addListener({
+                    shouldUpdate: function(props, newState) as object
+                        return newState.resourcesReady = true
+                    end function,
+                    callback: m.onResourcesReady, ' refering to a method in this scope
+                    once: true
+                })
+
+                ' Actually start preloading
+                m.preloaderDispatcher.dispatch({
+                    type: IntentType.PRELOADER.START_PRELOAD_RESOURCES
+                })
+
+            else
+
+                m.renderLayout()
+
+            end if
+
+        end sub
+
+        ' ViewModel lifecycle hoook
+        override sub onDestroyView()
+            m.preloaderDispatcher.destroy()
+            m.preloaderDispatcher = invalid
+        end sub
+
+
+        ' -------- Custom ViewModel Methods --------
+
+        sub onResourcesReady()
+
+            ' During pre-rendering we should not run animation at all
+            m.erase("defaultSpinner")
+            lastMomentLabel = m.getWidget("lastMomentLabel")
+            lastMomentLabel.render({
+                fields: {
+                    visible: true,
+                    enableRenderTracking: true
+                },
+                observer: {
+                    ' We are going to flood builder with pre-rendering requests, but:
+                    ' Roku need time to render changes on screen ("One second left..." text)
+                    ' What we're doing here is completely native and a generic approach in Rotor Builder.
+                    fieldId: "renderTracking",
+                    callback: sub(widget, payload)
+                        if payload?.renderTracking = "full"
+
+                            ' We're in scope of lastMomentLabel, but we need the loadingSceen viewModel to proceed rendering
+                            loadingScreenWidget = m.getWidget("./loadingScreen")
+                            loadingScreenWidget.renderLayout()
+
+                        end if
+
+                    end sub
+                }
+            })
+
+        end sub
+
+        sub renderLayout()
+
+            m.parent.render({
+                id: "layout",
+                zIndex: 0,
+                viewModel: ViewModels.LayoutViewModel,
+                props: {
+                    shouldPrerenderPages: m.props.shouldPrerenderPages
+                }
+            })
+
+        end sub
 
     end class
 

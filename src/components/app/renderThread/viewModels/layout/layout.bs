@@ -3,35 +3,16 @@ namespace ViewModels
 
     class LayoutViewModel extends ViewModel
 
-        sub showLoadingScreen()
-            m.render({
-                id: "loadingScreen",
-                viewModel: ViewModels.LoadingScreen
-            })
-        end sub
+        pagesViewModels = {
+            home: ViewModels.HomePage,
+            movies: ViewModels.MoviesPage,
+            series: ViewModels.SeriesPage,
+            playground1: ViewModels.Playground1Page,
+            playground2: ViewModels.Playground2Page,
+            settings: ViewModels.SettingsPage
+        }
 
-        sub hideLoadingScreen()
-            m.erase("./loadingScreen")
-        end sub
-
-        sub prerenderPage(pageKey)
-            pageViewModel = m.pagesViewModels[pageKey]
-            m.render({
-                ' You can set the id, but it is set automatically to the m.id
-                children: {
-                    id: "viewContainer",
-                    children: {
-                        id: `page-${pageKey}`,
-                        viewModel: pageViewModel,
-                        props: {
-                            pageKey: pageKey
-                        }
-                    }
-                }
-            })
-        end sub
-
-        function customLayoutTemplate() as object
+        override function template() as object
             safeAreaOffsets = "{#theme=safeAreaOffsets}"
             designResolution = "{#theme=designResolution}"
 
@@ -47,7 +28,6 @@ namespace ViewModels
                     {
                         id: "backgrounds",
                         sgName: "Group",
-                        ' zIndex: 0,
                         children: [
                             {
                                 id: "decor",
@@ -151,9 +131,92 @@ namespace ViewModels
             }
         end function
 
-        sub renderPageTransition(activePageKey as string, doesExistPage as boolean)
+        ' ViewModel lifecycle hoook
+        override sub onCreateView()
+
+            ' Get dispatcher facades
+            m.appStoreDispatcher = m.getDispatcher("appStore")
+
+            mapStateToProps = sub(props, state)
+                props.activePageKey = state.activePageKey
+            end sub
+
+            ' get initial appstore state and append to this ViewModel's props
+            m.appStoreDispatcher.getState(mapStateToProps)
+
+            ' Setup dispatcher listeners
+            m.appStoreDispatcher.addListener({
+                shouldUpdate: function(props, newState) as object
+                    return props.activePageKey <> newState.activePageKey
+                end function,
+                mapStateToProps: mapStateToProps,
+                callback: "proceedPageTransition" ' refering to a method in this scope
+            })
+
+        end sub
+
+        ' ViewModel lifecycle hoook
+        override sub afterViewMounted()
+
+            if m.props.shouldPrerenderPages = true
+                m.prerenderPages()
+            else
+                m.layoutReady()
+            end if
+
+        end sub
+
+        ' ViewModel lifecycle hoook
+        override sub onDestroyView()
+            m.appStoreDispatcher.destroy()
+            m.appStoreDispatcher = invalid
+        end sub
+
+
+        ' -------- Custom ViewModel Methods --------
+
+        sub prerenderPages()
+
+            for each pageKey in m.appStoreDispatcher.pageList
+                pageSettings = m.appStoreDispatcher.pageSettings[pageKey]
+                isEnabledPrerender = pageSettings.enablePrerender
+                if isEnabledPrerender = true
+                    pageViewModel = m.pagesViewModels[pageKey]
+                    m.render({
+                        id: "layout",
+                        children: {
+                            id: "viewContainer",
+                            children: {
+                                id: `page-${pageKey}`,
+                                viewModel: pageViewModel,
+                                props: {
+                                    pageKey: pageKey
+                                }
+                            }
+                        }
+                    })
+                end if
+            end for
+
+            m.layoutReady()
+
+        end sub
+
+        sub proceedPageTransition()
+            activePageKey = m.props.activePageKey ' Using props which visible in the enttyre view (in every widget on layout)
+
+            viewcontainer = m.getWidget("viewContainer")
+
+            ' hide other pages
+            for each childId in viewcontainer.children
+                childNode = viewcontainer.children[childId].node
+                childNode.visible = `page-${activePageKey}` = childId ' visible if equal
+            end for
+
+            ' If page is exist then make it visible, if does not exist then we need to create it.
+            doesExistPage = viewcontainer.children.LookupCI(`page-${activePageKey}`) <> invalid
+
             m.render({
-                id: "layout",
                 children: [
                     {
                         id: "viewContainer",
@@ -175,6 +238,25 @@ namespace ViewModels
                     }
                 ]
             })
+
+        end sub
+
+        sub layoutReady()
+
+            m.proceedPageTransition()
+
+            ' Pass the focus to framework's node (ONCE)
+            m.parent.node.setFocus(true)
+
+            ' Set the focus initially (ONCE)
+            pageMenuWidget = m.getWidget("./pageMenu")
+            pageMenuWidget.plugins.focus.setFocus()
+
+            ' Notify ready beacon (ONCE)
+            m.node.signalBeacon("AppLaunchComplete")
+
+            m.erase("./loadingScreen")
+
         end sub
 
     end class

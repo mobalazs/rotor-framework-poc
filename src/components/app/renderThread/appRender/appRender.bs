@@ -10,7 +10,6 @@ import "pkg:/assets/data/translation.brs"
 import "pkg:/components/app/common/intentTypes.bs"
 
 ' Import Views
-import "appViewModel.bs"
 import "../viewModels/busySpinner/busySpinner.bs"
 import "../viewModels/buttons/simpleButton.bs"
 import "../viewModels/layout/layout.bs"
@@ -74,13 +73,18 @@ sub initApplication(payload as object)
     ' Create our first ViewModel using View Builder Engine
     ' Note that render is held back and buffered until the appTask starts.
     m.appFw.render({
-        id: "layout",
-        viewModel: ViewModels.AppViewModel
+        id: "loadingScreen",
+        viewModel: ViewModels.LoadingScreen,
+        props: {
+            shouldPreloadResources: true,
+            shouldPrerenderPages: true
+        }
     })
 
 end sub
 
-' Example for onTasReady usage (this is optional. Render is deferred as default until all tasks are started, just liket this callback. This will be called before flush builder.)
+' Example for onTasReady usage (this is optional. Render is deferred automatically until all tasks are started,
+' This method called before first rendering.
 sub onTaskReady()
     ' set the curret theme based on the current user's preference
     m.usereDispatcher = m.appFw.getDispatcher("user")

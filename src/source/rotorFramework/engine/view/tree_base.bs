@@ -13,6 +13,23 @@ namespace Rotor.ViewBuilder
         isViewModel =  true
         childrenHIDhash = {}
 
+        sub render(payloads as dynamic, params = {} as object)
+            for each payload in Rotor.Utils.ensureArray(payloads)
+                if payload.DoesExist("id") = false and payload.DoesExist("HID") = false
+                    payload.id = m.id
+                    payload.HID = m.HID
+                end if
+            end for
+            globalScope = GetGlobalAA()
+            globalScope.rotor_framework_helper.frameworkInstance.builder.render(payloads, params)
+        end sub
+
+        sub erase(payloads as dynamic)
+            globalScope = GetGlobalAA()
+            globalScope.rotor_framework_helper.frameworkInstance.builder.erase(payloads, m.parentHID)
+        end sub
+
+
         sub destroy()
         end sub
 
