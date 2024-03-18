@@ -41,22 +41,27 @@ namespace Rotor.Utils
     end sub
 
 
-    sub callbackScoped(callback as dynamic, scope as object, payload  = invalid as dynamic)
-        isValidPayload = Rotor.Utils.isValid(payload)
+    sub callbackScoped(callback as dynamic, scope as object, payload1 = invalid as dynamic, payload2 = invalid as dynamic)
+        isValidPayload1 = Rotor.Utils.isValid(payload1)
+        isValidPayload2 = Rotor.Utils.isValid(payload2)
         if Rotor.Utils.isString(callback)
-            if true = isValidPayload
-                scope[callback](payload)
+            if true = isValidPayload2
+                scope[callback](payload1, payload2)
+            else if true = isValidPayload1
+                scope[callback](payload1)
             else
                 scope[callback]()
             end if
         else if Rotor.Utils.isFunction(callback)
-            scope.tmp_notify_fn = callback
-            if true = isValidPayload
-                scope.tmp_notify_fn(payload)
+            scope.rotor_tmp_callback_scoped = callback
+            if true = isValidPayload2
+                scope.rotor_tmp_callback_scoped(payload1, payload2)
+            else if true = isValidPayload1
+                scope.rotor_tmp_callback_scoped(payload1)
             else
-                scope.tmp_notify_fn()
+                scope.rotor_tmp_callback_scoped()
             end if
-            scope.tmp_notify_fn = invalid
+            scope.rotor_tmp_callback_scoped = invalid
         end if
     end sub
 

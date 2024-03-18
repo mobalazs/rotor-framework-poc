@@ -642,8 +642,8 @@ namespace Rotor
             idByKeys as object
             isEnabled as boolean
             isFocused as boolean
+            onFocusChanged as dynamic
             node as object
-            onFocusChanged as string
             widget as object
 
             function getStaticNodeIdInDirection(direction = "" as string) as string
@@ -658,12 +658,16 @@ namespace Rotor
 
             sub callOnFocusedFnOnWidget(isFocused as boolean)
                 if Rotor.Utils.isFunction(m.onFocusChanged)
-                    m.widget._onFocusChanged_tmp_fn = m.onFocusChanged
-                    m.widget._onFocusChanged_tmp_fn(m.widget, isFocused)
-                    m.widget.Delete("_onFocusChanged_tmp_fn")
+                    Rotor.Utils.callbackScoped(m.onFocusChanged, m.widget, m.widget, isFocused)
                 else if m.onFocusChanged <> ""
                     m.widget.context[m.onFocusChanged](m.widget, isFocused)
                 end if
+            end sub
+
+            sub destroy()
+                m.widget = invalid
+                m.node = invalid
+                m.onFocusChanged = invalid
             end sub
 
         end class
@@ -777,8 +781,7 @@ namespace Rotor
             end sub
 
             override sub destroy()
-                m.node = invalid
-                m.widget = invalid
+                super.destroy()
                 m.focusablesRef = invalid
                 m.groupsRef = invalid
             end sub
@@ -804,8 +807,7 @@ namespace Rotor
             isFocusable = true
             isGroup = false
             enableNativeFocus as boolean
-
-            onSelected as string
+            onSelected as Dynamic
 
             private metrics = {
                 segments: {}
@@ -907,10 +909,10 @@ namespace Rotor
                 end if
             end sub
 
-            sub destroy()
+            override sub destroy()
+                m.onSelected = invalid
                 m.metrics.segments.Clear()
-                m.node = invalid
-                m.widget = invalid
+                super.destroy()
             end sub
 
             sub applyFocus(isFocused as boolean, isNativeFocusEnalbed = false as boolean)
@@ -931,9 +933,7 @@ namespace Rotor
 
             sub callOnSelectedFnOnWidget()
                 if Rotor.Utils.isFunction(m.onSelected)
-                    m.widget._onSelected_tmp_fn = m.onSelected
-                    m.widget._onSelected_tmp_fn(m.widget)
-                    m.widget.Delete("_onSelected_tmp_fn")
+                    Rotor.Utils.callbackScoped(m.onSelected, m.widget, m.widget)
                 else if m.onSelected <> ""
                     m.widget.context[m.onSelected](m.widget)
                 end if
