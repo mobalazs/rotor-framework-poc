@@ -234,11 +234,7 @@ namespace Rotor
                 if Rotor.Utils.isString(m.callback)
                     m.listenerScope[m.callback](m.listenerScope, payload)
                 else if Rotor.Utils.isFunction(m.callback)
-                    m.listenerScope._notify_tmp_fn = m.callback
-                    m.listenerScope._notify_tmp_fn(m.listenerScope, payload)
-                    if m.listenerScope <> invalid
-                        m.listenerScope._notify_tmp_fn = invalid
-                    end if
+                    Rotor.Utils.callbackScoped(m.callback, m.listenerScope, payload)
                 end if
             end sub
 

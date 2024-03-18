@@ -50,13 +50,13 @@ namespace Rotor.Utils
                 scope[callback]()
             end if
         else if Rotor.Utils.isFunction(callback)
-            scope._notify_tmp_fn = callback
+            scope.tmp_notify_fn = callback
             if true = isValidPayload
-                scope._notify_tmp_fn(payload)
+                scope.tmp_notify_fn(payload)
             else
-                scope._notify_tmp_fn()
+                scope.tmp_notify_fn()
             end if
-            scope._notify_tmp_fn = invalid
+            scope.tmp_notify_fn = invalid
         end if
     end sub
 
