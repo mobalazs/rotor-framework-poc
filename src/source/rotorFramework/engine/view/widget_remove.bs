@@ -11,7 +11,7 @@ namespace Rotor.ViewBuilder
         pluginKey = pluginKeyList.GetIndex()
         while pluginKey <> invalid
 
-            if config.doesExist(pluginKey)
+            if widget.doesExist(pluginKey)
                 LifeCycleHookType = Rotor.const.LifeCycleHookType.BEFORE_DESTROY
                 if m.frameworkInstance.builder.pluginAdapter.pluginHooks[LifeCycleHookType].DoesExist(pluginKey)
                     postProcessBuffer.add({
@@ -40,16 +40,15 @@ namespace Rotor.ViewBuilder
             })
         end if
 
-
-        childrenToRemove = {}
+        childrenToRemove = []
         for each id in widget.children
             if not widget.children[id].doesExist("markedToRemove")
-                childrenToRemove[id] = {
+                childrenToRemove.push({
                     markedToRemove: true,
                     id: id,
                     HID: widget.children[id].HID,
                     parentHID: widget.children[id].parentHID
-                }
+                })
             end if
         end for
 

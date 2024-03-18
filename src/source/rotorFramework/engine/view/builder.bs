@@ -88,7 +88,10 @@ namespace Rotor.ViewBuilder
                 m.isRenderProcesssing = false
             end if
 
-            print "[DEBUG][MEASUREMENT]*** INFO --- Unparented roots Count      = ";GetGlobalAA().top.getRoots().Count()
+            ' print "[DEBUG][MEASUREMENT]*** INFO --- Unparented roots Count      = ";GetGlobalAA().top.getRoots().Count()
+            ' unparentedCount = GetGlobalAA().top.getRoots().Count()
+            ' unparented = GetGlobalAA().top.getRootsMeta()
+            ' if unparentedCount >= 8 then stop
 
         end sub
 
@@ -142,6 +145,7 @@ namespace Rotor.ViewBuilder
                     end if
 
                 end for
+                ' renderObject.Clear()
                 m.render(renderObject)
 
             end if

@@ -15,7 +15,6 @@ namespace Rotor.ViewBuilder
             if createFlow = true
                 widgets = invalid
             else if config.doesExist("HID")
-                ' parentHID = "0"
                 widgets = [m.frameworkInstance.builder.widgetTree.getByHID(config.HID)]
             else
                 widgets = m.frameworkInstance.builder.widgetTree.find(config.id, parentHID)
@@ -35,7 +34,7 @@ namespace Rotor.ViewBuilder
 
                 for each widget in widgets
 
-                    if config?.markedToRemove = true ' and m.changeBuffer
+                    if config?.markedToRemove = true
 
                         result = m.removeWidget(postProcessBuffer, widget, config)
 

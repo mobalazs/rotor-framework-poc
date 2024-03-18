@@ -91,9 +91,8 @@ namespace Rotor.ViewBuilder
 
         ' Create node
         sgName = Rotor.Utils.isString(config.sgName) ? config.sgName : "Group"
-        node = CreateObject("roSGNode", sgName)
+        widget.node = CreateObject("roSGNode", sgName)
         widget.sgName = sgName
-        widget.node = node
 
         widget.markedToAppend = true
 

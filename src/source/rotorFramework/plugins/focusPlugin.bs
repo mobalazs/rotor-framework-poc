@@ -153,7 +153,6 @@ namespace Rotor
 
         function setFocus(ref as dynamic, isFocused = true as boolean, enableNativeFocus = false as boolean) as boolean
 
-
             ' Get valid focusable
             if ref = "" then return false ' given ref is not set properly
 
@@ -538,6 +537,12 @@ namespace Rotor
                 return HID <> "" ? m.get(HID) : invalid
             end function
 
+            override sub remove(HID as string)
+                item = m.get(HID)
+                item.destroy()
+                super.remove(HID)
+            end sub
+
         end class
 
         class GroupStack extends BaseEntryStack
@@ -553,12 +558,6 @@ namespace Rotor
                 end for
                 return foundHID
             end function
-
-            override sub remove(HID as string)
-                group = m.get(HID)
-                group.destroy()
-                super.remove(HID)
-            end sub
 
         end class
 
@@ -586,13 +585,6 @@ namespace Rotor
                 end if
             end function
 
-            override sub remove(HID as string)
-                item = m.get(HID)
-
-                item.destroy()
-                super.remove(HID)
-            end sub
-
         end class
 
         class BaseFocusConfig
@@ -602,7 +594,7 @@ namespace Rotor
                 m.id = config.id
 
                 m.widget = config.widget
-                m.node = config.widget.node
+                m.node = m.widget.node
                 m.isFocused = config.isFocused ?? false
 
                 m.autoSetIsFocusedOnContext = config.autoSetIsFocusedOnContext ?? true

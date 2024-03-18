@@ -146,12 +146,12 @@ namespace Rotor.ViewBuilder
 
         sub remove (HID as string)
             widget = m.getByHID(HID)
-            if widget = invalid then return
+            ' if widget = invalid then return
 
             ' remnove from parent
-            parentHID = widget.parentHID
-            parent = widget.isRootChild ? m.tree : m.getTreeItem(parentHID)
+            parent = widget.parent
             parent.children.Delete(widget.id)
+
             parent.childrenHIDhash.Delete(widget.HID)
 
             m.tree_HIDHash.remove(HID)

@@ -8,7 +8,7 @@ namespace Rotor.ViewBuilder
 
         ' Generic full update flow   (should be updated with prepared skeleton, instead of this kind of update as part of performance optimalization)
         if widget.isViewModel = true and newConfig.viewModel <> invalid
-            template = widget.template(newConfig.props)
+            template = widget.template()
             template.id = newConfig.id
             newConfig.delete("viewModel")
             newConfig.append(template)

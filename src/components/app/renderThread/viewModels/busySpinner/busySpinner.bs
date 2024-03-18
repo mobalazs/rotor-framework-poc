@@ -3,16 +3,19 @@ namespace ViewModels
 
     class BusySpinner extends ViewModel
 
-        override sub afterViewMounted()
-            m.startSpinner()
-        end sub
-
-        override sub onDestroyView()
-            m.stopSpinner()
-        end sub
-
-
         override function template() as object
+
+            ' There are 2 spinner implemented accoding to design. Both have the same controller.
+            context = {
+                afterWidgetMounted: sub(widget)
+                    widget.visible = true
+                    widget.control = "stop"
+                end sub,
+                beforeWidgetDestroy: sub(widget)
+                    widget.visible = false
+                    widget.control = "stop"
+                end sub
+            }
 
             return {
                 id: "defaultSpinner",
@@ -24,6 +27,7 @@ namespace ViewModels
                     height: "@context.theme.busySpinner.size.h",
                     visible: true
                 },
+                context: context,
                 children: {
                     id: "innerSpinner",
                     sgName: "BusySpinner",
@@ -33,38 +37,18 @@ namespace ViewModels
                         clockwise: false,
                         opacity: 0.5,
                         spinInterval: 0.8,
-                        visible: true
-                    }
+                        visible: true,
+                        width: function(widget)
+                            return widget.context.theme.busySpinner.size.w - 8
+                        end function,
+                        height: function(widget)
+                            return widget.context.theme.busySpinner.size.h - 8
+                        end function
+                    },
+                    context: context
                 }
             }
         end function
-
-        sub startSpinner()
-            m.node.control = "start"
-
-            innerPosterNode = m.children.innerSpinner.node
-            innerPosterNode.control = "start"
-
-            innerPosterNodePoster = innerPosterNode.getChild(0) ' sorry, it is a natively appended poster
-
-            innerPosterNodePoster.width = m.context.theme.busySpinner.size.w - 8
-            innerPosterNodePoster.height = m.context.theme.busySpinner.size.h - 8
-
-            m.node.visible = true
-        end sub
-
-        sub stopSpinner()
-            m.node.visible = false
-
-            m.node.control = "stop"
-
-            innerPosterNode = m.children.innerSpinner.node
-            innerPosterNode.control = "stop"
-
-        end sub
-
-
-
 
     end class
 end namespace
