@@ -1,0 +1,10 @@
+namespace Models
+
+    class HomeHttpModel extends Model
+
+        state = {
+        }
+
+    end class
+
+end namespace

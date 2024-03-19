@@ -1,0 +1,126 @@
+{
+    "featuredContent": [
+      {
+        "title": "Popeye the Sailor meets Sinbad the Sailor",
+        "type": "movie",
+        "coverImage": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
+        "manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
+        "description": "Description of the featured content 1.",
+        "rating": 7.5
+      },
+      {
+        "title": "Featured Content 2",
+        "type": "series",
+        "coverImage": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
+        "manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
+        "description": "Description of the featured content 2.",
+        "rating": 8.2
+      }
+    ],
+    "personalizedRecommendations": [
+      {
+        "title": "Personalized Recommendation 1",
+        "type": "movie",
+        "coverImage": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
+        "manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
+        "description": "Description of the personalized recommendation 1.",
+        "rating": 7.8
+      },
+      {
+        "title": "Personalized Recommendation 2",
+        "type": "series",
+        "coverImage": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
+        "manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
+        "description": "Description of the personalized recommendation 2.",
+        "rating": 8.1
+      }
+    ],
+    "continueWatching": [
+      {
+        "title": "Continue Watching 1",
+        "type": "movie",
+        "coverImage": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
+        "manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
+        "description": "Description of the content 1 being continued.",
+        "progress": "S01E03"
+      }
+    ],
+    "trendingNow": [
+      {
+        "title": "Trending Now 1",
+        "type": "movie",
+        "coverImage": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
+        "manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
+        "description": "Description of the trending content 1.",
+        "rating": 7.3
+      },
+      {
+        "title": "Trending Now 2",
+        "type": "series",
+        "coverImage": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
+        "manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
+        "description": "Description of the trending content 2.",
+        "rating": 8.0
+      }
+    ],
+    "newReleases": [
+      {
+        "title": "New Release 1",
+        "type": "movie",
+        "coverImage": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
+        "manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
+        "description": "Description of the new release 1.",
+        "rating": 7.6
+      }
+    ],
+    "genreRecommendations": {
+      "action": [
+        {
+          "title": "Action Recommendation 1",
+          "type": "movie",
+          "coverImage": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
+          "manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
+          "description": "Description of the action recommendation 1."
+        }
+      ],
+      "romance": [
+        {
+          "title": "Romance Recommendation 1",
+          "type": "series",
+          "coverImage": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
+          "manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
+          "description": "Description of the romance recommendation 1."
+        }
+      ]
+    },
+    "featuredCollections": [
+      {
+        "title": "Featured Collection 1",
+        "content": [
+          {
+            "title": "Content 1 in Featured Collection 1",
+            "type": "movie",
+            "coverImage": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
+            "manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
+            "description": "Description of content 1 in featured collection 1."
+          },
+          {
+            "title": "Content 2 in Featured Collection 1",
+            "type": "series",
+            "coverImage": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
+            "manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
+            "description": "Description of content 2 in featured collection 1."
+          }
+        ]
+      }
+    ],
+    "upcomingReleases": [
+      {
+        "title": "Upcoming Release 1",
+        "type": "movie",
+        "coverImage": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
+        "manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
+        "description": "Description of the upcoming release 1."
+      }
+    ]
+  }

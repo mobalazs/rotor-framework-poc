@@ -1,7 +1,5 @@
 ' Import necessary utility libraries.
 import "../base/basePlugin.bs"
-import "pkg:/source/rotorFramework/utils/arrayUtils.bs"
-import "pkg:/source/rotorFramework/utils/nodeUtils.bs"
 
 '**
 ' A Brighterscript class for handling assets in a widget with a given key.

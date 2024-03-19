@@ -1,0 +1,10 @@
+namespace Models
+
+    class HomeReaderModel extends Model
+
+        state = {
+        }
+
+    end class
+
+end namespace

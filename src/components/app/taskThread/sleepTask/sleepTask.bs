@@ -1,5 +1,5 @@
 ' Rotor Framework Task
-import "pkg:/source/rotorFramework/RotorFrameworkTask.bs"
+import "pkg:/source/libs/rotorFramework/RotorFrameworkTask.bs"
 
 ' Import common contants
 import "pkg:/components/app/common/intentTypes.bs"

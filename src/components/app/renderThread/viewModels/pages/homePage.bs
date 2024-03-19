@@ -1,6 +1,6 @@
 namespace ViewModels
 
-    class HomePage extends BasePage
+    class HomePage extends ViewModel
 
     end class
 

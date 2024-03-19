@@ -1,0 +1,44 @@
+' Rotor Framework Task
+import "pkg:/source/libs/rotorFramework/RotorFrameworkTask.bs"
+
+' Import common contants
+import "pkg:/components/app/common/intentTypes.bs"
+
+' Import Models and Reducers
+import "homeHttp/homeHttpModel.bs"
+import "homeHttp/homeHttpReducer.bs"
+import "homeReader/homeReaderModel.bs"
+import "homeReader/homeReaderReducer.bs"
+
+sub init()
+    m.top.functionName = "task"
+    m.appFw = new Rotor.FrameworkTask({
+        tasks: ["SleepTask"] ' optional
+        ' tasks: ["SleepTask", "UserManagerTask"] ' optional
+    })
+end sub
+
+sub task()
+
+    ' * CREATE DISPATCHERS (Owned by this Task)
+
+    ' Create home http request dispatcher
+    homeHttpModel = new Models.HomeHttpModel()
+    homeHttpReducer = new Reducers.HomeHttpReducer(homeHttpModel)
+    m.homeHttpDispatcher = new Dispatcher("homeHttp", homeHttpReducer)
+
+    ' Create home content reader dispatcher
+    homeReaderModel = new Models.HomeReaderModel()
+    homeReaderReducer = new Reducers.HomeReaderReducer(homeReaderModel)
+    m.homeReaderDispatcher = new Dispatcher("homeReader", homeReaderReducer)
+
+
+    m.homeHttpDispatcher.addListener({
+        callbackWithState: sub(state)
+
+        end sub
+    })
+
+
+    m.appFw.sync() ' main loop of multi-thread MVI
+end sub

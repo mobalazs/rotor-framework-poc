@@ -1,21 +1,21 @@
 ' constants
-import "pkg:/source/rotorFramework/engine/constants.bs"
+import "engine/constants.bs"
 
 ' engine
-import "pkg:/source/rotorFramework/engine/providers/dispatcherProvider.bs"
-import "pkg:/source/rotorFramework/engine/providers/dispatcherFacade.bs"
+import "engine/providers/dispatcherProvider.bs"
+import "engine/providers/dispatcherFacade.bs"
 
 ' base classes
-import "pkg:/source/rotorFramework/base/dispatcher.bs"
-import "pkg:/source/rotorFramework/base/dispatcherExternal.bs"
-import "pkg:/source/rotorFramework/base/baseReducer.bs"
-import "pkg:/source/rotorFramework/base/baseModel.bs"
-import "pkg:/source/rotorFramework/base/baseStack.bs"
+import "base/dispatcher.bs"
+import "base/dispatcherExternal.bs"
+import "base/baseReducer.bs"
+import "base/baseModel.bs"
+import "base/baseStack.bs"
 
 ' utils
-import "pkg:/source/rotorFramework/utils/generalUtils.bs"
-import "pkg:/source/rotorFramework/utils/nodeUtils.bs"
-import "pkg:/source/rotorFramework/utils/arrayUtils.bs"
+import "utils/generalUtils.bs"
+import "utils/nodeUtils.bs"
+import "utils/arrayUtils.bs"
 
 namespace Rotor
     class FrameworkTask
