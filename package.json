@@ -4,7 +4,7 @@
   "description": "Rotor Framework POC",
   "scripts": {
     "precompiler": "ts-node-cwd scripts/precompilers/generateAssetJsonFromJs.ts",
-    "build": "npm run precompiler && bsc --createPackage=false",
+    "build-dev": "npm run precompiler && bsc  --project bsconfig-dev.json --createPackage=false",
     "build-tests": "npm run precompiler && bsc --project bsconfig-tests.json --createPackage=false",
     "lint": "npx bslint --project bsconfig.json  --lintConfig bslint.json",
     "watch": "npm run build -- --watch",

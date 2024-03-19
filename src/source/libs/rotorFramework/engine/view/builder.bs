@@ -88,7 +88,6 @@ namespace Rotor.ViewBuilder
                 m.isRenderProcesssing = false
             end if
 
-            print " /// [CUSTOM DEBUG] view/builder.bs [93] :: unparentedRootCount : "; GetGlobalAA().top.getRoots().Count()
             #if debug
                 unparentedRootCount = GetGlobalAA().top.getRoots().Count()
                 if unparentedRootCount >= 8

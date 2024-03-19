@@ -1,31 +1,32 @@
 ' constants
-import "pkg:/source/rotorFramework/engine/constants.bs"
+import "engine/constants.bs"
 
 ' engine
-import "pkg:/source/rotorFramework/engine/view/builder.bs"
-import "pkg:/source/rotorFramework/engine/providers/dispatcherProvider.bs"
-import "pkg:/source/rotorFramework/engine/providers/dispatcherFacade.bs"
+import "engine/view/builder.bs"
+import "engine/providers/dispatcherProvider.bs"
+import "engine/providers/dispatcherFacade.bs"
 
 ' base classes
-import "pkg:/source/rotorFramework/base/baseWidget.bs"
-import "pkg:/source/rotorFramework/base/dispatcher.bs"
-import "pkg:/source/rotorFramework/base/dispatcherExternal.bs"
-import "pkg:/source/rotorFramework/base/baseStack.bs"
-import "pkg:/source/rotorFramework/base/baseViewModel.bs"
+import "base/baseWidget.bs"
+import "base/dispatcher.bs"
+import "base/dispatcher.bs"
+import "base/dispatcherExternal.bs"
+import "base/baseStack.bs"
+import "base/baseViewModel.bs"
 
 ' utils
-import "pkg:/source/rotorFramework/utils/generalUtils.bs"
-import "pkg:/source/rotorFramework/utils/nodeUtils.bs"
-import "pkg:/source/rotorFramework/utils/arrayUtils.bs"
+import "utils/generalUtils.bs"
+import "utils/nodeUtils.bs"
+import "utils/arrayUtils.bs"
 
 ' plugins
-import "pkg:/source/rotorFramework/plugins/dispatcherProviderPlugin.bs"
-import "pkg:/source/rotorFramework/plugins/fieldsPlugin.bs"
-import "pkg:/source/rotorFramework/plugins/fontStylePlugin.bs"
-import "pkg:/source/rotorFramework/plugins/dynamicAssetContextPlugin.bs"
-import "pkg:/source/rotorFramework/plugins/observerPlugin.bs"
-import "pkg:/source/rotorFramework/plugins/focusPlugin.bs"
-import "pkg:/source/rotorFramework/plugins/onReadyExpression.bs"
+import "plugins/dispatcherProviderPlugin.bs"
+import "plugins/fieldsPlugin.bs"
+import "plugins/fontStylePlugin.bs"
+import "plugins/dynamicAssetContextPlugin.bs"
+import "plugins/observerPlugin.bs"
+import "plugins/focusPlugin.bs"
+import "plugins/onReadyExpression.bs"
 
 
 namespace Rotor

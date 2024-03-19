@@ -1,16 +1,16 @@
 ' Rotor Framework Task
-import "pkg:/source/rotorFramework/RotorFrameworkTask.bs"
+import "pkg:/source/libs/rotorFramework/RotorFrameworkTask.bs"
 
 ' Import common contants
 import "pkg:/components/app/common/intentTypes.bs"
 
 ' Import Models and Reducers
-import "appLogic/app/appStore.bs"
-import "appLogic/app/appStoreReducer.bs"
-import "appLogic/user/userModel.bs"
-import "appLogic/user/userReducer.bs"
-import "appLogic/preloader/preloaderModel.bs"
-import "appLogic/preloader/preloaderReducer.bs"
+import "app/appStore.bs"
+import "app/appStoreReducer.bs"
+import "user/userModel.bs"
+import "user/userReducer.bs"
+import "preloader/preloaderModel.bs"
+import "preloader/preloaderReducer.bs"
 
 sub init()
     m.top.functionName = "task"
@@ -38,29 +38,6 @@ sub task()
     preloadModel = new Models.PreloaderModel()
     preloadReducer = new Reducers.PreloaderReducer(preloadModel)
     m.preloadDispatcher = new Dispatcher("preloader", preloadReducer)
-
-
-    ' * GET DISPATCHERS (Even if External Dispacher means Owned by another Task)
-
-    ' sleepDispatcher = m.appFW.dispatcherProvider.get("sleep")
-
-
-    ' * ADD LISTENERT TO DISPATCHER
-
-    ' sleepDispatcher.addListener({
-    '     ' mapStateToState
-    '     ' shouldUpdate
-    '     callback: "",
-    '     once: true
-    ' })
-
-
-    ' * SEND DISPATCHES (to a specific dispatcher)
-
-    ' sleepDispatcher.dispatch({
-    '     type: IntentType.SLEEP.START
-    ' })
-
 
     m.appFw.sync() ' main loop of multi-thread MVI
 end sub

@@ -1,10 +1,10 @@
 
 ' Framework
-import "pkg:/source/rotorFramework/RotorFramework.bs"
+import "pkg:/source/libs/rotorFramework/RotorFramework.bs"
 
 ' Import assets
-import "pkg:/assets/data/theme.brs"
-import "pkg:/assets/data/translation.brs"
+import "pkg:/assets/generated/theme.brs"
+import "pkg:/assets/generated/translation.brs"
 
 ' constants
 import "pkg:/components/app/common/intentTypes.bs"

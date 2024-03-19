@@ -1,0 +1,22 @@
+import "pkg:/source/libs/roku-requests/Requests.brs"
+
+namespace Reducers
+
+    class HomeHttpReducer extends Reducer
+
+        sub new(modelInstance)
+            super(modelInstance)
+        end sub
+
+        override function reducer(state, intent)
+
+            if intent.type = IntentType.APP_STORE.SET_ACTIVE_PAGE_KEY
+                state.activePageKey = intent.payload.activePageKey
+            end if
+
+            return state
+        end function
+
+    end class
+
+end namespace
