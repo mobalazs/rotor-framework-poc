@@ -7,24 +7,23 @@ namespace ViewModels
             m.homeReaderDispatcher = m.getDispatcher("homeReader")
             m.homeReaderDispatcher.addListener({
                 mapStateToProps: sub(props, state)
-                    props.homeContentNode = state.homeContentNode
+                    props.zoomListNode = state.zoomListNode
                 end sub,
                 callback: m.updateHomeContent ' Value can be a string as well, this value is equivalent with: "updateHomeContent"
             })
 
             ' map current state to props in this scope
             m.homeReaderDispatcher.getState(sub(props, state)
-                props.homeContentNode = state.homeContentNode
+                props.zoomListNode = state.zoomListNode
             end sub)
 
         end sub
 
-        ' override sub afterViewMounted()
-        '     m.updateHomeContent()
-        ' end sub
+        override sub afterViewMounted()
+            m.updateHomeContent()
+        end sub
 
         override sub onUpdateView()
-            m.updateHomeContent()
         end sub
 
         override sub onDestroyView()
@@ -37,51 +36,89 @@ namespace ViewModels
             m.render({
                 id: "homeRowList",
                 fields: {
-                    content: m.props.homeContentNode
+                    content: m.props.zoomListNode
                 }
             })
         end sub
 
-        ' default template
+
+        ' Rotor interpretation of rokudev zoomRowListDefaultLayoutTest sample.
+        ' original: https://github.com/rokudev/samples/tree/master/ux%20components/lists%20and%20grids/zoomRowListDefaultLayoutTest
         override function template() as object
             return {
                 focus: {
                     group: {
-                        forwardFocusId: "homeRowList"
+                        forwardFocusId: "homeRowList",
+                        back: "pageMenu"
                     }
                 },
                 sgName: "Group",
                 children: [
                     {
                         id: "homeRowList",
-                        sgName: "RowList",
+                        sgName: "ZoomRowList",
                         focus: {
                             enableNativeFocus: true
                         },
+                        observer: [
+                            ' You will see how observer works, and 2 different ways how to access another node using node tree.
+                            {
+                                fieldId: "scrollingStatus",
+                                callback: sub(widget, payload)
+                                    m.getWidget("../scrollingStatusLabel").node.text = `scrollingStatus is: ${payload.scrollingStatus.toStr()}`
+                                end sub
+                            },
+                            {
+                                fieldId: "rowItemFocused",
+                                callback: sub(widget, payload)
+                                    m.parent.children["rowItemFocusedLabel"].node.text = `rowItemFocused is: ${payload.rowItemFocused[0].toStr()} ${payload.rowItemFocused[1].toStr()}`
+                                end sub
+                            },
+                            {
+                                fieldId: "rowFocused",
+                                callback: sub(widget, payload)
+                                    m.parent.children.rowFocusedLabel.node.text = `rowFocused is: ${payload.rowFocused.toStr()}`
+
+                                end sub
+                            }
+                        ],
                         fields: {
-                            itemComponentName: "NativeHomeItem",
-                            rowTitleComponentName: "NativeHomeTitle",
-                            numColumns: 6,
-                            numRows: 3,
-
-                            itemSize: [6 * 200 + 5 * 30, 300],
-                            itemSpacing: [0, 30],
-                            rowHeights: [300 + 30],
-
-                            rowSpacings: [30],
-
-                            rowItemSize: [[200, 300]],
-                            rowItemSpacing: [[30, 0]],
-                            rowLabelOffset: [[0, 15]],
-
-                            showRowLabel: [true],
-
-                            rowFocusAnimationStyle: "floatingFocus",
-
-                            content: m.props.homeContentNode
+                            itemComponentName: "SimpleGridItem",
+                            translation: [20, 90]
                         }
 
-                    }
+                    },
+                    {
+                        id: "scrollingStatusLabel",
+                        sgName: "Label",
+                        fields: {
+                            translation: [20, 40],
+                            text: "scrollingStatus: false"
+                        }
+                    },
+                    {
+                        id: "rowItemFocusedLabel",
+                        sgName: "Label",
+                        fields: {
+                            translation: [420, 40],
+                            text: "rowItemFocused: 0, 0"
+                        }
+                    },
+                    {
+                        id: "rowFocusedLabel",
+                        sgName: "Label",
+                        fields: {
+                            translation: [820, 40],
+                            text: "rowFocused: 0"
+                        }
+                    },
+                    {
+                        sgName: "Label",
+                        fields: {
+                            translation: [20, -15],
+                            text: `Press the “back” button on the remote control to return to the side menu.`
+                        }
+                    },
                 ]
             }
         end function

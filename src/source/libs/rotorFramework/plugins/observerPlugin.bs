@@ -14,7 +14,7 @@ namespace Rotor
 
             beforeUpdate: sub(scope as object, widget as object, newValue, oldValue = {})
                 if oldValue <> invalid
-                    scope.detach(widget.node, oldValue, widget)
+                    scope.detach(widget.node)
                 end if
                 widget[scope.key] = newValue
                 scope.attach(widget.node, newValue, widget)

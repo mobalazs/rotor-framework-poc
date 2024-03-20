@@ -256,6 +256,7 @@ namespace Rotor
         end sub
 
         function spatialNavigation(focused as object, direction as string, focusablesHIDlist as object) as string
+            if direction = Rotor.const.Direction.BACK then return ""
             index = Rotor.Utils.findInArray(focusablesHIDlist, focused.HID)
             if index >= 0 then focusablesHIDlist.delete(index)
             segments = m.collectSegments(focused, direction, focusablesHIDlist)
@@ -373,6 +374,7 @@ namespace Rotor
                         Rotor.const.Direction.RIGHT,
                         Rotor.const.Direction.DOWN,
                         Rotor.const.Direction.LEFT
+                        Rotor.const.Direction.BACK
                     ], key)
 
                     newHID = ""
@@ -605,6 +607,7 @@ namespace Rotor
                 m.staticDirection[Rotor.const.Direction.RIGHT] = config.right ?? ""
                 m.staticDirection[Rotor.const.Direction.DOWN] = config.down ?? ""
                 m.staticDirection[Rotor.const.Direction.LEFT] = config.left ?? ""
+                m.staticDirection[Rotor.const.Direction.BACK] = config.back ?? ""
 
                 m.onFocusChanged = config.onFocusChanged ?? ""
                 Rotor.Utils.setCustomFields(m.node, { "isFocused": false }, true)

@@ -62,6 +62,10 @@ namespace Reducers
 
                 homeContentNode = m.parseHomeData(intent.payload.data)
                 state.homeContentNode = homeContentNode
+
+                zoomListNode = m.createZoomList()
+                state.zoomListNode = zoomListNode
+
                 state.loading = false
 
             else if intent.type = IntentType.CONTENT_READER.REQUEST_ERROR
@@ -76,6 +80,33 @@ namespace Reducers
             return state
         end function
 
+        function createZoomList()
+            content = createObject("roSGNode", "ContentNode")
+
+            numRows = 9
+            if content <> invalid
+                next169Index = 0
+                num169ContentItems = 16
+
+                for i = 0 To numRows - 1
+                    row = CreateObject("rosgnode", "ContentNode")
+                    row.title = "MOVIE ROW " + i.toStr()
+
+                    numItems = 10
+
+                    for j = 0 To numItems - 1
+                        item = row.CreateChild("ContentNode")
+                        item.title = "Item " + j.ToStr()
+
+                        item.hdposterurl = `pkg:/assets/images/imagesForZoomRowList/16x9/${next169Index.toStr()}.jpeg`
+                        next169Index = (next169Index + 1) mod num169ContentItems
+
+                    end for
+                    content.appendChild(row)
+                end for
+            end if
+            return content
+        end function
 
         function parseHomeData(data) as object
             createContentNode = Rotor.Utils.createContentNode

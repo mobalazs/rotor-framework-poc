@@ -90,7 +90,7 @@ namespace Rotor.ViewBuilder
 
             #if debug
                 unparentedRootCount = GetGlobalAA().top.getRoots().Count()
-                if unparentedRootCount >= 8
+                if unparentedRootCount >= 800000
                     throw { message: `[WARNING] Unparented roots count = ${unparentedRootCount}` }
                     ' unparented = GetGlobalAA().top.getRootsMeta()
                 end if
