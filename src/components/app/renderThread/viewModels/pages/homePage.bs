@@ -1,7 +1,0 @@
-namespace ViewModels
-
-    class HomePage extends ViewModel
-
-    end class
-
-end namespace

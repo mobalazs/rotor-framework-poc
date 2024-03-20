@@ -1,0 +1,15 @@
+
+sub init()
+
+    titleLabel = m.top.createChild("Label")
+    titleLabel.font = "font:smallSystemFont"
+    m.titleLabel = titleLabel
+
+end sub
+
+sub contentChanged()
+
+    content = m.top.content
+    m.titleLabel.text = `${content.title}`
+
+end sub

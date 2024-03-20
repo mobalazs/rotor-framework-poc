@@ -193,7 +193,7 @@ namespace Rotor
             ' Already focused
             if focusable.HID = m.globalFocusHID and isFocused = true then return false
 
-            isNativeFocusEnalbed = enableNativeFocus or focusable.enableNativeFocus = true
+            enableNativeFocus = enableNativeFocus or focusable.enableNativeFocus = true
 
             ' Block focusing flow thif the found focusable is disabled
             preventFocusOnDisabled = focusable.isEnabled = false and isFocused = true
@@ -202,7 +202,7 @@ namespace Rotor
             end if
 
             ' Modify focus on focusable
-            focusable.applyFocus(isFocused, isNativeFocusEnalbed)
+            focusable.applyFocus(isFocused, enableNativeFocus)
             m.applyGroupFocus(focusable.HID)
 
             ' Save new HID
@@ -211,7 +211,7 @@ namespace Rotor
                 if m.globalFocusHID <> ""
                     lastFocused = m.focusableStack.get(m.globalFocusHID)
                     if lastFocused <> invalid ' widget may have been removed recently
-                        lastFocused.applyFocus(false, isNativeFocusEnalbed)
+                        lastFocused.applyFocus(false, enableNativeFocus)
                         ancestorGroupsHIDlist = m.findAncestorGroups(m.globalFocusHID)
                         m.applyGroupFocus(focusable.HID, ancestorGroupsHIDlist)
 
@@ -231,7 +231,7 @@ namespace Rotor
             end if
 
             ' Rescue native focus if native focus is not enabled at the moment
-            if isNativeFocusEnalbed = false
+            if enableNativeFocus = false
                 globalScope = GetGlobalAA()
                 if globalScope.top.isInFocusChain() = false
                     globalScope.top.setFocus(true)
@@ -256,6 +256,7 @@ namespace Rotor
         end sub
 
         function spatialNavigation(focused as object, direction as string, focusablesHIDlist as object) as string
+            if direction = Rotor.const.Direction.BACK then return ""
             index = Rotor.Utils.findInArray(focusablesHIDlist, focused.HID)
             if index >= 0 then focusablesHIDlist.delete(index)
             segments = m.collectSegments(focused, direction, focusablesHIDlist)
@@ -373,6 +374,7 @@ namespace Rotor
                         Rotor.const.Direction.RIGHT,
                         Rotor.const.Direction.DOWN,
                         Rotor.const.Direction.LEFT
+                        Rotor.const.Direction.BACK
                     ], key)
 
                     newHID = ""
@@ -605,6 +607,7 @@ namespace Rotor
                 m.staticDirection[Rotor.const.Direction.RIGHT] = config.right ?? ""
                 m.staticDirection[Rotor.const.Direction.DOWN] = config.down ?? ""
                 m.staticDirection[Rotor.const.Direction.LEFT] = config.left ?? ""
+                m.staticDirection[Rotor.const.Direction.BACK] = config.back ?? ""
 
                 m.onFocusChanged = config.onFocusChanged ?? ""
                 Rotor.Utils.setCustomFields(m.node, { "isFocused": false }, true)
@@ -894,7 +897,7 @@ namespace Rotor
                 super.destroy()
             end sub
 
-            sub applyFocus(isFocused as boolean, isNativeFocusEnalbed = false as boolean)
+            sub applyFocus(isFocused as boolean, enableNativeFocus = false as boolean)
 
                 if m.autoSetIsFocusedOnContext
                     m.widget.context.isFocused = isFocused
@@ -902,7 +905,7 @@ namespace Rotor
 
                 m.node.setField("isFocused", isFocused)
 
-                if isNativeFocusEnalbed or m.enableNativeFocus
+                if enableNativeFocus or m.enableNativeFocus
                     m.node.setFocus(isFocused)
                 end if
 

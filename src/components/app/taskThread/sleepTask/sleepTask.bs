@@ -20,7 +20,7 @@ sub task()
     modelInstance = new Model(intialState)
 
     ' REDUCER
-    reducerInstance = new Reducer(modelInstance)
+    reducerInstance = new Reducer()
     reducerInstance.reducer = function(state, intent)
 
         if intent.type = IntentType.SLEEP.START
@@ -32,7 +32,7 @@ sub task()
     end function
 
     ' ... finally create dispatcher
-    m.sleepDispatcher = new Dispatcher("sleep", reducerInstance)
+    m.sleepDispatcher = new Dispatcher("sleep", modelInstance, reducerInstance)
 
     m.appFw.sync()
 

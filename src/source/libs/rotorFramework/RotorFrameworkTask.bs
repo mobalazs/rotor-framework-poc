@@ -50,6 +50,10 @@ namespace Rotor
 
         end sub
 
+        public function getDispatcher(dispatcherId as string) as object
+            return m.dispatcherProvider.getFacade(dispatcherId, GetGlobalAA())
+        end function
+
         sub sync()
             m.notifySyncStatus(Rotor.const.ThreadSyncType.TASK_SYNCING)
 

@@ -38,6 +38,7 @@ namespace ViewModels
                         opacity: 0.5,
                         spinInterval: 0.8,
                         visible: true,
+                        translation: [4, 4],
                         width: function(widget)
                             return widget.context.theme.busySpinner.size.w - 8
                         end function,

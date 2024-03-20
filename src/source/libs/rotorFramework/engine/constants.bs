@@ -9,6 +9,7 @@ namespace Rotor
             RIGHT = "right"
             DOWN = "down"
             LEFT = "left"
+            BACK = "back"
         end enum
 
         enum Segment

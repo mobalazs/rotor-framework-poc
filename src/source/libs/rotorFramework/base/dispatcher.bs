@@ -9,8 +9,10 @@ class Dispatcher extends ListenerForDispatchers
 
     middlewares = []
     isExternal = false
+    isDispatchingInProgress = false
+    dispatchQueue = []
 
-    function new(dispatcherId = "" as string, reducerInstance = invalid as object) as object
+    function new(dispatcherId = "" as string, modelInstance = invalid as object, reducerInstance = invalid as object) as object
         super()
 
         if dispatcherId = "" then dispatcherId = Rotor.Utils.getUUIDHex()
@@ -20,7 +22,8 @@ class Dispatcher extends ListenerForDispatchers
         m.taskNode = globalScope.top
 
         m.reducerInstance = reducerInstance
-        m.modelInstance = m.reducerInstance.modelInstance
+        m.reducerInstance.ownerDispatcher = m ' will be destroyed properly
+        m.modelInstance = modelInstance
 
         ' for render thread (notification and data)
         m.taskNode.addField(m.dispatcherId, "node", true)
@@ -46,13 +49,26 @@ class Dispatcher extends ListenerForDispatchers
 
         if intent.Count() > 1 and intent.payload = invalid then throw "[WARNING] Intent payload is invalid."
 
-        currentState = m.modelInstance.state
-        newState = m.reducerInstance.reduce(currentState, intent)
+        if m.isDispatchingInProgress = false
 
-        ' If intention has been dropped by a middleware
-        if newState = invalid then return
+            currentState = m.modelInstance.state
+            newState = m.reducerInstance.reduce(currentState, intent)
 
-        m.exposeState()
+            ' If intention has been dropped by a middleware
+            if newState = invalid then return
+
+            m.exposeState()
+
+            if m.dispatchQueue.Count() > 0
+                intent = m.dispatchQueue.shift()
+                m.dispatch(intent)
+            end if
+
+        else
+
+            m.dispatchQueue.push(intent)
+
+        end if
 
     end sub
 
@@ -67,6 +83,8 @@ class Dispatcher extends ListenerForDispatchers
 
     override sub destroy()
         super.destroy()
+
+        m.dispatchQueue.clear()
 
         frameworkInstance = GetGlobalAA().globalScope.rotor_framework_helper.frameworkInstance
         frameworkInstance.disptcherProvider.deregisterDispatcher(m.dispatcherId)
