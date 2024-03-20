@@ -23,7 +23,7 @@ namespace Rotor.ViewBuilder
         frameworkInstance as object
 
         isRenderProcesssing = false
-        renderQueueBuffer = []
+        renderQueue = []
 
         sub init(frameworkInstance as object)
             m.frameworkInstance = frameworkInstance
@@ -46,10 +46,10 @@ namespace Rotor.ViewBuilder
 
         timer = CreateObject("roTimespan")
 
-        sub renderQueueBufferFlush()
+        sub renderQueueFlush()
             m.frameworkInstance.enableRendering = true
-            if m.renderQueueBuffer.Count() > 0
-                request = m.renderQueueBuffer.shift()
+            if m.renderQueue.Count() > 0
+                request = m.renderQueue.shift()
                 m.renderProcessor(request.payload, request.params, true)
             end if
         end sub
@@ -64,7 +64,7 @@ namespace Rotor.ViewBuilder
             ' print "[DEBUG][MEASUREMENT] Process took: " + m.timer.TotalMilliseconds().ToStr() + " ms"
 
             if (m.isRenderProcesssing = true and isCallback = false) or m.frameworkInstance.enableRendering = false
-                m.renderQueueBuffer.push({
+                m.renderQueue.push({
                     payload: payload,
                     params: params
                 })
@@ -81,8 +81,8 @@ namespace Rotor.ViewBuilder
             ' print "[VIEWBUILDER MEASUREMENT] (2) PostProcess took: " + m.timer.TotalMilliseconds().ToStr() + " ms"
             m.postProcessBuffer.clearLifeCycleBuffers()
 
-            if m.renderQueueBuffer.Count() > 0
-                request = m.renderQueueBuffer.shift()
+            if m.renderQueue.Count() > 0
+                request = m.renderQueue.shift()
                 m.renderProcessor(request.payload, request.params, true)
             else
                 m.isRenderProcesssing = false

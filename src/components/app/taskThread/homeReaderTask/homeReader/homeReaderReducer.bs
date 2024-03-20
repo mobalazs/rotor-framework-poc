@@ -1,20 +1,120 @@
+import "../../../common/httpLogic/httpRouter.bs"
 
 namespace Reducers
 
     class HomeReaderReducer extends Reducer
 
-        sub new(modelInstance)
-            super(modelInstance)
-        end sub
+        override function applyMiddlewares()
+            return [
+                ' (1) Logger middleware
+                function(intent, state) as Intent
+                    print `[CONTENT_READER REDUCER][INFO] type: ${intent.type}`; intent?.payload?.preloadId <> invalid ? `, preloadId: ${intent.payload?.preloadId}` : ""
+                    return intent ' NEXT
+                end function,
+
+                ' (2) Logger middleware
+                function(intent, state) as Intent
+                    if intent.type = IntentType.CONTENT_READER.FETCH_DATA
+
+                        ' Get mockup response (only in debug mode)
+                        http = new HttpRouter()
+                        response = http.Requests(false).get("https://rotor-sample.b-cdn.net/mockups/home_feed.json")
+
+                        if response.statusCode = 200
+
+                            intent = {
+                                type: IntentType.CONTENT_READER.DATA_RECEIVED,
+                                payload: {
+                                    data: response.json
+                                }
+                            }
+
+                        else
+                            intent = {
+                                type: IntentType.CONTENT_READER.REQUEST_ERROR,
+                                payload: {
+                                    statusCode: response.statusCode
+                                }
+                            }
+                        end if
+
+                    end if
+
+                    return intent ' NEXT
+                end function,
+            ]
+        end function
 
         override function reducer(state, intent)
 
-            if intent.type = IntentType.APP_STORE.SET_ACTIVE_PAGE_KEY
-                state.activePageKey = intent.payload.activePageKey
+            if intent.type = IntentType.CONTENT_READER.START_LOADING
+
+                state.loading = true
+
+                ' self dispatch goes into queue
+                m.dispatch({
+                    type: IntentType.CONTENT_READER.FETCH_DATA
+                })
+
+                ' return invalid ' if you dont want to notify ui about loading state
+
+            else if intent.type = IntentType.CONTENT_READER.DATA_RECEIVED
+
+                homeContentNode = m.parseHomeData(intent.payload.data)
+                state.homeContentNode = homeContentNode
+                state.loading = false
+
+            else if intent.type = IntentType.CONTENT_READER.REQUEST_ERROR
+
+                '  TODO Implement dispatch Network ERROR
+                state.loading = false
+                throw { message: "Network error." }
+                return invalid ' stop it for now
+
             end if
 
             return state
         end function
+
+
+        function parseHomeData(data) as object
+            createContentNode = Rotor.Utils.createContentNode
+
+            homeContentNode = createContentNode({
+                state: data.Count() > 0 ? "operational" : "down" ' (or could be "empty")
+            })
+
+
+            index = 0
+            rows = []
+            for each rowKey in data
+
+                ' items in a row
+                items = []
+                for each item in data[rowKey]
+                    intemContentNode = createContentNode({
+                        posterUrl: item.posterUrl
+                    })
+                    items.push(intemContentNode)
+                end for
+
+                ' create row
+                rowContentNode = createContentNode({
+                    title: rowKey,
+                    rowKey: rowKey,
+                    sort: index
+                })
+                rowContentNode.appendChildren(items)
+                rows.push(rowContentNode)
+
+                index++
+            end for
+
+            homeContentNode.appendChildren(rows)
+
+            return homeContentNode
+        end function
+
 
     end class
 

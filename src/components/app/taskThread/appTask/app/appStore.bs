@@ -6,7 +6,7 @@ namespace Models
         state = {
 
             activePageKey: "home",
-            loadingScreenMinTime: 2, ' sec
+            loadingScreenMinTime: 1.5, ' sec
 
             pageList: [
                 "home",
@@ -20,22 +20,28 @@ namespace Models
             ' Available pages
             pageSettings: {
                 home: {
-                    enablePrerender: true
+                    enablePrerender: true,
+                    enableKeepAlive: false
                 },
                 movies: {
-                    enablePrerender: false
+                    enablePrerender: false,
+                    enableKeepAlive: false
                 },
                 series: {
-                    enablePrerender: false
+                    enablePrerender: false,
+                    enableKeepAlive: false
                 },
                 playground1: {
-                    enablePrerender: false
+                    enablePrerender: false,
+                    enableKeepAlive: false
                 },
                 playground2: {
-                    enablePrerender: true
+                    enablePrerender: false,
+                    enableKeepAlive: false
                 },
                 settings: {
-                    enablePrerender: true
+                    enablePrerender: false,
+                    enableKeepAlive: true
                 }
             }
         }

@@ -1,0 +1,91 @@
+namespace ViewModels
+
+    class HomePage extends ViewModel
+
+        override sub onCreateView()
+
+            m.homeReaderDispatcher = m.getDispatcher("homeReader")
+            m.homeReaderDispatcher.addListener({
+                mapStateToProps: sub(props, state)
+                    props.homeContentNode = state.homeContentNode
+                end sub,
+                callback: m.updateHomeContent ' Value can be a string as well, this value is equivalent with: "updateHomeContent"
+            })
+
+            ' map current state to props in this scope
+            m.homeReaderDispatcher.getState(sub(props, state)
+                props.homeContentNode = state.homeContentNode
+            end sub)
+
+        end sub
+
+        ' override sub afterViewMounted()
+        '     m.updateHomeContent()
+        ' end sub
+
+        override sub onUpdateView()
+            m.updateHomeContent()
+        end sub
+
+        override sub onDestroyView()
+            m.homeReaderDispatcher.destroy()
+        end sub
+
+
+
+        sub updateHomeContent()
+            m.render({
+                id: "homeRowList",
+                fields: {
+                    content: m.props.homeContentNode
+                }
+            })
+        end sub
+
+        ' default template
+        override function template() as object
+            return {
+                focus: {
+                    group: {
+                        forwardFocusId: "homeRowList"
+                    }
+                },
+                sgName: "Group",
+                children: [
+                    {
+                        id: "homeRowList",
+                        sgName: "RowList",
+                        focus: {
+                            enableNativeFocus: true
+                        },
+                        fields: {
+                            itemComponentName: "NativeHomeItem",
+                            rowTitleComponentName: "NativeHomeTitle",
+                            numColumns: 6,
+                            numRows: 3,
+
+                            itemSize: [6 * 200 + 5 * 30, 300],
+                            itemSpacing: [0, 30],
+                            rowHeights: [300 + 30],
+
+                            rowSpacings: [30],
+
+                            rowItemSize: [[200, 300]],
+                            rowItemSpacing: [[30, 0]],
+                            rowLabelOffset: [[0, 15]],
+
+                            showRowLabel: [true],
+
+                            rowFocusAnimationStyle: "floatingFocus",
+
+                            content: m.props.homeContentNode
+                        }
+
+                    }
+                ]
+            }
+        end function
+
+    end class
+
+end namespace

@@ -1,0 +1,20 @@
+
+sub init()
+    rect = m.top
+    rect.width = 200
+    rect.height = 300
+    rect.color = "0x333333FF"
+
+    poster = m.top.createChild("Poster")
+    poster.loadWidth = 200
+    poster.loadHeight = 300
+    m.poster = poster
+
+end sub
+
+sub itemContentChanged()
+
+    content = m.top.itemContent
+    m.poster.uri = content.posterUrl
+
+end sub

@@ -3,10 +3,6 @@ namespace Reducers
 
     class UserReducer extends Reducer
 
-        sub new(modelInstance)
-            super(modelInstance)
-        end sub
-
         override function reducer(state, intent)
 
             if intent.type = IntentType.USER.SET_ACTIVE_LANGUAGE_KEY

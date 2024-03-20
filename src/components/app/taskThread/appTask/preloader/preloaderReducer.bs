@@ -2,18 +2,12 @@ namespace Reducers
 
     class PreloaderReducer extends Reducer
 
-        sub new(modelInstance)
-            super(modelInstance)
-            m.init()
-        end sub
-
-        sub init()
-
-            m.applyMidleware([
+        override function applyMiddlewares() as object
+            return [
 
                 ' (1) Logger middleware
                 function(intent, state) as Intent
-                    print `[INFO PRELOADER REDUCER] type: ${intent.type}`; intent?.payload?.preloadId <> invalid ? `, preloadId: ${intent.payload?.preloadId}` : ""
+                    print `[PRELOADER REDUCER][INFO] type: ${intent.type}`; intent?.payload?.preloadId <> invalid ? `, preloadId: ${intent.payload?.preloadId}` : ""
                     return intent ' NEXT
                 end function,
 
@@ -21,6 +15,11 @@ namespace Reducers
                 function(intent, state) as Intent
                     if intent.type = IntentType.PRELOADER.START_PRELOAD_RESOURCES
 
+                        m.preloaderDispatcher = m.getDispatcher("preloader")
+                        m.homeReaderDisparcher = m.getDispatcher("homeReader")
+                        m.appStoreDispatcher = m.getDispatcher("appStore")
+
+                        m.preloadHomeFeed()
                         m.fetchResources()
 
                         return invalid
@@ -29,9 +28,8 @@ namespace Reducers
                     return intent
                 end function,
 
-            ])
-
-        end sub
+            ]
+        end function
 
         override function reducer(state as Object, intent as Intent)
 
@@ -53,10 +51,41 @@ namespace Reducers
         end function
 
 
+
+        sub preloadHomeFeed()
+            ' (1) dispatch add item
+            m.preloaderDispatcher.dispatch({
+                type: IntentType.PRELOADER.ADD_ITEM,
+                payload: {
+                    preloadId: "preloadHomeFeed"
+                }
+            })
+            ' (2) dispatch completed item
+            m.homeReaderDisparcher.addListener({
+                callbackWithState: sub(state)
+                    if state.loading = false
+                        m.preloaderDispatcher.dispatch({
+                            type: IntentType.PRELOADER.COMPLETED_ITEM,
+                            payload: {
+                                preloadId: "preloadHomeFeed"
+                            }
+                        })
+                    end if
+                end sub,
+                once: true
+            })
+            ' (3) start loading home feed
+            m.homeReaderDisparcher.dispatch({
+                type: IntentType.CONTENT_READER.START_LOADING
+            })
+
+        end sub
+
+
+
         sub fetchResources() ' simulation
 
-            ' Dispatch increase preloader counter
-            m.preloaderDispatcher = m.getDispatcher("preloader")
+            ' (1) Dispatch add item
             m.preloaderDispatcher.dispatch({
                 type: IntentType.PRELOADER.ADD_ITEM,
                 payload: {
@@ -64,22 +93,12 @@ namespace Reducers
                 }
             })
 
-            ' Get minimum loading duration
-            appStoreDispatcher = m.getDispatcher("appStore")
-            appStoreState = appStoreDispatcher.getState()
+            ' (2) Get minimum loading duration
+            appStoreState = m.appStoreDispatcher.getState()
             loadingScreenMinTime = appStoreState.loadingScreenMinTime
-            appStoreDispatcher.destroy()
 
-            ' Start async process
+            ' (3) dispatch completed item, if done
             sleepDispatcher = m.getDispatcher("sleep")
-            sleepDispatcher.dispatch({
-                type: IntentType.SLEEP.START,
-                payload: {
-                    duration: loadingScreenMinTime
-                }
-            })
-
-            ' Listening to async
             sleepDispatcher.addListener({
                 callback: sub()
                     m.preloaderDispatcher.dispatch({
@@ -91,14 +110,16 @@ namespace Reducers
                 end sub,
                 once: true
             })
-        end sub
+
+            ' (4) Start async process
+            sleepDispatcher.dispatch({
+                type: IntentType.SLEEP.START,
+                payload: {
+                    duration: loadingScreenMinTime
+                }
+            })
 
 
-
-        override sub destroy()
-            m.preloaderDispatcher.destryo()
-            m.preloaderDispatcher = invalid
-            super.destroy()
         end sub
 
     end class

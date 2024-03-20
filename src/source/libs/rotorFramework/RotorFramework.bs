@@ -86,7 +86,7 @@ namespace Rotor
 
             ' prepare tasks for syncing
             if config.tasks <> invalid
-                m.enableRendering = false ' disable rendering until task sync ready, then call renderQueueBufferFlush()
+                m.enableRendering = false ' disable rendering until task sync ready, then call renderQueueFlush()
                 taskNames = Rotor.Utils.ensureArray(config.tasks)
                 for each taskName in taskNames
                     m.setupTaskForSyncing(taskName, rootNode)
@@ -129,7 +129,6 @@ namespace Rotor
             return m.dispatcherProvider.getFacade(dispatcherId, GetGlobalAA())
         end function
 
-
         sub setupTaskForSyncing(taskName as string, parentNode)
             rootNode = m.getRootNode()
             taskNode = parentNode.createChild(taskName)
@@ -153,7 +152,7 @@ namespace Rotor
             if Rotor.Utils.isFunction(m.config.onTaskReady)
                 Rotor.Utils.callbackScoped(m.config.onTaskReady, GetGlobalAA())
             end if
-            m.builder.renderQueueBufferFlush()
+            m.builder.renderQueueFlush()
 
         end sub
 

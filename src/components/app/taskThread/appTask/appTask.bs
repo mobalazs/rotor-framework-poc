@@ -15,8 +15,7 @@ import "preloader/preloaderReducer.bs"
 sub init()
     m.top.functionName = "task"
     m.appFw = new Rotor.FrameworkTask({
-        tasks: ["SleepTask"] ' optional
-        ' tasks: ["SleepTask", "UserManagerTask"] ' optional
+        tasks: ["SleepTask", "HomeReaderTask"] ' optional
     })
 end sub
 
@@ -26,18 +25,18 @@ sub task()
 
     ' App logic
     appStore = new Models.AppStore()
-    appStoreReducer = new Reducers.AppStoreReducer(appStore)
-    m.appStoreDispatcher = new Dispatcher("appStore", appStoreReducer)
+    appStoreReducer = new Reducers.AppStoreReducer()
+    m.appStoreDispatcher = new Dispatcher("appStore", appStore, appStoreReducer)
 
     ' User logic
     userModel = new Models.UserModel()
-    userReducer = new Reducers.userReducer(userModel)
-    m.userDispatcher = new Dispatcher("user", userReducer)
+    userReducer = new Reducers.userReducer()
+    m.userDispatcher = new Dispatcher("user", userModel, userReducer)
 
     ' Preloader logic
     preloadModel = new Models.PreloaderModel()
-    preloadReducer = new Reducers.PreloaderReducer(preloadModel)
-    m.preloadDispatcher = new Dispatcher("preloader", preloadReducer)
+    preloadReducer = new Reducers.PreloaderReducer()
+    m.preloadDispatcher = new Dispatcher("preloader", preloadModel, preloadReducer)
 
     m.appFw.sync() ' main loop of multi-thread MVI
 end sub

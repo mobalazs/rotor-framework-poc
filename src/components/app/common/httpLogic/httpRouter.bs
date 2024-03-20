@@ -1,0 +1,95 @@
+import "pkg:/source/libs/roku-requests/Requests.brs"
+
+
+' Http Request Router is using roku-requests lib to procees remote requests.
+' Http Request Router is able to simulate request with mockup data in a simple static way.
+class HttpRouter
+
+    mockupLookup = {
+        "https://rotor-sample.b-cdn.net/mockups/home_feed.json": "pkg:/assets/mockups/home_feed.json"
+    }
+
+    function Requests(isRemoteRequest = true as boolean) as object
+
+        #if debug
+        #else isRemoteRequest = true
+        #end if
+
+        if isRemoteRequest
+            return Requests()
+        else
+            ' json =
+            return m.mockeupFactory()
+        end if
+    end function
+
+    #if debug
+        function mockeupFactory() as object
+            return {
+                get: function(url)
+                    json = ParseJson(ReadAsciifile("pkg:/assets/mockups/home_feed.json"))
+                    requestid = Rotor.Utils.getUUIDHex(32)
+                    return {
+                        "body": "<mockup>",
+                        "cachehit": true,
+                        "getfailurereason": "OK",
+                        "getsourceidentity": 111111111,
+                        "headers": {
+                            "cache-control": "public, max-age=2592000",
+                            "cdn-cache": "MISS",
+                            "cdn-cachedat": "03/20/2024 22:50:02",
+                            "cdn-edgestorageid": "<mockup>",
+                            "cdn-fileserver": "<mockup>",
+                            "cdn-proxyver": "1.04",
+                            "cdn-pullzone": "<mockup>",
+                            "cdn-requestcountrycode": "<mockup>",
+                            "cdn-requestid": requestid,
+                            "cdn-requestpullcode": "206",
+                            "cdn-requestpullsuccess": "True",
+                            "cdn-status": "200",
+                            "cdn-storageserver": "<mockup>",
+                            "cdn-uid": "<mockup>",
+                            "content-encoding": "gzip",
+                            "content-type": "application/json",
+                            "date": "Wed, 20 Mar 2024 22:50:02 GMT",
+                            "last-modified": "Wed, 20 Mar 2024 22:49:32 GMT",
+                            "server": "<mockup>",
+                            "vary": "Accept-Encoding"
+                        },
+                        "headersarray": [
+                            { "cache-control": "public, max-age=2592000" },
+                            { "cdn-cache": "MISS" },
+                            { "cdn-cachedat": "03/20/2024 22:50:02" },
+                            { "cdn-edgestorageid": "<mockup>" },
+                            { "cdn-fileserver": "<mockup>" },
+                            { "cdn-proxyver": "1.04" },
+                            { "cdn-pullzone": "<mockup>" },
+                            { "cdn-requestcountrycode": "<mockup>" },
+                            { "cdn-requestid": requestid },
+                            { "cdn-requestpullcode": "206" },
+                            { "cdn-requestpullsuccess": "True" },
+                            { "cdn-status": "200" },
+                            { "cdn-storageserver": "<mockup>" },
+                            { "cdn-uid": "<mockup>" },
+                            { "content-encoding": "gzip" },
+                            { "content-type": "application/json" },
+                            { "date": "Wed, 20 Mar 2024 2250:02 GMT" },
+                            { "last-modified": "Wed, 20 Mar 2024 22:49:32 GMT" },
+                            { "server": "<mockup>" },
+                            { "vary": "Accept-Encoding" }
+                        ],
+                        "json": json,
+                        "ok": true,
+                        "statuscode": 200,
+                        "target_ip": "<mockup>",
+                        "text": "<mockup>",
+                        "timestried": 1,
+                        "url": url
+                    }
+                end function
+            }
+
+        end function
+    #end if
+
+end class
