@@ -141,7 +141,6 @@ namespace ViewModels
             m.appStoreDispatcher.getState(sub(props, state)
                 props.pageList = state.pageList ' remember prev page
                 props.pageSettings = state.pageSettings ' remember prev page
-                props.prevActiveKey = state.activePageKey ' remember prev page
                 props.activePageKey = state.activePageKey ' get new page key
             end sub)
 
@@ -232,7 +231,8 @@ namespace ViewModels
             viewcontainer = m.getWidget("viewContainer")
             for each childId in viewcontainer.children
                 childNode = viewcontainer.children[childId].node
-                childNode.visible = m.props.activePageKey = childId ' visible if equal
+                childNode.visible = `page-${m.props.activePageKey}` = childId ' visible if equal
+
             end for
 
             ' If page is exist then make it visible, if does not exist then we need to create it.
