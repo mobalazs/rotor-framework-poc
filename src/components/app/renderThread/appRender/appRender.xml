@@ -2,5 +2,6 @@
 <component name="AppRender" extends="Group">
     <interface>
         <function name="initApplication" />
+        <function name="destroyApplication" />
     </interface>
 </component>

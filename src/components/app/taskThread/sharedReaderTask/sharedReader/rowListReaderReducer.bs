@@ -1,0 +1,81 @@
+import "../../../common/httpLogic/httpRouter.bs"
+import "sharedLogic/sharedReaderReducer.bs"
+
+namespace Reducers
+
+    class RowListReaderReducer extends SharedReaderReducer
+
+        ' logic on top of the basic reducer class
+        reducerParams = {
+            url: "https://rotor-sample.b-cdn.net/mockups/feed/rowListSample_feed.json",
+            useMockup: false
+        }
+
+        override function parser(data) as object
+            createContentNode = Rotor.Utils.createContentNode
+
+            content = createContentNode({
+                state: data.Count() > 0 ? "operational" : "down"
+            })
+
+            numRows = 9
+            if content <> invalid
+
+                for i = 0 To numRows - 1
+                    row = CreateObject("rosgnode", "ContentNode")
+                    row.title = "MOVIE ROW " + i.toStr()
+
+                    numItems = 10
+
+                    for j = 0 To numItems - 1
+                        item = row.CreateChild("ContentNode")
+                        item.title = "Item " + j.ToStr()
+
+                        item.hdposterurl = data[data.keys()[0]][0].posterUrl
+
+                    end for
+                    content.appendChild(row)
+                end for
+            end if
+            return content
+
+            ' createContentNode = Rotor.Utils.createContentNode
+
+            ' content = createContentNode({
+            '     state: data.Count() > 0 ? "operational" : "down"
+            ' })
+
+            ' index = 0
+            ' rows = []
+            ' for each rowKey in data
+
+            '     ' items in a row
+            '     items = []
+            '     for each item in data[rowKey]
+            '         intemContentNode = createContentNode({
+            '             posterUrl: item.posterUrl
+            '         })
+            '         items.push(intemContentNode)
+            '     end for
+
+            '     ' create row
+            '     rowContentNode = createContentNode({
+            '         title: rowKey,
+            '         rowKey: rowKey,
+            '         sort: index
+            '     })
+            '     rowContentNode.appendChildren(items)
+            '     rows.push(rowContentNode)
+
+            '     index++
+            ' end for
+
+            ' content.appendChildren(rows)
+
+            ' return content
+        end function
+
+
+    end class
+
+end namespace

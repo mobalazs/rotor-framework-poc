@@ -2,12 +2,16 @@ namespace Reducers
 
     class PreloaderReducer extends Reducer
 
+        sub logIntent(intent)
+            print `[CONTENT_READER REDUCER][INFO] dispatcherId: ${m.ownerDispatcherId}, type: ${intent.type}`; intent?.payload?.preloadId <> invalid ? `, preloadId: ${intent.payload?.preloadId}` : ""
+        end sub
+
         override function applyMiddlewares() as object
             return [
 
                 ' (1) Logger middleware
                 function(intent, state) as Intent
-                    print `[PRELOADER REDUCER][INFO] type: ${intent.type}`; intent?.payload?.preloadId <> invalid ? `, preloadId: ${intent.payload?.preloadId}` : ""
+                    m.logIntent(intent)
                     return intent ' NEXT
                 end function,
 
@@ -16,10 +20,9 @@ namespace Reducers
                     if intent.type = IntentType.PRELOADER.START_PRELOAD_RESOURCES
 
                         m.preloaderDispatcher = m.getDispatcher("preloader")
-                        m.homeReaderDisparcher = m.getDispatcher("homeReader")
                         m.appStoreDispatcher = m.getDispatcher("appStore")
 
-                        m.preloadHomeFeed()
+                        ' m.preloadHomeFeed()
                         m.fetchResources()
 
                         return invalid
@@ -52,34 +55,34 @@ namespace Reducers
 
 
 
-        sub preloadHomeFeed()
-            ' (1) dispatch add item
-            m.preloaderDispatcher.dispatch({
-                type: IntentType.PRELOADER.ADD_ITEM,
-                payload: {
-                    preloadId: "preloadHomeFeed"
-                }
-            })
-            ' (2) dispatch completed item
-            m.homeReaderDisparcher.addListener({
-                callbackWithState: sub(state)
-                    if state.loading = false
-                        m.preloaderDispatcher.dispatch({
-                            type: IntentType.PRELOADER.COMPLETED_ITEM,
-                            payload: {
-                                preloadId: "preloadHomeFeed"
-                            }
-                        })
-                    end if
-                end sub,
-                once: true
-            })
-            ' (3) start loading home feed
-            m.homeReaderDisparcher.dispatch({
-                type: IntentType.CONTENT_READER.START_LOADING
-            })
+        ' sub preloadHomeFeed()
+        '     ' (1) dispatch add item
+        '     m.dispatch({
+        '         type: IntentType.PRELOADER.ADD_ITEM,
+        '         payload: {
+        '             preloadId: "preloadHomeFeed"
+        '         }
+        '     })
+        '     ' (2) dispatch completed item
+        '     m.homeReaderDisparcher.addListener({
+        '         callbackWithState: sub(state)
+        '             if state.loading = false
+        '                 m.dispatch({
+        '                     type: IntentType.PRELOADER.COMPLETED_ITEM,
+        '                     payload: {
+        '                         preloadId: "preloadHomeFeed"
+        '                     }
+        '                 })
+        '             end if
+        '         end sub,
+        '         once: true
+        '     })
+        '     ' (3) start loading home feed
+        '     m.homeReaderDisparcher.dispatch({
+        '         type: IntentType.CONTENT_READER.START_LOADING
+        '     })
 
-        end sub
+        ' end sub
 
 
 
@@ -101,7 +104,7 @@ namespace Reducers
             sleepDispatcher = m.getDispatcher("sleep")
             sleepDispatcher.addListener({
                 callback: sub()
-                    m.preloaderDispatcher.dispatch({
+                    m.dispatch({
                         type: IntentType.PRELOADER.COMPLETED_ITEM,
                         payload: {
                             preloadId: "loadingScreenMinTime"

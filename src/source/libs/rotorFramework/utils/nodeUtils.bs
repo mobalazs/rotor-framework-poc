@@ -42,8 +42,14 @@ namespace Rotor.Utils
 
 
     sub callbackScoped(callback as dynamic, scope as object, payload1 = invalid as dynamic, payload2 = invalid as dynamic)
+
+        ' check if callback valid, otherwise return
+        if not (Rotor.Utils.isFunction(callback) or (Rotor.Utils.isString(callback) and callback <> "")) then return
+
+        ' check possible arguments
         isValidPayload1 = Rotor.Utils.isValid(payload1)
         isValidPayload2 = Rotor.Utils.isValid(payload2)
+
         if Rotor.Utils.isString(callback)
             if true = isValidPayload2
                 scope[callback](payload1, payload2)

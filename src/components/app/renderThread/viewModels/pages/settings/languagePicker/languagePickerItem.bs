@@ -10,23 +10,15 @@ namespace ViewModels
         override function template() as object
 
             focus = {
-                onFocusChanged: sub (widget, isFocused as boolean) ' onSelected pass isFocused
+                onFocusChanged: sub (isFocused as boolean)
                     m.onUpdateView()
-                    if isFocused = true and widget.props.isAutoSelectOnFocusEnabled = true
-                        widget.focus.onSelected(widget)
+                    if isFocused = true and m.props.isAutoSelectOnFocusEnabled = true
+                        m.context.notifySelection(m.props.optionKey, m.props.isActive)
                     end if
                 end sub,
 
-                onSelected: sub (widget) ' onSelected pass isFocused
-                    if widget.props.isActive = false
-
-                        widget.context.dispatcher.user.dispatch({
-                            type: IntentType.USER.SET_ACTIVE_LANGUAGE_KEY,
-                            payload: {
-                                activeLanguageKey: widget.props.optionKey
-                            }
-                        })
-                    end if
+                onSelected: sub ()
+                    m.context.notifySelection(m.props.optionKey, m.props.isActive)
                 end sub
             }
 
@@ -35,6 +27,19 @@ namespace ViewModels
                 sgName: "Group",
                 focus: focus,
                 dispatcher: "user",
+                context: {
+                    isFocused: false, ' as default
+                    notifySelection: sub(languageKey, isActive)
+                        if isActive = false
+                            m.dispatcher.user.dispatch({
+                                type: IntentType.USER.SET_ACTIVE_LANGUAGE_KEY,
+                                payload: {
+                                    activeLanguageKey: languageKey
+                                }
+                            })
+                        end if
+                    end sub
+                },
                 fields: {
                     translation: function(widget) as object ' expression example
                         theme = widget.context.theme.menu.optionlistContent.languagePickerItem

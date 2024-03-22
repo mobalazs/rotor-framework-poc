@@ -12,9 +12,16 @@ namespace Rotor
 
         ' return a facede of the requested dispatcher
         function getFacade(dispatcherId as string, listenerScope = invalid as object) as object
-            listenerId = listenerScope?.HID ?? Rotor.Utils.getUUIDHex()
+            listenerId = Rotor.Utils.getUUIDHex(32)
 
             dispatcherTaskNode = m.stack.LookupCI(dispatcherId)
+
+            #if debug
+                if dispatcherTaskNode = invalid
+                    throw { message: `[DISPATCHER PROVIDER][ERROR] Dispatcher id:${dispatcherId} is not registered.` }
+                end if
+            #end if
+
             dispatcherFacadeInstance = new Rotor.DispatcherFacade(dispatcherTaskNode, dispatcherId, listenerId, listenerScope)
 
             return dispatcherFacadeInstance
@@ -39,9 +46,14 @@ namespace Rotor
         end sub
 
         sub deregisterDispatcher(dispatcherId as dynamic)
-            dispatcherInstance = m.get()
-            dispatcherInstance.destroy()
             m.remove(dispatcherId)
+        end sub
+
+        sub destroy()
+            dispatchers = m.getAll()
+            for each disaptcherId in dispatchers
+                dispatchers[disaptcherId].destroy() ' Note that destroy will deregister dispatcher automatically
+            end for
         end sub
 
     end class

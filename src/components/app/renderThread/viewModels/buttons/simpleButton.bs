@@ -13,11 +13,11 @@ namespace ViewModels
                 },
                 focus: {
                     isEnabled: true,
-                    onFocusChanged: sub (widget, isFocused as boolean)
+                    onFocusChanged: sub (isFocused as boolean)
 
-                        theme = widget.context.theme.buttons.simpleButton
-                        bg = widget.getWidget("buttonBg")
-                        label = widget.getWidget("buttonBg/buttonLabel")
+                        theme = m.context.theme.buttons.simpleButton
+                        bg = m.getWidget("buttonBg")
+                        label = m.getWidget("buttonBg/buttonLabel")
 
                         if isFocused
                             bg.node.blendColor = theme.bgColor_focused

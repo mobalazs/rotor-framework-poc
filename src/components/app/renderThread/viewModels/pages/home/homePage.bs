@@ -1,0 +1,9 @@
+namespace ViewModels
+
+    class HomePage extends BasePage
+
+
+
+    end class
+
+end namespace

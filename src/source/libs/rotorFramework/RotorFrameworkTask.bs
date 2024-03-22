@@ -31,6 +31,8 @@ namespace Rotor
 
         threadType = Rotor.const.ThreadType.TASK
 
+        keepAlive = true
+
         sub new(config = {} as object)
 
             Rotor.Utils.deepExtendAA(m.config, config)
@@ -57,7 +59,9 @@ namespace Rotor
         sub sync()
             m.notifySyncStatus(Rotor.const.ThreadSyncType.TASK_SYNCING)
 
-            while true
+            keepAlive = true
+
+            while true and keepAlive = true
                 msg = wait(0, m.port)
                 if msg <> invalid
                     msgType = type(msg)
@@ -86,6 +90,10 @@ namespace Rotor
 
                                 m.notifySyncStatus(Rotor.const.ThreadSyncType.TASK_SYNCED)
 
+                            else if sync.type = Rotor.const.ThreadSyncType.DESTROY
+
+                                keepAlive = false
+
                             end if
                         else
 
@@ -99,7 +107,7 @@ namespace Rotor
                     end if
                 end if
             end while
-            m.desroy()
+            m.destroy()
         end sub
 
         sub notifySyncStatus(status as string)
@@ -130,11 +138,14 @@ namespace Rotor
 
         ' DESTROY
         public sub destroy()
+            m.dispatcherProvider.destroy()
+
             globalScope = GetGlobalAA()
             globalScope.rotor_framework_helper = {
                 frameworkInstance: invalid
             }
-            m.dispatcherProvider.destroy()
+
+            m.taskNode.rootNode = invalid
             m.taskNode = invalid
         end sub
 

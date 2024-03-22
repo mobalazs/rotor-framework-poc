@@ -52,6 +52,7 @@ namespace Rotor
         enum ThreadSyncType
             TASK_SYNCING = "taskSyncing"
             REGISTER_EXTERNAL_DISPATCHER = "registerExternalDispatcher"
+            DESTROY = "destroy"
             TASK_SYNCED = "taskSynced"
             DISPATCH = "dispatch"
         end enum

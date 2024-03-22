@@ -8,6 +8,7 @@ class Reducer
 
     getDispatcher as function
     ownerDispatcher as object
+    ownerDispatcherId as string
 
     sub new()
 

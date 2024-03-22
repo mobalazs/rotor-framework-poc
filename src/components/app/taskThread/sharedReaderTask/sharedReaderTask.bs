@@ -1,0 +1,31 @@
+' Rotor Framework Task
+import "pkg:/source/libs/rotorFramework/RotorFrameworkTask.bs"
+
+' Import common contants
+import "pkg:/components/app/common/intentTypes.bs"
+
+' Import Models and Reducers
+import "sharedReader/sharedLogic/sharedReaderModel.bs"
+import "sharedReader/zoomListReaderReducer.bs"
+import "sharedReader/rowListReaderReducer.bs"
+
+sub init()
+    m.top.functionName = "task"
+    m.appFw = new Rotor.FrameworkTask()
+end sub
+
+sub task()
+
+    ' * CREATE DISPATCHERS (Owned by this Task)
+
+    ' Create shared content reader dispatcher
+    zoomListModel = new Models.SharedReaderModel()
+    zoomListReaderReducer = new Reducers.ZoomListReaderReducer()
+    m.zoomListReaderDispatcher = new Dispatcher("zoomListReader", zoomListModel, zoomListReaderReducer)
+
+    rowListModel = new Models.SharedReaderModel()
+    rowListReaderReducer = new Reducers.RowListReaderReducer()
+    m.rowListReaderDispatcher = new Dispatcher("rowListReader", rowListModel, rowListReaderReducer)
+
+    m.appFw.sync() ' main loop of multi-thread MVI
+end sub

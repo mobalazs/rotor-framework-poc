@@ -15,7 +15,7 @@ import "preloader/preloaderReducer.bs"
 sub init()
     m.top.functionName = "task"
     m.appFw = new Rotor.FrameworkTask({
-        tasks: ["SleepTask", "HomeReaderTask"] ' optional
+        tasks: ["SleepTask", "SharedReaderTask"] ' optional
     })
 end sub
 

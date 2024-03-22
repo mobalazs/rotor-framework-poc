@@ -174,22 +174,22 @@ namespace Rotor.ViewBuilder
                 parentNode.removeChild(widget.node)
 
             else if process.hookType = Rotor.const.LifeCycleHookType.MOUNTED
-                if widget.afterWidgetMounted <> invalid
-                    widget.afterWidgetMounted(widget)
+                if widget.onMountWidget <> invalid
+                    widget.onMountWidget()
                 end if
                 if widget?.isViewModel = true
                     widget.afterViewMounted()
                 end if
 
             else if process.hookType = Rotor.const.LifeCycleHookType.UPDATED
-                if widget.afterWidgetUpdated <> invalid
-                    widget.afterWidgetUpdated(widget)
+                if widget.onUpdateWidget <> invalid
+                    widget.onUpdateWidget()
                 end if
                 ' Note thet onUpdateView is nota called automatically.
 
             else if process.hookType = Rotor.const.LifeCycleHookType.DELETE_WIDGET
-                if widget.beforeWidgetDestroy <> invalid
-                    widget.beforeWidgetDestroy()
+                if widget.onDestroyWidget <> invalid
+                    widget.onDestroyWidget()
                 end if
                 if widget?.isViewModel = true
                     widget.onDestroyView()

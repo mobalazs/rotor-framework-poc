@@ -27,7 +27,7 @@ namespace Rotor
             m.dispatcherInstance.addListener(listenerConfig, m.listenerId, m.listenerScope)
         end sub
 
-        sub removeAllListenesrByListenerId(listenerId)
+        sub removeAllListenesrByListenerId()
             m.dispatcherInstance.removeAllListenesrByListenerId(m.listenerId)
         end sub
 
@@ -36,7 +36,7 @@ namespace Rotor
         end function
 
         sub destroy()
-            m.removeAllListenesrByListenerId(m.listenerId)
+            m.removeAllListenesrByListenerId()
             m.listenerScope = invalid
             m.dispatcherInstance = invalid
         end sub

@@ -1,0 +1,10 @@
+
+sub init()
+    m.itemPoster = m.top.findNode("itemPoster")
+end sub
+
+sub itemContentChanged()
+    m.itemPoster.uri = m.top.itemContent.posterUrl
+end sub
+
+

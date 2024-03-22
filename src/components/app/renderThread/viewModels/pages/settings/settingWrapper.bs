@@ -24,13 +24,13 @@ namespace ViewModels
             titleHeight = "{#theme=fontStyles.H1}".size - 10
             focus = {
                 group: {
-                    onFocusChanged: sub(widget, isFocused)
-                        labelWidget = widget.getWidget("settingTitle") ' below id equal
+                    onFocusChanged: sub(isFocused)
+                        labelWidget = m.getWidget("settingTitle") ' below id equal
                         labelWidget.context.isFocused = isFocused
-                        labelWidget.node.color = isFocused = true ? widget.context.theme.colors.primary_2 : widget.context.theme.colors.primary
+                        labelWidget.node.color = isFocused = true ? m.context.theme.colors.primary_2 : m.context.theme.colors.primary
 
-                        if widget.context.showArrows
-                            rcArrows = widget.getWidget("rcArrows") ' below id equal
+                        if m.context.showArrows
+                            rcArrows = m.getWidget("rcArrows") ' below id equal
                             rcArrows.node.visible = isFocused
                         end if
                     end sub

@@ -46,7 +46,7 @@ namespace Rotor
                     ' Focus another widget and set to true
                     otherId = isFocused
                     return globalScope.rotor_framework_helper.frameworkInstance.plugins[pluginKey].setFocus(otherId, true, enableNativeFocus)
-                else
+                else ' is boolean
                     ' Focus / unfocus this widget
                     return globalScope.rotor_framework_helper.frameworkInstance.plugins[pluginKey].setFocus(HID, isFocused, enableNativeFocus)
                 end if
@@ -70,6 +70,11 @@ namespace Rotor
             m.globalFocusHID = HID
             m.globalFocusId = id
         end sub
+
+        function getFocusedWidget() as object
+            focused = m.focusableStack.get(m.globalFocusHID)
+            return focused?.widget
+        end function
 
         sub setFocusConfig(widget as object, pluginConfig as object)
 
@@ -191,44 +196,41 @@ namespace Rotor
             HID = focusable.HID
 
             ' Already focused
-            if focusable.HID = m.globalFocusHID and isFocused = true then return false
+            ' if focusable.HID = m.globalFocusHID and isFocused = true then return false
 
             enableNativeFocus = enableNativeFocus or focusable.enableNativeFocus = true
 
-            ' Block focusing flow thif the found focusable is disabled
+            ' Block focusing flow if the found focusable is disabled
             preventFocusOnDisabled = focusable.isEnabled = false and isFocused = true
             if preventFocusOnDisabled
                 return false
+            end if
+
+
+            if m.globalFocusHID <> ""
+                lastFocused = m.focusableStack.get(m.globalFocusHID)
+                if lastFocused <> invalid ' widget may have been removed recently
+
+                    if isFocused = true then lastFocused.applyFocus(false, enableNativeFocus)
+                    ancestorGroupsHIDlist = m.findAncestorGroups(m.globalFocusHID)
+                    if isFocused = true then m.applyGroupFocus(focusable.HID, ancestorGroupsHIDlist)
+
+                    parentGroupHID = ancestorGroupsHIDlist[0]
+                    if parentGroupHID <> invalid and parentGroupHID <> ""
+                        group = m.groupStack.get(parentGroupHID)
+                        if group <> invalid
+                            group.setLastFocusedHID(m.globalFocusHID)
+                        end if
+                    end if
+                end if
             end if
 
             ' Modify focus on focusable
             focusable.applyFocus(isFocused, enableNativeFocus)
             m.applyGroupFocus(focusable.HID)
 
-            ' Save new HID
-            if isFocused = true
-                ' remove previous focus automatically
-                if m.globalFocusHID <> ""
-                    lastFocused = m.focusableStack.get(m.globalFocusHID)
-                    if lastFocused <> invalid ' widget may have been removed recently
-                        lastFocused.applyFocus(false, enableNativeFocus)
-                        ancestorGroupsHIDlist = m.findAncestorGroups(m.globalFocusHID)
-                        m.applyGroupFocus(focusable.HID, ancestorGroupsHIDlist)
 
-                        parentGroupHID = ancestorGroupsHIDlist[0]
-                        if parentGroupHID <> ""
-                            group = m.groupStack.get(parentGroupHID)
-                            if group <> invalid
-                                group.setLastFocusedHID(m.globalFocusHID)
-                            end if
-                        end if
-                    end if
-                end if
-                ' set focusedId in scope
-                m.storeGlobalFocusHID(HID, focusable.id)
-            else if m.globalFocusHID = HID
-                m.storeGlobalFocusHID("", "")
-            end if
+            m.storeGlobalFocusHID(isFocused ? HID : "", isFocused ? focusable.id : "")
 
             ' Rescue native focus if native focus is not enabled at the moment
             if enableNativeFocus = false
@@ -296,7 +298,7 @@ namespace Rotor
 
 
         ' Technicly this is a waterfall of fallback's of groups (linked together with defaultFocusId/forwardFcousID).
-        function capturingFocus_recursively(identifier as string, direction = "", ancestorHID = "" as string) as string
+        function capturingFocus_recursively(identifier as string, direction = "", ancestorHID = "0" as string) as string
 
             ' Next group
             group = m.groupStack.get(identifier) ' if identifier is a HID
@@ -320,7 +322,6 @@ namespace Rotor
                 ' NEXT
                 newHID = m.capturingFocus_recursively(newHID, direction, group.HID)
             end if
-
 
             ' Prevent capturing by fallback in the same group where original focus was. (This is useful for setting top level focus directions)
             if newHID <> "" and m.globalFocusHID <> ""
@@ -524,8 +525,8 @@ namespace Rotor
                 return Left(descendantHID, HIDlen) = HID and HIDlen < Len(descendantHID)
             end function
 
-            function getByNodeId(nodeId as string, ancestorHID = "" as string) as object
-                if ancestorHID <> ""
+            function getByNodeId(nodeId as string, ancestorHID = "0" as string) as object
+                if ancestorHID <> "0"
                     filteredStack = {}
                     for each HID in m.stack
                         if m.isDescendantHID(HID, ancestorHID)
@@ -610,7 +611,7 @@ namespace Rotor
                 m.staticDirection[Rotor.const.Direction.BACK] = config.back ?? ""
 
                 m.onFocusChanged = config.onFocusChanged ?? ""
-                Rotor.Utils.setCustomFields(m.node, { "isFocused": false }, true)
+                Rotor.Utils.setCustomFields(m.node, { "isFocused": false }, true, true)
 
                 ' convenience (usuallly this is used on context)
                 if false = m.widget.context.DoesExist("isFocused") and true = m.autoSetIsFocusedOnContext
@@ -628,22 +629,17 @@ namespace Rotor
             node as object
             widget as object
 
-            function getStaticNodeIdInDirection(direction = "" as string) as string
-                if direction = "" then return ""
+            function getStaticNodeIdInDirection(direction as dynamic) as string
                 direction = m.staticDirection[direction]
                 if Rotor.Utils.isFunction(direction)
-                    return direction(m.widget.context) ?? ""
+                    return direction(m.widget) ?? ""
                 else
                     return direction ?? ""
                 end if
             end function
 
             sub callOnFocusedFnOnWidget(isFocused as boolean)
-                if Rotor.Utils.isFunction(m.onFocusChanged)
-                    Rotor.Utils.callbackScoped(m.onFocusChanged, m.widget, m.widget, isFocused)
-                else if m.onFocusChanged <> ""
-                    m.widget.context[m.onFocusChanged](m.widget, isFocused)
-                end if
+                Rotor.Utils.callbackScoped(m.onFocusChanged, m.widget, isFocused)
             end sub
 
             sub destroy()
@@ -914,11 +910,7 @@ namespace Rotor
             end sub
 
             sub callOnSelectedFnOnWidget()
-                if Rotor.Utils.isFunction(m.onSelected)
-                    Rotor.Utils.callbackScoped(m.onSelected, m.widget, m.widget)
-                else if m.onSelected <> ""
-                    m.widget.context[m.onSelected](m.widget)
-                end if
+                Rotor.Utils.callbackScoped(m.onSelected, m.widget)
             end sub
 
         end class

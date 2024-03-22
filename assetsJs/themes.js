@@ -128,7 +128,7 @@ module.exports = function () {
 			purpleTheme: {
 				blendColor: colors.background_2,
 				posterUrl:
-					'pkg:/assets/images/themeDecor/image-from-rawpixel-id-6302119-png.png',
+					'https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6302119-png.png',
 				translation: [0, 50],
 				opacity: 0.3,
 				rotation: 0,
@@ -138,7 +138,7 @@ module.exports = function () {
 			greenTheme: {
 				blendColor: colors.background_2,
 				posterUrl:
-					'pkg:/assets/images/themeDecor/image-from-rawpixel-id-6440165-png.png',
+					'https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6440165-png.png',
 				translation: [-90, 50],
 				opacity: 0.7,
 				rotation: 0,
@@ -148,7 +148,7 @@ module.exports = function () {
 			blueTheme: {
 				blendColor: colors.background_2,
 				posterUrl:
-					'pkg:/assets/images/themeDecor/image-from-rawpixel-id-6458017-png.png',
+					'https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6458017-png.png',
 				translation: [0, 20],
 				opacity: 0.6,
 				rotation: 0,
@@ -158,7 +158,7 @@ module.exports = function () {
 			redTheme: {
 				blendColor: colors.background_2,
 				posterUrl:
-					'pkg:/assets/images/themeDecor/image-from-rawpixel-id-6283207-png.png',
+					'https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6283207-png.png',
 				translation: [1300, 450],
 				opacity: 0.5,
 				rotation: 0,
@@ -168,7 +168,7 @@ module.exports = function () {
 			yellowTheme: {
 				blendColor: "0xCCCCCC99",
 				posterUrl:
-					'pkg:/assets/images/themeDecor/image-from-rawpixel-id-6283277-png.png',
+					'https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6283277-png.png',
 				translation: [85, 1030],
 				opacity: 1,
 				rotation: 3.141592 / 2,
@@ -236,6 +236,12 @@ module.exports = function () {
 					series: {
 						url: 'pkg:/assets/images/icons/ic_collections.png',
 					},
+					rowListExample: {
+						url: 'pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png',
+					},
+					zoomListSample: {
+						url: 'pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png',
+					},
 					playground1: {
 						url: 'pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png',
 					},
@@ -266,7 +272,7 @@ module.exports = function () {
 					color: colors.primary_2,
 					translation: [300, 0],
 				},
-				appTitleTransition: [300 + 15, 0],
+				appTitleTransition: [325, 0],
 			},
 			shared: {
 				labelWidth: 230,

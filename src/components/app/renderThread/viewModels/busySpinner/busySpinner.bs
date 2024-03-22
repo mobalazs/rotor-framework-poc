@@ -6,17 +6,6 @@ namespace ViewModels
         override function template() as object
 
             ' There are 2 spinner implemented accoding to design. Both have the same controller.
-            context = {
-                afterWidgetMounted: sub(widget)
-                    widget.visible = true
-                    widget.control = "stop"
-                end sub,
-                beforeWidgetDestroy: sub(widget)
-                    widget.visible = false
-                    widget.control = "stop"
-                end sub
-            }
-
             return {
                 id: "defaultSpinner",
                 sgName: "BusySpinner",
@@ -27,26 +16,40 @@ namespace ViewModels
                     height: "@context.theme.busySpinner.size.h",
                     visible: true
                 },
-                context: context,
+                onMountWidget: sub()
+                    m.node.visible = true
+                    m.node.control = "stop"
+                end sub,
+                onDestroyWidget: sub()
+                    m.node.visible = false
+                    m.node.control = "stop"
+                end sub,
                 children: {
                     id: "innerSpinner",
                     sgName: "BusySpinner",
                     fields: {
                         uri: "#theme.busySpinner.url",
-                        translation: [4, 4],
                         clockwise: false,
                         opacity: 0.5,
                         spinInterval: 0.8,
                         visible: true,
-                        translation: [4, 4],
-                        width: function(widget)
-                            return widget.context.theme.busySpinner.size.w - 8
-                        end function,
-                        height: function(widget)
-                            return widget.context.theme.busySpinner.size.h - 8
+                        translation: [10, 10],
+                        scale: function(widget)
+                            scale = (widget.context.theme.busySpinner.size.w - 20) / widget.context.theme.busySpinner.size.w
+                            return [
+                                scale,
+                                scale
+                            ]
                         end function
                     },
-                    context: context
+                    onMountWidget: sub()
+                        m.node.visible = true
+                        m.node.control = "stop"
+                    end sub,
+                    onDestroyWidget: sub()
+                        m.node.visible = false
+                        m.node.control = "stop"
+                    end sub
                 }
             }
         end function

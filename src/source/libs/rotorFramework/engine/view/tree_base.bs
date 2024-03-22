@@ -20,6 +20,7 @@ namespace Rotor.ViewBuilder
                     payload.HID = m.HID
                 end if
             end for
+            if Rotor.Utils.isValid(params.callback) then params.callbackScope = m
             globalScope = GetGlobalAA()
             globalScope.rotor_framework_helper.frameworkInstance.builder.render(payloads, params)
         end sub
@@ -29,8 +30,8 @@ namespace Rotor.ViewBuilder
             globalScope.rotor_framework_helper.frameworkInstance.builder.erase(payloads, m.parentHID)
         end sub
 
-
         sub destroy()
+            m.node = invalid
         end sub
 
     end class
@@ -42,13 +43,12 @@ namespace Rotor.ViewBuilder
             m.tree_HIDHash = new Rotor.BaseStack()
         end sub
 
-        negatedGroup = /\[!\](.*?)\]/i ' negated range for glob patter search
-        groupConditionPattern = /{(.*?)}/i ' group conditions for glob patter search
-
         sub init()
         end sub
 
         sub destroy()
+            m.tree.destroy()
+            m.tree_HIDHash.stack.Clear()
         end sub
 
         function add(config as object, ViewModelClass = invalid) as object

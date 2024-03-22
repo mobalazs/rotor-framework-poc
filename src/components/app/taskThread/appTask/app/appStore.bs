@@ -5,13 +5,15 @@ namespace Models
 
         state = {
 
-            activePageKey: "home",
+            activePageKey: "playground2",
             loadingScreenMinTime: 1.5, ' sec
 
             pageList: [
                 "home",
                 "movies",
                 "series",
+                "rowListExample",
+                "zoomListSample",
                 "playground1",
                 "playground2",
                 "settings"
@@ -21,13 +23,21 @@ namespace Models
             pageSettings: {
                 home: {
                     enablePrerender: true,
-                    enableKeepAlive: false
+                    enableKeepAlive: true
                 },
                 movies: {
                     enablePrerender: false,
                     enableKeepAlive: false
                 },
                 series: {
+                    enablePrerender: false,
+                    enableKeepAlive: false
+                },
+                rowListExample: {
+                    enablePrerender: false,
+                    enableKeepAlive: false
+                },
+                zoomListSample: {
                     enablePrerender: false,
                     enableKeepAlive: false
                 },

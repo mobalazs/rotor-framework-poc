@@ -89,7 +89,7 @@ namespace Rotor
                 m.enableRendering = false ' disable rendering until task sync ready, then call renderQueueFlush()
                 taskNames = Rotor.Utils.ensureArray(config.tasks)
                 for each taskName in taskNames
-                    m.setupTaskForSyncing(taskName, rootNode)
+                    m.setupTaskForSyncing(taskName)
                 end for
             end if
 
@@ -98,6 +98,7 @@ namespace Rotor
         ' * Public View Builder methods
 
         public sub render(payload as object, params = {} as object)
+            if Rotor.Utils.isValid(params.callback) then params.callbackScope = m
             m.builder.render(payload, params)
         end sub
 
@@ -117,6 +118,10 @@ namespace Rotor
             return m.builder.widgetTree.get(searchPattern, HID)
         end function
 
+        public function getRootWidget() as object
+            return m.builder.widgetTree.getByHID("0")
+        end function
+
         public function getSubtreeClone(searchPattern as string, keyPathList = [] as Object, parentHID = "0" as string) as object
             return m.builder.widgetTree.getSubtreeClone(searchPattern, keyPathList, parentHID)
         end function
@@ -129,9 +134,9 @@ namespace Rotor
             return m.dispatcherProvider.getFacade(dispatcherId, GetGlobalAA())
         end function
 
-        sub setupTaskForSyncing(taskName as string, parentNode)
+        sub setupTaskForSyncing(taskName as string)
             rootNode = m.getRootNode()
-            taskNode = parentNode.createChild(taskName)
+            taskNode = rootNode.createChild(taskName)
             taskId = Rotor.Utils.getUUIDHex(16)
 
             m.taskNodes[taskId] = taskNode ' collection for later usage
@@ -148,7 +153,6 @@ namespace Rotor
 
         sub taskSyncFinished()
 
-            m.taskNodes.Clear()
             if Rotor.Utils.isFunction(m.config.onTaskReady)
                 Rotor.Utils.callbackScoped(m.config.onTaskReady, GetGlobalAA())
             end if
@@ -159,19 +163,33 @@ namespace Rotor
 
         ' DESTROY
         public sub destroy()
-            m.builder.destroy()
+
+            rootNode = m.getRootNode()
+            for each taskId in m.taskNodes
+                taskNode = m.taskNodes[taskId]
+                taskNode.setField("rotorSync", {
+                    type: Rotor.const.ThreadSyncType.DESTROY
+                })
+                rootNode.removeChild(taskNode)
+            end for
+
+
+            m.taskNodes.Clear()
+
+            rootNode.unobserveFieldScoped("rotorSync")
+
+            ' destroy subsystems
             m.builder.destroy()
             m.dispatcherProvider.destroy()
-            m.storeProvider.destroy()
 
+            ' remove references
             m.taskNode = invalid
-
-
             globalScope = GetGlobalAA()
             globalScope.rotor_framework_helper = {
                 frameworkInstance: invalid
             }
             m.config.rootNode = invalid
+
         end sub
 
     end class
@@ -193,7 +211,7 @@ namespace Rotor
             if sync.tasks <> invalid
                 taskNames = Rotor.Utils.ensureArray(sync.tasks)
                 for each taskName in taskNames
-                    m.frameworkInstance.setupTaskForSyncing(taskName, taskNode)
+                    m.frameworkInstance.setupTaskForSyncing(taskName)
                 end for
             end if
 

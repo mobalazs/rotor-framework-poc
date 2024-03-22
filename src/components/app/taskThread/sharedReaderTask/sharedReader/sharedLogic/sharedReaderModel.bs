@@ -1,11 +1,11 @@
 namespace Models
 
-    class HomeReaderModel extends Model
+    class SharedReaderModel extends Model
 
         state = {
             loading: false,
             contentNode: Rotor.Utils.createContentNode({
-                state: "empty" ' this is not in use, but looks good in the model
+                state: "none"
             })
         }
 

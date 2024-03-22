@@ -5,10 +5,6 @@ import "pkg:/source/libs/roku-requests/Requests.brs"
 ' Http Request Router is able to simulate request with mockup data in a simple static way.
 class HttpRouter
 
-    mockupLookup = {
-        "https://rotor-sample.b-cdn.net/mockups/home_feed.json": "pkg:/assets/mockups/home_feed.json"
-    }
-
     function Requests(isRemoteRequest = true as boolean) as object
 
         #if debug
@@ -18,16 +14,22 @@ class HttpRouter
         if isRemoteRequest
             return Requests()
         else
-            ' json =
-            return m.mockeupFactory()
+            return m.mockupFactory()
         end if
     end function
 
     #if debug
-        function mockeupFactory() as object
+        function mockupFactory() as object
             return {
+
+                mockupMap: {
+                    "https://rotor-sample.b-cdn.net/mockups/feed/dummy_feed.json": "pkg:/assets/mockups/feed/dummy_feed.json",
+                    "https://rotor-sample.b-cdn.net/mockups/feed/rowListSample_feed.json": "pkg:/assets/mockups/feed/rowListSample_feed.json"
+                },
+
                 get: function(url)
-                    json = ParseJson(ReadAsciifile("pkg:/assets/mockups/home_feed.json"))
+                    uri = m.mockupMap[url]
+                    json = ParseJson(ReadAsciifile(uri))
                     requestid = Rotor.Utils.getUUIDHex(32)
                     return {
                         "body": "<mockup>",

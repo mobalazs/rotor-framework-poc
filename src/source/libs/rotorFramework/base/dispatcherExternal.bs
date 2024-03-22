@@ -97,8 +97,9 @@ namespace Rotor
                 end if
             end if
             m.listeners.Clear()
+            m.taskNode = invalid
 
-            frameworkInstance.disptcherProvider.deregisterDispatcher(m.dispatcherId)
+            frameworkInstance.dispatcherProvider.deregisterDispatcher(m.dispatcherId)
 
         end sub
 

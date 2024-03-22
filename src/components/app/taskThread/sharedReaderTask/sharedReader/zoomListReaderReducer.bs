@@ -1,0 +1,48 @@
+import "../../../common/httpLogic/httpRouter.bs"
+import "sharedLogic/sharedReaderReducer.bs"
+
+namespace Reducers
+
+    class ZoomListReaderReducer extends SharedReaderReducer
+
+        ' logic on top of the basic reducer class
+        reducerParams = {
+            url: "https://rotor-sample.b-cdn.net/mockups/feed/dummy_feed.json",
+            useMockup: true
+        }
+
+        override function parser(data)
+            createContentNode = Rotor.Utils.createContentNode
+
+            content = createContentNode({
+                state: data.Count() > 0 ? "operational" : "down"
+            })
+
+            numRows = 9
+            if content <> invalid
+                next169Index = 0
+                num169ContentItems = 15
+
+                for i = 0 To numRows - 1
+                    row = CreateObject("rosgnode", "ContentNode")
+                    row.title = "MOVIE ROW " + i.toStr()
+
+                    numItems = 10
+
+                    for j = 0 To numItems - 1
+                        item = row.CreateChild("ContentNode")
+                        item.title = "Item " + j.ToStr()
+
+                        item.hdposterurl = `https://rotor-sample.b-cdn.net/images/rokudev/16X9/${next169Index.toStr()}.jpeg`
+                        next169Index = (next169Index + 1) mod num169ContentItems
+
+                    end for
+                    content.appendChild(row)
+                end for
+            end if
+            return content
+        end function
+
+    end class
+
+end namespace

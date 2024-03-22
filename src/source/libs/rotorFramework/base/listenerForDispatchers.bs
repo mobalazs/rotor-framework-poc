@@ -82,9 +82,8 @@ class ListenerForDispatchers
                 m.listeners[listenerIndex].callbackWithState = invalid
                 m.listeners[listenerIndex].listenerScope = invalid
                 m.listeners.delete(listenerIndex)
-            else
-                listenerIndex--
             end if
+            listenerIndex--
         end while
     end sub
 

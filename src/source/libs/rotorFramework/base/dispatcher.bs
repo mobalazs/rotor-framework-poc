@@ -23,6 +23,7 @@ class Dispatcher extends ListenerForDispatchers
 
         m.reducerInstance = reducerInstance
         m.reducerInstance.ownerDispatcher = m ' will be destroyed properly
+        m.reducerInstance.ownerDispatcherId = dispatcherId
         m.modelInstance = modelInstance
 
         ' for render thread (notification and data)
@@ -86,8 +87,8 @@ class Dispatcher extends ListenerForDispatchers
 
         m.dispatchQueue.clear()
 
-        frameworkInstance = GetGlobalAA().globalScope.rotor_framework_helper.frameworkInstance
-        frameworkInstance.disptcherProvider.deregisterDispatcher(m.dispatcherId)
+        frameworkInstance = GetGlobalAA().rotor_framework_helper.frameworkInstance
+        frameworkInstance.dispatcherProvider.deregisterDispatcher(m.dispatcherId)
 
         m.taskNode = invalid
         m.modelInstance = invalid

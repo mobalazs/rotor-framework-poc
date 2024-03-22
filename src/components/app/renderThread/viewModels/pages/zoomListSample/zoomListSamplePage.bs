@@ -1,0 +1,155 @@
+namespace ViewModels
+
+    class ZoomListSamplePage extends ViewModel
+
+        override sub onCreateView()
+
+            m.zoomListReaderDispatcher = m.getDispatcher("zoomListReader")
+            m.zoomListReaderDispatcher.addListener({
+                mapStateToProps: sub(props, state)
+                    props.zoomListContentNode = state.content
+                end sub,
+                callback: m.onUpdateView ' Value can be a string as well, this value is equivalent with: "onUpdateView"
+            })
+
+        end sub
+
+        override sub afterViewMounted()
+            ' Start loading
+            m.zoomListReaderDispatcher.dispatch({
+                type: IntentType.CONTENT_READER.START_LOADING
+            })
+        end sub
+
+        override sub onUpdateView()
+            m.updateHomeContent()
+        end sub
+
+        override sub onDestroyView()
+            m.zoomListReaderDispatcher.destroy()
+        end sub
+
+
+
+        sub updateHomeContent()
+            m.render({
+                id: "zoomRowList",
+                fields: {
+                    content: m.props.zoomListContentNode
+                }
+            })
+            ' Another way, but less flexible in aspect of meaintenance:
+            ' m.children.zoomRowList.node.content = m.props.zoomListContentNode
+        end sub
+
+
+        ' Rotor interpretation of rokudev zoomRowListDefaultLayoutTest sample.
+        ' original: https://github.com/rokudev/samples/tree/master/ux%20components/lists%20and%20grids/zoomRowListDefaultLayoutTest
+        override function template() as object
+            return {
+                focus: {
+                    group: {
+                        forwardFocusId: "zoomRowList",
+                        back: "pageMenu"
+                    }
+                },
+                sgName: "Group",
+                children: [
+                    {
+                        id: "viewTitle",
+                        sgName: "Label",
+                        tr: "menuItems." + m.props.pageKey,
+                        theme: "fontStyles.H2",
+                        fontStyle: "@context.theme.fontStyles.H2",
+                        fields: {
+                            text: "@context.tr.menuItems." + m.props.pageKey + ".longTitle"
+                        }
+                    },
+                    {
+                        sgName: "Group",
+                        fields: {
+                            translation: [15, 100]
+                        },
+                        children: [
+                            {
+                                id: "zoomRowList",
+                                sgName: "ZoomRowList",
+                                focus: {
+                                    enableNativeFocus: true
+                                },
+                                context: {
+                                    onDestroyWidget: sub()
+                                        ' Native grid components will produce unparented roots if content is not invalidated.
+                                        m.node.content = invalid
+                                    end sub
+                                },
+                                fields: {
+                                    itemComponentName: "SimpleGridItem",
+                                    translation: [20, 100],
+                                    content: m.props.zoomListContentNode
+                                },
+                                observer: [
+                                    ' Note that how observer works, and 2 different ways how to access another node using node tree.
+                                    {
+                                        fieldId: "scrollingStatus",
+                                        callback: sub(widget, payload)
+                                            ' maintenance-friendly way of accessing another widget and node
+                                            m.getWidget("../scrollingStatusLabel").node.text = `scrollingStatus is: ${payload.scrollingStatus.toStr()}`
+                                        end sub
+                                    },
+                                    {
+                                        fieldId: "rowItemFocused",
+                                        callback: sub(widget, payload)
+                                            m.parent.children["rowItemFocusedLabel"].node.text = `rowItemFocused is: ${payload.rowItemFocused[0].toStr()} ${payload.rowItemFocused[1].toStr()}`
+                                        end sub
+                                    },
+                                    {
+                                        fieldId: "rowFocused",
+                                        callback: sub(widget, payload)
+                                            m.parent.children.rowFocusedLabel.node.text = `rowFocused is: ${payload.rowFocused.toStr()}`
+
+                                        end sub
+                                    }
+                                ]
+                            },
+                            {
+                                id: "scrollingStatusLabel",
+                                sgName: "Label",
+                                fields: {
+                                    translation: [20, 40],
+                                    text: "scrollingStatus: false"
+                                }
+                            },
+                            {
+                                id: "rowItemFocusedLabel",
+                                sgName: "Label",
+                                fields: {
+                                    translation: [420, 40],
+                                    text: "rowItemFocused: 0, 0"
+                                }
+                            },
+                            {
+                                id: "rowFocusedLabel",
+                                sgName: "Label",
+                                fields: {
+                                    translation: [840, 40],
+                                    text: "rowFocused: 0"
+                                }
+                            },
+                            {
+                                sgName: "Label",
+                                fields: {
+                                    translation: [20, -15],
+                                    text: `Press the “back” button on the remote control to return to the side menu.`
+                                }
+                            },
+                        ]
+                    }
+
+                ]
+            }
+        end function
+
+    end class
+
+end namespace

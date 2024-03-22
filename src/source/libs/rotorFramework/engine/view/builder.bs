@@ -35,12 +35,16 @@ namespace Rotor.ViewBuilder
         end sub
 
         sub destroy()
-            m.erase()
+            ' remove all widgets
+            rootKeys = m.widgetTree.tree.children.Keys()
+            m.erase(rootKeys)
+            ' destroy nuilder engine
             m.pluginAdapter.destroy()
             m.processor.destroy()
             m.postProcessor.destroy()
             m.postProcessBuffer.destroy()
             m.widgetTree.destroy()
+            ' remove references
             m.frameworkInstance = invalid
         end sub
 
@@ -49,8 +53,8 @@ namespace Rotor.ViewBuilder
         sub renderQueueFlush()
             m.frameworkInstance.enableRendering = true
             if m.renderQueue.Count() > 0
-                request = m.renderQueue.shift()
-                m.renderProcessor(request.payload, request.params, true)
+                nextQueuedConfig = m.renderQueue.shift()
+                m.renderProcessor(nextQueuedConfig.payload, nextQueuedConfig.params, true)
             end if
         end sub
 
@@ -81,18 +85,27 @@ namespace Rotor.ViewBuilder
             ' print "[VIEWBUILDER MEASUREMENT] (2) PostProcess took: " + m.timer.TotalMilliseconds().ToStr() + " ms"
             m.postProcessBuffer.clearLifeCycleBuffers()
 
+            ' call custom callback
+            if Rotor.Utils.isValid(params.callback)
+                Rotor.Utils.callbackScoped(params.callback, params.callbackScope)
+                params.callback = invalid
+                params.callbackScope = invalid
+            end if
+
             if m.renderQueue.Count() > 0
-                request = m.renderQueue.shift()
-                m.renderProcessor(request.payload, request.params, true)
+                nextQueuedConfig = m.renderQueue.shift()
+                m.renderProcessor(nextQueuedConfig.payload, nextQueuedConfig.params, true)
             else
                 m.isRenderProcesssing = false
             end if
 
             #if debug
                 unparentedRootCount = GetGlobalAA().top.getRoots().Count()
-                if unparentedRootCount >= 800000
-                    throw { message: `[WARNING] Unparented roots count = ${unparentedRootCount}` }
+                if unparentedRootCount > 100
+                    ' Existance of Unparented root nodes are normal temporary, but it should fall back to 2.
+                    ' Above 100 it might be the sign of app has memory leak
                     ' unparented = GetGlobalAA().top.getRootsMeta()
+                    throw { message: `[WARNING] Unparented roots count = ${unparentedRootCount}` }
                 end if
             #end if
 

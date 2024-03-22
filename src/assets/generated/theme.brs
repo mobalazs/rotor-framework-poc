@@ -109,7 +109,7 @@ function getAssets_theme() as Object
       },
       "decor": {
         "blendColor": "0x0A000CFF",
-        "posterUrl": "pkg:/assets/images/themeDecor/image-from-rawpixel-id-6302119-png.png",
+        "posterUrl": "https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6302119-png.png",
         "translation": [
           0,
           50
@@ -132,6 +132,12 @@ function getAssets_theme() as Object
           },
           "series": {
             "url": "pkg:/assets/images/icons/ic_collections.png"
+          },
+          "rowListExample": {
+            "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
+          },
+          "zoomListSample": {
+            "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
           },
           "playground1": {
             "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
@@ -170,7 +176,7 @@ function getAssets_theme() as Object
           ]
         },
         "appTitleTransition": [
-          315,
+          325,
           0
         ]
       },
@@ -364,7 +370,7 @@ function getAssets_theme() as Object
       },
       "decor": {
         "blendColor": "0x0F1A17FF",
-        "posterUrl": "pkg:/assets/images/themeDecor/image-from-rawpixel-id-6440165-png.png",
+        "posterUrl": "https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6440165-png.png",
         "translation": [
           -90,
           50
@@ -387,6 +393,12 @@ function getAssets_theme() as Object
           },
           "series": {
             "url": "pkg:/assets/images/icons/ic_collections.png"
+          },
+          "rowListExample": {
+            "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
+          },
+          "zoomListSample": {
+            "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
           },
           "playground1": {
             "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
@@ -425,7 +437,7 @@ function getAssets_theme() as Object
           ]
         },
         "appTitleTransition": [
-          315,
+          325,
           0
         ]
       },
@@ -619,7 +631,7 @@ function getAssets_theme() as Object
       },
       "decor": {
         "blendColor": "0x0A1323FF",
-        "posterUrl": "pkg:/assets/images/themeDecor/image-from-rawpixel-id-6458017-png.png",
+        "posterUrl": "https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6458017-png.png",
         "translation": [
           0,
           20
@@ -642,6 +654,12 @@ function getAssets_theme() as Object
           },
           "series": {
             "url": "pkg:/assets/images/icons/ic_collections.png"
+          },
+          "rowListExample": {
+            "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
+          },
+          "zoomListSample": {
+            "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
           },
           "playground1": {
             "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
@@ -680,7 +698,7 @@ function getAssets_theme() as Object
           ]
         },
         "appTitleTransition": [
-          315,
+          325,
           0
         ]
       },
@@ -874,7 +892,7 @@ function getAssets_theme() as Object
       },
       "decor": {
         "blendColor": "0x1E0E16FF",
-        "posterUrl": "pkg:/assets/images/themeDecor/image-from-rawpixel-id-6283207-png.png",
+        "posterUrl": "https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6283207-png.png",
         "translation": [
           1300,
           450
@@ -897,6 +915,12 @@ function getAssets_theme() as Object
           },
           "series": {
             "url": "pkg:/assets/images/icons/ic_collections.png"
+          },
+          "rowListExample": {
+            "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
+          },
+          "zoomListSample": {
+            "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
           },
           "playground1": {
             "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
@@ -935,7 +959,7 @@ function getAssets_theme() as Object
           ]
         },
         "appTitleTransition": [
-          315,
+          325,
           0
         ]
       },
@@ -1129,7 +1153,7 @@ function getAssets_theme() as Object
       },
       "decor": {
         "blendColor": "0xCCCCCC99",
-        "posterUrl": "pkg:/assets/images/themeDecor/image-from-rawpixel-id-6283277-png.png",
+        "posterUrl": "https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6283277-png.png",
         "translation": [
           85,
           1030
@@ -1152,6 +1176,12 @@ function getAssets_theme() as Object
           },
           "series": {
             "url": "pkg:/assets/images/icons/ic_collections.png"
+          },
+          "rowListExample": {
+            "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
+          },
+          "zoomListSample": {
+            "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
           },
           "playground1": {
             "url": "pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png"
@@ -1190,7 +1220,7 @@ function getAssets_theme() as Object
           ]
         },
         "appTitleTransition": [
-          315,
+          325,
           0
         ]
       },

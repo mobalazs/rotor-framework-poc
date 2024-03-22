@@ -25,6 +25,13 @@ function getAssets_translation() as Object
       "series": {
         "text": "Serien"
       },
+      "rowListExample": {
+        "text": "RowList Example"
+      },
+      "zoomListSample": {
+        "text": "RokuDev ZoomRowList",
+        "longTitle": "Integration of the official RokuDev ZoomRowList sample"
+      },
       "playground1": {
         "text": "Erfahrung 1"
       },
@@ -78,6 +85,13 @@ function getAssets_translation() as Object
       },
       "series": {
         "text": "Series"
+      },
+      "rowListExample": {
+        "text": "RowList Example"
+      },
+      "zoomListSample": {
+        "text": "RokuDev ZoomRowList",
+        "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
       "playground1": {
         "text": "Playground 1"
@@ -133,6 +147,13 @@ function getAssets_translation() as Object
       "series": {
         "text": "Series"
       },
+      "rowListExample": {
+        "text": "RowList Example"
+      },
+      "zoomListSample": {
+        "text": "RokuDev ZoomRowList",
+        "longTitle": "Integration of the official RokuDev ZoomRowList sample"
+      },
       "playground1": {
         "text": "Experiencia 1"
       },
@@ -186,6 +207,13 @@ function getAssets_translation() as Object
       },
       "series": {
         "text": "Séries"
+      },
+      "rowListExample": {
+        "text": "RowList Example"
+      },
+      "zoomListSample": {
+        "text": "RokuDev ZoomRowList",
+        "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
       "playground1": {
         "text": "Expérience 1"
@@ -241,6 +269,13 @@ function getAssets_translation() as Object
       "series": {
         "text": "Sorozatok"
       },
+      "rowListExample": {
+        "text": "RowList Example"
+      },
+      "zoomListSample": {
+        "text": "RokuDev ZoomRowList",
+        "longTitle": "Integration of the official RokuDev ZoomRowList sample"
+      },
       "playground1": {
         "text": "Élmény 1"
       },
@@ -294,6 +329,13 @@ function getAssets_translation() as Object
       },
       "series": {
         "text": "Serie TV"
+      },
+      "rowListExample": {
+        "text": "RowList Example"
+      },
+      "zoomListSample": {
+        "text": "RokuDev ZoomRowList",
+        "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
       "playground1": {
         "text": "Esperienza 1"
@@ -349,6 +391,13 @@ function getAssets_translation() as Object
       "series": {
         "text": "Series"
       },
+      "rowListExample": {
+        "text": "RowList Example"
+      },
+      "zoomListSample": {
+        "text": "RokuDev ZoomRowList",
+        "longTitle": "Integration of the official RokuDev ZoomRowList sample"
+      },
       "playground1": {
         "text": "Ervaring 1"
       },
@@ -402,6 +451,13 @@ function getAssets_translation() as Object
       },
       "series": {
         "text": "Seriale"
+      },
+      "rowListExample": {
+        "text": "RowList Example"
+      },
+      "zoomListSample": {
+        "text": "RokuDev ZoomRowList",
+        "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
       "playground1": {
         "text": "Doświadczenie 1"
@@ -457,6 +513,13 @@ function getAssets_translation() as Object
       "series": {
         "text": "Séries"
       },
+      "rowListExample": {
+        "text": "RowList Example"
+      },
+      "zoomListSample": {
+        "text": "RokuDev ZoomRowList",
+        "longTitle": "Integration of the official RokuDev ZoomRowList sample"
+      },
       "playground1": {
         "text": "Experiência 1"
       },
@@ -510,6 +573,13 @@ function getAssets_translation() as Object
       },
       "series": {
         "text": "Serier"
+      },
+      "rowListExample": {
+        "text": "RowList Example"
+      },
+      "zoomListSample": {
+        "text": "RokuDev ZoomRowList",
+        "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
       "playground1": {
         "text": "Upplevelse 1"

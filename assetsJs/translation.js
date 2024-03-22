@@ -28,6 +28,13 @@ module.exports = function () {
 			series: {
 				text: 'Series',
 			},
+			rowListExample: {
+				text: 'RowList Example',
+			},
+			zoomListSample: {
+				text: 'RokuDev ZoomRowList',
+				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
+			},
 			playground1: {
 				text: 'Playground 1',
 			},
@@ -71,6 +78,13 @@ module.exports = function () {
 			},
 			series: {
 				text: 'Series',
+			},
+			rowListExample: {
+				text: 'RowList Example',
+			},
+			zoomListSample: {
+				text: 'RokuDev ZoomRowList',
+				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground1: {
 				text: 'Experiencia 1',
@@ -116,6 +130,13 @@ module.exports = function () {
 			series: {
 				text: 'Séries',
 			},
+			rowListExample: {
+				text: 'RowList Example',
+			},
+			zoomListSample: {
+				text: 'RokuDev ZoomRowList',
+				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
+			},
 			playground1: {
 				text: 'Expérience 1',
 			},
@@ -159,6 +180,13 @@ module.exports = function () {
 			},
 			series: {
 				text: 'Serien',
+			},
+			rowListExample: {
+				text: 'RowList Example',
+			},
+			zoomListSample: {
+				text: 'RokuDev ZoomRowList',
+				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground1: {
 				text: 'Erfahrung 1',
@@ -204,6 +232,13 @@ module.exports = function () {
 			series: {
 				text: 'Sorozatok',
 			},
+			rowListExample: {
+				text: 'RowList Example',
+			},
+			zoomListSample: {
+				text: 'RokuDev ZoomRowList',
+				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
+			},
 			playground1: {
 				text: 'Élmény 1',
 			},
@@ -247,6 +282,13 @@ module.exports = function () {
 			},
 			series: {
 				text: 'Séries',
+			},
+			rowListExample: {
+				text: 'RowList Example',
+			},
+			zoomListSample: {
+				text: 'RokuDev ZoomRowList',
+				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground1: {
 				text: 'Experiência 1',
@@ -292,6 +334,13 @@ module.exports = function () {
 			series: {
 				text: 'Serie TV',
 			},
+			rowListExample: {
+				text: 'RowList Example',
+			},
+			zoomListSample: {
+				text: 'RokuDev ZoomRowList',
+				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
+			},
 			playground1: {
 				text: 'Esperienza 1',
 			},
@@ -335,6 +384,13 @@ module.exports = function () {
 			},
 			series: {
 				text: 'Series',
+			},
+			rowListExample: {
+				text: 'RowList Example',
+			},
+			zoomListSample: {
+				text: 'RokuDev ZoomRowList',
+				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground1: {
 				text: 'Ervaring 1',
@@ -380,6 +436,13 @@ module.exports = function () {
 			series: {
 				text: 'Serier',
 			},
+			rowListExample: {
+				text: 'RowList Example',
+			},
+			zoomListSample: {
+				text: 'RokuDev ZoomRowList',
+				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
+			},
 			playground1: {
 				text: 'Upplevelse 1',
 			},
@@ -423,6 +486,13 @@ module.exports = function () {
 			},
 			series: {
 				text: 'Seriale',
+			},
+			rowListExample: {
+				text: 'RowList Example',
+			},
+			zoomListSample: {
+				text: 'RokuDev ZoomRowList',
+				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground1: {
 				text: 'Doświadczenie 1',

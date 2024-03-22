@@ -60,13 +60,8 @@ This project was created to prove the feasibility of a Roku-friendly reactive ap
 #### MVI Example; at Widget level:
 
 ```js
-    onSelected: sub(widget)
-        widget.context.dispatcher.todoList.dispatch({
-            type: IntentType.TODO_LIST.ADD_TODO,
-            payload: {
-                description: m.props.description
-            }
-        })
+    onSelected: sub()
+        m.context.notifySelection(m.props.optionKey, m.props.isActive)
     end sub
 ```
 

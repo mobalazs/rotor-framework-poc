@@ -1,0 +1,97 @@
+import "../../../../common/httpLogic/httpRouter.bs"
+
+namespace Reducers
+
+    class SharedReaderReducer extends Reducer
+
+        reducerParams as object
+
+        http = new HttpRouter()
+
+        sub logIntent(intent)
+            print `[CONTENT_READER REDUCER][INFO] dispatcherId: ${m.ownerDispatcherId}, type: ${intent.type}`; intent?.payload?.preloadId <> invalid ? `, preloadId: ${intent.payload?.preloadId}` : ""
+        end sub
+
+        override function applyMiddlewares()
+            return [
+                ' (1) Logger middleware
+                function(intent, state) as Intent
+                    m.logIntent(intent)
+                    return intent ' NEXT
+                end function,
+
+                ' (2) Logger middleware
+                function(intent, state) as Intent
+                    if intent.type = IntentType.CONTENT_READER.FETCH_DATA
+
+                        ' Get mockup response (only in debug mode)
+                        response = m.http.Requests(m.reducerParams?.useMockup = true ? false : true).get(m.reducerParams.url)
+
+                        if response.statusCode = 200
+
+                            intent = {
+                                type: IntentType.CONTENT_READER.DATA_RECEIVED,
+                                payload: {
+                                    data: response.json
+                                }
+                            }
+
+                        else
+                            intent = {
+                                type: IntentType.CONTENT_READER.REQUEST_ERROR,
+                                payload: {
+                                    statusCode: response.statusCode
+                                }
+                            }
+                        end if
+
+                        m.logIntent(intent)
+
+                    end if
+
+                    return intent ' NEXT
+                end function,
+            ]
+        end function
+
+        override function reducer(state, intent)
+
+            if intent.type = IntentType.CONTENT_READER.START_LOADING
+
+                state.loading = true
+
+                ' self dispatch goes into queue
+                m.dispatch({
+                    type: IntentType.CONTENT_READER.FETCH_DATA
+                })
+
+                ' return invalid ' if you dont want to notify ui about loading state
+
+            else if intent.type = IntentType.CONTENT_READER.DATA_RECEIVED
+
+                state.content = m.parser(intent.payload.data)
+
+                state.loading = false
+
+            else if intent.type = IntentType.CONTENT_READER.REQUEST_ERROR
+
+                '  TODO Implement dispatch Network ERROR
+                state.loading = false
+                throw { message: "Network error." }
+                return invalid ' stop it for now
+
+            end if
+
+            return state
+        end function
+
+        function parser(data) as object
+            createContentNode = Rotor.Utils.createContentNode
+
+            contentNode = createContentNode()
+            return contentNode
+        end function
+
+    end class
+
+end namespace

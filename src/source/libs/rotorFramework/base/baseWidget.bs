@@ -12,9 +12,9 @@ namespace Rotor
         sgName as string ' rosgNode name
         zIndex as integer
 
-        afterWidgetMounted as Function ' widget's lifecycle callback
-        afterWidgetUpdated as Function ' widget's lifecycle callback
-        beforeWidgetDestroy as Function ' widget's lifecycle callback
+        onMountWidget as Function ' widget's lifecycle callback
+        onUpdateWidget as Function ' widget's lifecycle callback
+        onDestroyWidget as Function ' widget's lifecycle callback
 
         ' Public methods
 

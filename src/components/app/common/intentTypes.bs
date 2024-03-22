@@ -22,13 +22,9 @@ namespace IntentType
         COMPLETED = "sleep_completed"
     end enum
 
-    enum HTTP
-        FETCH = "http_fetch"
-    end enum
-
     enum CONTENT_READER
         START_LOADING = "CONTENT_READER_start_loading"
-        FETCH_DATA = "CONTENT_READER_fetch_date"
+        FETCH_DATA = "CONTENT_READER_fetch_data"
         DATA_RECEIVED = "CONTENT_READER_data_received"
         REQUEST_ERROR = "CONTENT_READER_request_error"
     end enum

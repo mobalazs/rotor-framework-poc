@@ -7,6 +7,8 @@ namespace ViewModels
             home: ViewModels.HomePage,
             movies: ViewModels.MoviesPage,
             series: ViewModels.SeriesPage,
+            rowListExample: ViewModels.RowListExamplePage,
+            zoomListSample: ViewModels.ZoomListSamplePage,
             playground1: ViewModels.Playground1Page,
             playground2: ViewModels.Playground2Page,
             settings: ViewModels.SettingsPage
@@ -69,7 +71,6 @@ namespace ViewModels
                     }, {
                         id: "separatorContainer",
                         sgName: "Group",
-                        ' zIndex: 1,
                         fields: {
                             translation: [30, safeAreaOffsets.y]
                         },
@@ -108,7 +109,6 @@ namespace ViewModels
                         ]
                     }, {
                         id: "pageMenuWrapper",
-                        ' zIndex: 3,
                         sgName: "Group",
                         children: [{
                             id: "pageMenu",
@@ -117,14 +117,13 @@ namespace ViewModels
                     }, {
                         id: "viewContainer",
                         sgName: "Group",
-                        ' zIndex: 2,
                         focus: {
                             group: {
                                 left: "pageMenu"
                             }
                         },
                         fields: {
-                            translation: [360, 200]
+                            translation: [360, 150]
                         }
                     }
                 ]
@@ -203,11 +202,9 @@ namespace ViewModels
                     id: "viewContainer",
                     children: pagesToRender
                 }
+            }, {
+                callback: m.layoutReady
             })
-
-            ' Not that render is synchronous
-
-            m.layoutReady()
 
         end sub
 
@@ -232,10 +229,9 @@ namespace ViewModels
             for each childId in viewcontainer.children
                 childNode = viewcontainer.children[childId].node
                 childNode.visible = `page-${m.props.activePageKey}` = childId ' visible if equal
-
             end for
 
-            ' If page is exist then make it visible, if does not exist then we need to create it.
+            ' If page does exist then make it visible, if does not exist then we need to create it.
             doesExistPage = viewcontainer.children.LookupCI(`page-${m.props.activePageKey}`) <> invalid
 
             m.render({
@@ -266,18 +262,14 @@ namespace ViewModels
         sub layoutReady()
 
             m.proceedPageTransition()
-
-            ' Pass the focus to framework's node (ONCE)
-            m.parent.node.setFocus(true)
-
-            ' Set the focus initially (ONCE)
-            pageMenuWidget = m.getWidget("./pageMenu")
-            pageMenuWidget.plugins.focus.setFocus()
-
             m.erase("./loadingScreen")
+
+            pageMenuWidget = m.getWidget("pageMenu")
+            pageMenuWidget.plugins.focus.setFocus(true, true)
 
             ' Notify ready beacon (ONCE)
             m.node.signalBeacon("AppLaunchComplete")
+
         end sub
 
     end class

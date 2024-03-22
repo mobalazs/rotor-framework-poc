@@ -14,12 +14,16 @@ namespace Rotor.ViewBuilder
 
         ' * Method decorators
 
-        if config.afterWidgetMounted <> invalid
-            widget.afterWidgetMounted = config.afterWidgetMounted
+        if Rotor.Utils.isFunction(config.onMountWidget)
+            widget.onMountWidget = config.onMountWidget
         end if
 
-        if config.afterWidgetUpdated <> invalid
-            widget.afterWidgetUpdated = config.afterWidgetUpdated
+        if Rotor.Utils.isFunction(config.onUpdateWidget)
+            widget.onUpdateWidget = config.onUpdateWidget
+        end if
+
+        if Rotor.Utils.isFunction(config.onDestroyWidget)
+            widget.onDestroyWidget = config.onDestroyWidget
         end if
 
         widget.refresh = sub(featureKeyPaths as object)
@@ -36,6 +40,14 @@ namespace Rotor.ViewBuilder
 
         widget.getWidget = function(searchPattern as string) as object
             return GetGlobalAA().rotor_framework_helper.frameworkInstance.builder.widgetTree.get(searchPattern, m.HID)
+        end function
+
+        widget.getWidgetByHID = function(HID as string) as object
+            return GetGlobalAA().rotor_framework_helper.frameworkInstance.builder.widgetTree.getByHID(HID)
+        end function
+
+        widget.getRootWidget = function() as object
+            return m.getWidgetByHID("0")
         end function
 
         widget.findWidgets = function(searchPattern as string) as object
@@ -55,6 +67,7 @@ namespace Rotor.ViewBuilder
                     payload.HID = m.HID ' and performance
                 end if
             end for
+            if Rotor.Utils.isValid(params.callback) then params.callbackScope = m
             globalScope = GetGlobalAA()
             globalScope.rotor_framework_helper.frameworkInstance.builder.render(payloads, params)
         end sub
@@ -170,7 +183,7 @@ namespace Rotor.ViewBuilder
 
         postProcessBuffer.add(appendChildProcess)
 
-        if Rotor.Utils.isFunction(widget.afterWidgetMounted) or widget?.isViewModel = true
+        if Rotor.Utils.isFunction(widget.onMountWidget) or widget?.isViewModel = true
             postProcessBuffer.add({
                 hookType: Rotor.const.LifeCycleHookType.MOUNTED,
                 widget: widget

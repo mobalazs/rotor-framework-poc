@@ -42,51 +42,53 @@ namespace ViewModels
                         forwardFocusId: "buttonGroup" ' Example for propagate focus
                     }
                 },
-                children: [{
-                    sgName: "LayoutGroup",
-                    fields: {
-                        layoutDirection: "horiz",
-                        verticalAlignment: "bottom",
-                        itemSpacings: [30]
-                    },
-                    children: [
-                        {
-                            id: "viewTitle",
-                            sgName: "Label",
-                            tr: "menuItems." + m.props.pageKey,
-                            theme: "fontStyles.H2",
-                            fontStyle: "@context.theme.fontStyles.H2",
-                            fields: {
-                                text: "@context.tr.menuItems." + m.props.pageKey + ".text"
-                            }
-                        }, {
-                            id: "someInfo",
-                            sgName: "Label",
-                            theme: "fontStyles.caption4",
-                            fontStyle: "@context.theme.fontStyles.caption4",
-                            fields: {
-                                width: 1000,
-                                maxLines: 2,
-                                wrap: true,
-                                text: `Features: (1) Spatial navigation within group \n(2) Enter into group by spatial navigation.`
-                            }
-                        }
-                    ]
-                }, {
+                children: [
+                    {
 
-                    id: "buttonGroup",
-                    sgName: "LayoutGroup",
-                    fields: {
-                        translation: [0, 70],
-                        itemSpacings: [8]
-                    },
-                    focus: {
-                        group: {
-                            defaultFocusId: "button-first",
-                            enableSpatialEnter: true
-                        }
-                    },
-                    children: children
+                        sgName: "LayoutGroup",
+                        fields: {
+                            layoutDirection: "horiz",
+                            verticalAlignment: "bottom",
+                            itemSpacings: [30]
+                        },
+                        children: [
+                            {
+                                id: "viewTitle",
+                                sgName: "Label",
+                                tr: "menuItems." + m.props.pageKey,
+                                theme: "fontStyles.H2",
+                                fontStyle: "@context.theme.fontStyles.H2",
+                                fields: {
+                                    text: "@context.tr.menuItems." + m.props.pageKey + ".text"
+                                }
+                            }, {
+                                id: "someInfo",
+                                sgName: "Label",
+                                theme: "fontStyles.caption4",
+                                fontStyle: "@context.theme.fontStyles.caption4",
+                                fields: {
+                                    width: 1000,
+                                    maxLines: 2,
+                                    wrap: true,
+                                    text: `Features: (1) Spatial navigation within group \n(2) Enter into group by spatial navigation.`
+                                }
+                            }
+                        ]
+                    }, {
+
+                        id: "buttonGroup",
+                        sgName: "LayoutGroup",
+                        fields: {
+                            translation: [0, 70],
+                            itemSpacings: [8]
+                        },
+                        focus: {
+                            group: {
+                                defaultFocusId: "button-first",
+                                enableSpatialEnter: true
+                            }
+                        },
+                        children: children
 
                 }]
             }
