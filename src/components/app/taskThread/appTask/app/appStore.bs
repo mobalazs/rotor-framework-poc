@@ -5,7 +5,7 @@ namespace Models
 
         state = {
 
-            activePageKey: "playground2",
+            activePageKey: "rowListExample",
             loadingScreenMinTime: 1.5, ' sec
 
             pageList: [
