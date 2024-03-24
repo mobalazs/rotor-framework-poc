@@ -1,5 +1,3 @@
-import "../base/basePlugin.bs"
-import "../base/baseStack.bs"
 
 '**
 ' A Brighterscript class for handling focus and focusGroups.
@@ -122,16 +120,11 @@ namespace Rotor
             ' m.measurementCheckHIDs.push(HID)
         end sub
 
-        function isAncestorHID(ancestorHID as string, HID as string) as boolean
-            ancestorHIDLen = Len(ancestorHID)
-            return Left(HID, ancestorHIDLen) = ancestorHID and ancestorHIDLen < Len(HID)
-        end function
-
         function findAncestorGroups(HID as string) as object
             allGroups = m.groupStack.getAll()
             ancestorGroups = []
             for each groupHID in allGroups
-                if m.isAncestorHID(groupHID, HID)
+                if Rotor.Utils.isAncestorHID(groupHID, HID)
                     ancestorGroups.push(groupHID)
                 end if
             end for
@@ -206,21 +199,17 @@ namespace Rotor
                 return false
             end if
 
-
-            ' Modify focus on focusable
-            focusable.applyFocus(isFocused, enableNativeFocus)
-            m.applyGroupFocus(focusable.HID)
-
-
+            lastFocusChaingGroups = []
             if m.globalFocusHID <> ""
                 lastFocused = m.focusableStack.get(m.globalFocusHID)
                 if lastFocused <> invalid ' widget may have been removed recently
 
+                    ' set previous focus to false
                     lastFocused.applyFocus(false, enableNativeFocus)
-                    ancestorGroupsHIDlist = m.findAncestorGroups(m.globalFocusHID)
-                    m.applyGroupFocus(focusable.HID, ancestorGroupsHIDlist)
 
-                    parentGroupHID = ancestorGroupsHIDlist[0]
+                    ' setLastFocusedHID
+                    lastFocusChaingGroups = m.findAncestorGroups(m.globalFocusHID)
+                    parentGroupHID = lastFocusChaingGroups[0]
                     if parentGroupHID <> invalid and parentGroupHID <> ""
                         group = m.groupStack.get(parentGroupHID)
                         if group <> invalid
@@ -230,8 +219,16 @@ namespace Rotor
                 end if
             end if
 
+            ' Nodify focus on focusable
+            focusable.applyFocus(isFocused, enableNativeFocus)
 
+            ' Notify groups in focus chain (handle focus/unfocus)
+            focusChainGroups = m.findAncestorGroups(focusable.HID)
+            focusChainGroups.append(lastFocusChaingGroups)
+            Rotor.Utils.removeRedundantValuesInArray(focusChainGroups)
+            m.notifyAncestorGroups(focusable.HID, focusChainGroups)
 
+            ' Store global focus
             m.storeGlobalFocusHID(isFocused ? HID : "", isFocused ? focusable.id : "")
 
             ' Rescue native focus if native focus is not enabled at the moment
@@ -246,15 +243,16 @@ namespace Rotor
 
         end function
 
-        sub applyGroupFocus(newHID as string, oldAncestorGroupsHIDlist = invalid as object)
+        sub notifyAncestorGroups(HID as string, groupHIDs = [] as object)
+
             ' Notify all ancestor groups
-            isCheckingLastFocus = oldAncestorGroupsHIDlist <> invalid
-            ancestorGroups = isCheckingLastFocus ? oldAncestorGroupsHIDlist : m.findAncestorGroups(newHID)
-            if ancestorGroups.Count() > 0
-                for each groupHID in ancestorGroups
+            if groupHIDs.Count() > 0
+                for each groupHID in groupHIDs
+
                     group = m.groupStack.get(groupHID)
-                    isInFocusChain = isCheckingLastFocus ? m.isAncestorHID(groupHID, newHID) : true
+                    isInFocusChain = Rotor.Utils.isAncestorHID(groupHID, HID)
                     group.applyFocus(isInFocusChain)
+
                 end for
             end if
         end sub
@@ -519,19 +517,13 @@ namespace Rotor
 
     namespace FocusPluginHelper
 
-
         class BaseEntryStack extends Rotor.BaseStack
-
-            function isDescendantHID(descendantHID as string, HID as string) as boolean
-                HIDlen = Len(HID)
-                return Left(descendantHID, HIDlen) = HID and HIDlen < Len(descendantHID)
-            end function
 
             function getByNodeId(nodeId as string, ancestorHID = "0" as string) as object
                 if ancestorHID <> "0"
                     filteredStack = {}
                     for each HID in m.stack
-                        if m.isDescendantHID(HID, ancestorHID)
+                        if Rotor.Utils.isDescendantHID(HID, ancestorHID)
                             filteredStack[HID] = m.get(HID)
                         end if
                     end for

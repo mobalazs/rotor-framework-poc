@@ -303,4 +303,32 @@ namespace Rotor.Utils
         return resolvedArray
     end function
 
+    function isAncestorHID(ancestorHID as string, HID as string) as boolean
+        ancestorHIDLen = Len(ancestorHID)
+        return Left(HID, ancestorHIDLen) = ancestorHID and ancestorHIDLen < Len(HID)
+    end function
+
+    function isDescendantHID(descendantHID as string, HID as string) as boolean
+        HIDlen = Len(HID)
+        return Left(descendantHID, HIDlen) = HID and HIDlen < Len(descendantHID)
+    end function
+
+    sub removeRedundantValuesInArray(array as object)
+        itemCount = array.Count()
+        if itemCount = 0 then return
+
+        array.Sort()
+
+        index = 0
+        while index + 1 < itemCount
+            if array[index] = array[index + 1]
+                array.delete(index + 1)
+                itemCount--
+            else
+                index++
+            end if
+        end while
+    end sub
+
 end namespace
+

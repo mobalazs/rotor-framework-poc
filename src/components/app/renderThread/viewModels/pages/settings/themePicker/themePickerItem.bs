@@ -44,14 +44,14 @@ namespace ViewModels
                 dispatcher: "user",
                 fields: {
                     rotation: "@context.theme.settings.themePicker.rotation",
-                    scaleRotateCenter: function(widget) as object
-                        themePickerTheme = widget.context.theme.settings.themePicker
-                        themePickerThemeTheme = widget.context.theme.menu.optionlistContent.themePickerItem
+                    scaleRotateCenter: function() as object
+                        themePickerTheme = m.context.theme.settings.themePicker
+                        themePickerThemeTheme = m.context.theme.menu.optionlistContent.themePickerItem
                         return [themePickerTheme.labelWidth + themePickerThemeTheme.marginRight * 1.5, themePickerThemeTheme.height / 2]
                     end function,
-                    translation: function(widget) as object ' expression example
-                        theme = widget.context.theme.menu.optionlistContent.themePickerItem
-                        return [0, widget.props.optionIndex * (theme.height + (theme.marginBottom ?? 0))]
+                    translation: function() as object ' expression example
+                        theme = m.context.theme.menu.optionlistContent.themePickerItem
+                        return [0, m.props.optionIndex * (theme.height + (theme.marginBottom ?? 0))]
                     end function
                 },
                 children: [
@@ -62,18 +62,18 @@ namespace ViewModels
                             width: "#theme.menu.shared.icon.size.width",
                             height: "#theme.menu.shared.icon.size.height",
                             uri: "#theme.settings.themePicker.icon.url",
-                            blendColor: function(widget) as string
-                                optionKey = widget.props.optionKey
-                                isActive = widget.props.isActive
-                                theme = widget.context.theme
-                                if widget.context.isFocused
+                            blendColor: function() as string
+                                optionKey = m.props.optionKey
+                                isActive = m.props.isActive
+                                theme = m.context.theme
+                                if m.context.isFocused
                                     return theme.settings.themePicker.colors_focused[optionKey]
                                 else
                                     return isActive ? theme.settings.themePicker.colors_focused[optionKey] : theme.settings.themePicker.colors[optionKey]
                                 end if
                             end function,
-                            translation: function(widget) ' expression example
-                                return [widget.context.theme.settings.themePicker.labelWidth + widget.context.theme.menu.optionlistContent.themePickerItem.marginRight, 0]
+                            translation: function() ' expression example
+                                return [m.context.theme.settings.themePicker.labelWidth + m.context.theme.menu.optionlistContent.themePickerItem.marginRight, 0]
                             end function
                         }
                     }, { ' old
@@ -82,15 +82,15 @@ namespace ViewModels
                         tr: `themeSamples.${m.props.optionKey}`,
                         fontStyle: "#theme.fontStyles.subMenuLabelFontStyle",
                         fields: {
-                            color: function(widget) as string
-                                if widget.context.isFocused
-                                    return widget.context.theme.menu.shared.menuItemColor.focused
+                            color: function() as string
+                                if m.context.isFocused
+                                    return m.context.theme.menu.shared.menuItemColor.focused
                                 else
-                                    return widget.props.isActive ? widget.context.theme.menu.shared.menuItemColor.active : widget.context.theme.menu.shared.menuItemColor.default
+                                    return m.props.isActive ? m.context.theme.menu.shared.menuItemColor.active : m.context.theme.menu.shared.menuItemColor.default
                                 end if
                             end function,
-                            text: function(widget)
-                                return widget.context.tr.themeSamples[widget.props.optionKey]
+                            text: function()
+                                return m.context.tr.themeSamples[m.props.optionKey]
                             end function,
                             width: "#theme.settings.themePicker.labelWidth",
                             height: "#theme.menu.shared.icon.size.height",

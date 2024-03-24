@@ -34,8 +34,8 @@ namespace ViewModels
                     sgName: "Poster",
                     fields: {
                         blendColor: "#theme.buttons.simpleButton.bgColor",
-                        width: function(widget)
-                            return widget.props.width ?? widget.context.theme.buttons.simpleButton.width
+                        width: function()
+                            return m.props.width ?? m.context.theme.buttons.simpleButton.width
                         end function,
                         height: "#theme.buttons.simpleButton.height",
                         uri: "#theme.buttons.simpleButton.posterUrl"
@@ -49,14 +49,14 @@ namespace ViewModels
                             color: "#theme.buttons.simpleButton.textColor",
                             horizAlign: "left",
                             vertAlign: "center",
-                            width: function(widget)
-                                return (widget.props.width ?? widget.context.theme.buttons.simpleButton.width) - 2 * widget.context.theme.buttons.simpleButton.padding
+                            width: function()
+                                return (m.props.width ?? m.context.theme.buttons.simpleButton.width) - 2 * m.context.theme.buttons.simpleButton.padding
                             end function,
-                            height: function(widget)
-                                return widget.context.theme.buttons.simpleButton.height - 2 * widget.context.theme.buttons.simpleButton.padding
+                            height: function()
+                                return m.context.theme.buttons.simpleButton.height - 2 * m.context.theme.buttons.simpleButton.padding
                             end function,
-                            translation: function(widget)
-                                return [widget.context.theme.buttons.simpleButton.padding, widget.context.theme.buttons.simpleButton.padding]
+                            translation: function()
+                                return [m.context.theme.buttons.simpleButton.padding, m.context.theme.buttons.simpleButton.padding]
                             end function
                         }
                     }

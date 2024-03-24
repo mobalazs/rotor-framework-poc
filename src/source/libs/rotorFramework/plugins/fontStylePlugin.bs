@@ -43,7 +43,7 @@ namespace Rotor
 
                 if Rotor.Utils.isFunction(value)
                     ' Resolve expression
-                    fontStyle = value(widget)
+                    fontStyle = Rotor.Utils.callbackScoped(value, widget)
 
                 else if Rotor.Utils.isString(value)
 

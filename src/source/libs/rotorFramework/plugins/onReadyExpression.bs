@@ -18,7 +18,7 @@ namespace Rotor
 
             afterRenderReady: sub(scope as object, widget)
                 if Rotor.Utils.isFunction(widget[scope.key])
-                    widget[scope.key](widget)
+                    Rotor.Utils.callbackScoped(widget[scope.key], widget)
                 end if
             end sub,
 

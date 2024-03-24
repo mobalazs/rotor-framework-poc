@@ -41,9 +41,9 @@ namespace ViewModels
                     end sub
                 },
                 fields: {
-                    translation: function(widget) as object ' expression example
-                        theme = widget.context.theme.menu.optionlistContent.languagePickerItem
-                        return [0, widget.props.optionIndex * (theme.height + (theme.marginBottom ?? 0))]
+                    translation: function() as object ' expression example
+                        theme = m.context.theme.menu.optionlistContent.languagePickerItem
+                        return [0, m.props.optionIndex * (theme.height + (theme.marginBottom ?? 0))]
                     end function
                 },
                 children: {
@@ -51,11 +51,11 @@ namespace ViewModels
                     sgName: "Label",
                     fontStyle: "#theme.fontStyles.subMenuLabelFontStyle",
                     fields: {
-                        color: function(widget) as string
-                            if widget.context.isFocused
-                                return widget.context.theme.menu.shared.menuItemColor.focused
+                        color: function() as string
+                            if m.context.isFocused
+                                return m.context.theme.menu.shared.menuItemColor.focused
                             else
-                                return widget.props.isActive ? widget.context.theme.menu.shared.menuItemColor.active : widget.context.theme.menu.shared.menuItemColor.default
+                                return m.props.isActive ? m.context.theme.menu.shared.menuItemColor.active : m.context.theme.menu.shared.menuItemColor.default
                             end if
                         end function,
                         text: "#tr.languages." + m.props.optionKey,

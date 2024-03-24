@@ -42,9 +42,9 @@ namespace ViewModels
                 },
                 dispatcher: "appStore",
                 fields: {
-                    translation: function(widget) as object
-                        theme = widget.context.theme.menu.optionlistContent.pageMenuItem
-                        return [0, widget.props.optionIndex * (theme.height + (theme.marginBottom ?? 0))]
+                    translation: function() as object
+                        theme = m.context.theme.menu.optionlistContent.pageMenuItem
+                        return [0, m.props.optionIndex * (theme.height + (theme.marginBottom ?? 0))]
                     end function
                 },
                 children: [
@@ -52,18 +52,18 @@ namespace ViewModels
                         id: "itemIcon",
                         sgName: "Poster",
                         fields: {
-                            blendColor: function(widget) as string
-                                if widget.context.isFocused
-                                    return widget.context.theme.menu.shared.menuItemColor.focused
+                            blendColor: function() as string
+                                if m.context.isFocused
+                                    return m.context.theme.menu.shared.menuItemColor.focused
                                 else
-                                    return widget.props.isActive ? widget.context.theme.menu.shared.menuItemColor.active : widget.context.theme.menu.shared.menuItemColor.default
+                                    return m.props.isActive ? m.context.theme.menu.shared.menuItemColor.active : m.context.theme.menu.shared.menuItemColor.default
                                 end if
                             end function,
                             width: "#theme.menu.shared.icon.size.width",
                             height: "#theme.menu.shared.icon.size.height",
                             uri: `#theme.menu.pageMenu.menuIcons.${m.props.optionKey}.url`,
-                            translation: function(widget) ' expression example
-                                theme = widget.context.theme.menu.optionlistContent.pageMenuItem
+                            translation: function() ' expression example
+                                theme = m.context.theme.menu.optionlistContent.pageMenuItem
                                 return [theme.labelWidth + theme.marginRight, 0]
                             end function
                         }
@@ -76,11 +76,11 @@ namespace ViewModels
                             m.animationIndex = m.props.optionIndex ' will be used to sort labelItems for animation
                         end sub,
                         fields: {
-                            color: function(widget) as string
-                                if widget.context.isFocused
-                                    return widget.context.theme.menu.shared.menuItemColor.focused
+                            color: function() as string
+                                if m.context.isFocused
+                                    return m.context.theme.menu.shared.menuItemColor.focused
                                 else
-                                    return widget.props.isActive ? widget.context.theme.menu.shared.menuItemColor.active : widget.context.theme.menu.shared.menuItemColor.default
+                                    return m.props.isActive ? m.context.theme.menu.shared.menuItemColor.active : m.context.theme.menu.shared.menuItemColor.default
                                 end if
                             end function,
                             text: `#tr.menuItems.${m.props.optionKey}.text`,

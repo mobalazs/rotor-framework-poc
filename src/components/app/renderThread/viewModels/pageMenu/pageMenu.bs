@@ -32,15 +32,17 @@ namespace ViewModels
         override sub afterViewMounted()
             ' trigger alignment update
             m.render({
-                theme: ["menu.pageMenu", "safeAreaOffsets"],
-                onReadyExpression: sub(widget)
-                    context = widget.context
-                    node = widget.node
-                    b = node.boundingRect()
-                    xOffset = context.theme.menu.pageMenu.bg.size.width - b.width
-                    yOffset = (context.theme.menu.pageMenu.verticalSeparetorLine.size.height - b.height) / 2 + context.theme.safeAreaOffsets.y
-                    node.translation = [xOffset, yOffset]
-                end sub,
+                theme: ["menu.pageMenu", "safeAreaOffsets", "menu.optionlistContent.pageMenuItem"],
+                fields: {
+                    translation: function()
+                        pageMenuItemTheme = m.context.theme.menu.optionlistContent.pageMenuItem
+                        width = 285
+                        height = m.props.optionKeys.Count() * (pageMenuItemTheme.height + pageMenuItemTheme.marginBottom)
+                        xOffset = m.context.theme.menu.pageMenu.bg.size.width - width
+                        yOffset = (m.context.theme.menu.pageMenu.verticalSeparetorLine.size.height - height) / 2 + m.context.theme.safeAreaOffsets.y
+                        return [xOffset, yOffset]
+                    end function
+                },
                 onDestroyWidget: sub()
                     m.animator = m.animator
                 end sub

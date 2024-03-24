@@ -61,8 +61,8 @@ namespace ViewModels
                             isFocused: false
                         },
                         fields: {
-                            color: function(widget) as string
-                                color = widget.context.isFocused = true ? widget.context.theme.colors.primary_2 : widget.context.theme.colors.primary
+                            color: function() as string
+                                color = m.context.isFocused = true ? m.context.theme.colors.primary_2 : m.context.theme.colors.primary
                                 return color
                             end function,
                             opacity: 0.9,
@@ -100,11 +100,11 @@ namespace ViewModels
                             isRotated: bgRotation <> 0,
                             titleHeight: titleHeight
                         },
-                        onReadyExpression: sub(widget)
-                            isRotated = widget.context.isRotated
+                        onReadyExpression: sub()
+                            isRotated = m.context.isRotated
 
-                            context = widget.context
-                            node = widget.node
+                            context = m.context
+                            node = m.node
                             child = node.getChild(1)
                             b = child.boundingRect()
 

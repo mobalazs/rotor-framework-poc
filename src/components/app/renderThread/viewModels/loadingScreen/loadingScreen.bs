@@ -26,8 +26,8 @@ namespace ViewModels
                             itemSpacings: [10],
                             horizAlignment: "center",
                             vertAlignment: "center",
-                            translation: function(widget) as object
-                                return [widget.context.designResolution.w / 2, widget.context.designResolution.h / 2] ' I dont like LayoutGroup, but it can be useful
+                            translation: function() as object
+                                return [m.context.designResolution.w / 2, m.context.designResolution.h / 2] ' I dont like LayoutGroup, but it can be useful
                             end function
                         },
                         children: [{

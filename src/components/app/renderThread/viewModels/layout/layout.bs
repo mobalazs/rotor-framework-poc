@@ -108,8 +108,26 @@ namespace ViewModels
                             }
                         ]
                     }, {
-                        id: "pageMenuWrapper",
+                        id: "pageMenuContainer",
                         sgName: "Group",
+                        focus: {
+                            group: {
+                                onFocusChanged: sub(isFocused)
+
+                                    if not m.props.activePageKey = "settings" ' keep menu on setting page
+                                        if isFocused
+                                            m.animator("focusPageMenuAnimation").play()
+                                        else
+                                            m.animator("focusPageMenuAnimation").reverse()
+                                        end if
+                                    end if
+
+                                    ' One line version:
+                                    ' m.animator("focusPageMenuAnimation")[isFocused ? "play" : "reverse"]()
+
+                                end sub
+                            }
+                        },
                         children: [{
                             id: "pageMenu",
                             viewModel: ViewModels.PageMenu
@@ -250,18 +268,7 @@ namespace ViewModels
                         id: "pageMenu",
                         focus: {
                             group: {
-                                right: `page-${m.props.activePageKey}`,
-                                onFocusChanged: sub(isFocused)
-
-                                    focusPageMenuAnimation = m.animator("focusPageMenuAnimation")
-
-                                    if isFocused
-                                        focusPageMenuAnimation.play()
-                                    else
-                                        focusPageMenuAnimation.reverse()
-                                    end if
-
-                                end sub
+                                right: `page-${m.props.activePageKey}`
                             }
                         }
                     }
@@ -272,83 +279,58 @@ namespace ViewModels
 
         sub layoutReady()
 
+
+            appTitleWidget = m.getWidget("appTitle")
+            pageMenuContainer = m.getWidget("pageMenuContainer")
+            separatorContainer = m.getWidget("separatorContainer")
+            viewContainer = m.getWidget("viewContainer")
+            pageMenuItemLabels = m.findWidgets("pageMenu/**/itemLabel")
+            pageMenuItemLabels.sortby("animationIndex")
+            pageMenuWidget = m.getWidget("pageMenu")
+
+
+            m.animator("focusPageMenuAnimation").timeline({
+                duration: 0.3,
+                easeFunction: "linear"
+            }).add({
+                targetWidgets: appTitleWidget,
+                direction: "reverse",
+                y: -150,
+                opacity: 0,
+                easeFunction: "easeOutInElastic"
+            }).add({
+                targetWidgets: [separatorContainer, pageMenuContainer],
+                direction: "reverse",
+                translateX: -150,
+                duration: 0.3
+            }).add({
+                targetWidgets: viewContainer,
+                direction: "reverse",
+                translation: [-150, -90],
+                duration: 0.3
+            }).add({
+                duration: 0.2,
+                targetWidgets: pageMenuItemLabels,
+                direction: "reverse",
+                x: -210,
+                opacity: 0,
+                delay: function(t, i, l)
+                    return i * 0.05
+                end function,
+                easeFunction: "easeOutBounce"
+            }).getAnimation()
+
+            ' first page transition
             m.proceedPageTransition()
             m.erase("./loadingScreen")
 
-            pageMenuWidget = m.getWidget("pageMenu")
             pageMenuWidget.plugins.focus.setFocus(true, true)
 
             ' Notify ready beacon (ONCE)
             m.node.signalBeacon("AppLaunchComplete")
 
 
-            appTitleWidget = m.getWidget("appTitle")
-            targetWidgets = m.findWidgets("pageMenu/**/itemLabel")
-            targetWidgets.sortby("animationIndex")
 
-            ' m.animator("focusPageMenuAnimation").timeline({
-            '     direction: "reverse",
-            '     opacity: 0,
-            '     duration: 0.2
-            ' }).add({
-            '     targetWidgets: appTitleWidget,
-            '     y: -210
-            ' }).add({
-            '     targetWidgets: targetWidgets,
-            '     x: -210,
-            '     delay: function(t, i, l)
-            '         return i * 0.05
-            '     end function
-            ' }).getAnimation()
-
-            m.animator("focusPageMenuAnimation").timeline({
-                opacity: 0,
-                duration: 0.3
-            }).add({
-                targetWidgets: appTitleWidget,
-                direction: "reverse",
-                y: -210,
-                opacity: 0
-            }).add({
-                targetWidgets: targetWidgets,
-                direction: "reverse",
-                x: -210,
-                opacity: 0,
-                delay: function(t, i, l)
-                    return i * 0.05
-                end function
-            }).getAnimation()
-
-            ' m.animator("unFocusPageMenuAnimation").timeline({
-            '     opacity: 0,
-            '     duration: 0.3
-            ' }).add({
-            '     targetWidgets: appTitleWidget,
-            '     y: -210,
-            '     opacity: 0
-            ' }).add({
-            '     targetWidgets: targetWidgets,
-            '     x: -210,
-            '     opacity: 0,
-            '     delay: function(t, i, l)
-            '         return i * 0.05
-            '     end function
-            ' }).getAnimation()
-
-
-            ' aaa = m.animator("focusPageMenuAnimation")
-            ' bbb = m.animator("unFocusPageMenuAnimation")
-
-            ' ? aaa
-            ' ? bbb
-
-
-            ' ' bbb = m.animator("unFocusPageMenuAnimation")
-            ' ' print " /// [CUSTOM DEBUG] layout/layout.bs [344] :: bbb : "; bbb
-            ' ' aaa.instanceScope.animNode.control = "start"
-            ' ' bbb.start()
-
-            ' ' stop
 
         end sub
 

@@ -34,8 +34,8 @@ namespace ViewModels
                         spinInterval: 0.8,
                         visible: true,
                         translation: [10, 10],
-                        scale: function(widget)
-                            scale = (widget.context.theme.busySpinner.size.w - 20) / widget.context.theme.busySpinner.size.w
+                        scale: function()
+                            scale = (m.context.theme.busySpinner.size.w - 20) / m.context.theme.busySpinner.size.w
                             return [
                                 scale,
                                 scale
