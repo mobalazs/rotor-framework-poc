@@ -2,9 +2,10 @@
 import "engine/constants.bs"
 
 ' engine
-import "engine/view/builder.bs"
+import "engine/builder/builder.bs"
 import "engine/providers/dispatcherProvider.bs"
 import "engine/providers/dispatcherFacade.bs"
+import "engine/animator/animator.bs"
 
 ' base classes
 import "base/baseWidget.bs"
@@ -47,20 +48,27 @@ namespace Rotor
 
         threadType = Rotor.const.ThreadType.RENDER
 
+        ' subsystems
         builder as object
         dispatcherProvider as object
+        animatorProvider as object
+
+        ' plugin adapter workspace
         plugins = {}
-        enableRendering = true
+
+        ' sync
         taskOperationalFlag = {}
         taskSyncReadyFlag = {}
         taskNodes = {}
+
+        enableRendering = true
 
         sub new(config = {})
 
             Rotor.Utils.deepExtendAA(m.config, config)
 
             m.builder = new Rotor.ViewBuilder.Builder()
-
+            m.animatorProvider = new Rotor.Animator()
             m.dispatcherProvider = new Rotor.DispatcherProvider(m.threadType)
 
             globalScope = GetGlobalAA()
@@ -70,6 +78,7 @@ namespace Rotor
             }
 
             m.builder.init(m)
+            m.animatorProvider.init(m)
 
             ' set root node
             if m.config.rootNode = invalid
@@ -118,6 +127,14 @@ namespace Rotor
             return m.builder.widgetTree.get(searchPattern, HID)
         end function
 
+        public function getChildrenWidgets(searchPattern as string, HID = "0" as string) as object
+            return m.builder.widgetTree.getChildrenWidgets(searchPattern, HID)
+        end function
+
+        public function getWidgetByHID(searchPattern as string, HID = "0" as string) as object
+            return m.builder.widgetTree.getByHID(HID)
+        end function
+
         public function getRootWidget() as object
             return m.builder.widgetTree.getByHID("0")
         end function
@@ -132,6 +149,11 @@ namespace Rotor
 
         public function getDispatcher(dispatcherId as string) as object
             return m.dispatcherProvider.getFacade(dispatcherId, GetGlobalAA())
+        end function
+
+        public function animator(animatorId) as object
+            ' todo: destroy animator scope
+            return m.animatorProvider.getFactory(animatorId, m)
         end function
 
         sub setupTaskForSyncing(taskName as string)
@@ -180,6 +202,7 @@ namespace Rotor
 
             ' destroy subsystems
             m.builder.destroy()
+            m.animatorProvider.destroy()
             m.dispatcherProvider.destroy()
 
             ' remove references

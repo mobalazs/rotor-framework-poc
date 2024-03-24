@@ -40,6 +40,9 @@ namespace ViewModels
                     xOffset = context.theme.menu.pageMenu.bg.size.width - b.width
                     yOffset = (context.theme.menu.pageMenu.verticalSeparetorLine.size.height - b.height) / 2 + context.theme.safeAreaOffsets.y
                     node.translation = [xOffset, yOffset]
+                end sub,
+                onDestroyWidget: sub()
+                    m.animator = m.animator
                 end sub
             })
         end sub

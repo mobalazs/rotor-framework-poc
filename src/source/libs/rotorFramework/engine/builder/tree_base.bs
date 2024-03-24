@@ -10,7 +10,7 @@ namespace Rotor.ViewBuilder
 
         HID = "0"
         vmHID = "0"
-        isViewModel =  true
+        isViewModel = true
         childrenHIDhash = {}
 
         sub render(payloads as dynamic, params = {} as object)
@@ -138,6 +138,34 @@ namespace Rotor.ViewBuilder
 
         function getByHID(HID as string) as object
             return HID = "0" ? m.tree : m.tree_HIDHash.get(HID)
+        end function
+
+        function getChildrenWidgets(searchPattern as string, HID = "0" as string) as object
+
+            parentWidget = m.get(searchPattern, HID)
+            if parentWidget = invalid then return invalid
+
+            childrenWidgets = parentWidget.children.items()
+
+            childrenWidgetsCount = childrenWidgets.Count()
+            childrenNodes = parentWidget.node.getChildren(-1, 0)
+
+            orderedWidgets = []
+            for each node in childrenNodes
+                isFound = false
+                itemIndex = 0
+                while isFound = false and itemIndex < childrenWidgetsCount
+                    widget = childrenWidgets[itemIndex].value
+                    if widget.node.isSameNode(node)
+                        orderedWidgets.push(widget)
+                        isFound = true
+                    else
+                        itemIndex++
+                    end if
+                end while
+            end for
+
+            return orderedWidgets
         end function
 
         function hasByHID(HID as string) as boolean

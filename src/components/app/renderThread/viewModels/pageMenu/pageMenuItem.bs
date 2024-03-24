@@ -72,6 +72,9 @@ namespace ViewModels
                         id: "itemLabel",
                         sgName: "Label",
                         fontStyle: "#theme.menu.shared.menuLabelFontStyle",
+                        onMountWidget: sub()
+                            m.animationIndex = m.props.optionIndex ' will be used to sort labelItems for animation
+                        end sub,
                         fields: {
                             color: function(widget) as string
                                 if widget.context.isFocused

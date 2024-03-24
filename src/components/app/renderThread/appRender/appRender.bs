@@ -72,8 +72,8 @@ sub initApplication(payload = {} as object)
         id: "loadingScreen",
         viewModel: ViewModels.LoadingScreen,
         props: {
-            shouldPreloadResources: true,
-            shouldPrerenderPages: true
+            shouldPreloadResources: false,
+            shouldPrerenderPages: false
         }
     })
 

@@ -20,9 +20,11 @@ namespace Rotor
 
         getWidget as Function ' decorated by widget
         findWidgets as Function ' decorated by widget
+        getChildrenWidgets as Function ' decorated by widget
         getSubtreeClone as Function ' decorated by widget
         render as Function ' decorated by widget
         getDispatcher as Function ' decorated by widget
+        animator as Function ' decorated by widget
 
 
         ' Rotor engire properties

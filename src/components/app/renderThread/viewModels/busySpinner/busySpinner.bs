@@ -18,7 +18,7 @@ namespace ViewModels
                 },
                 onMountWidget: sub()
                     m.node.visible = true
-                    m.node.control = "stop"
+                    m.node.control = "start"
                 end sub,
                 onDestroyWidget: sub()
                     m.node.visible = false
@@ -44,7 +44,7 @@ namespace ViewModels
                     },
                     onMountWidget: sub()
                         m.node.visible = true
-                        m.node.control = "stop"
+                        m.node.control = "start"
                     end sub,
                     onDestroyWidget: sub()
                         m.node.visible = false

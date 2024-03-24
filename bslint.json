@@ -2,7 +2,7 @@
     "rules": {
         "inline-if-style": "then",
         "block-if-style": "no-then",
-        "condition-style": "no-group",
+        "condition-style": "off",
         "named-function-style": "auto",
         "anon-function-style": "auto",
         "aa-comma-style": "no-dangling",

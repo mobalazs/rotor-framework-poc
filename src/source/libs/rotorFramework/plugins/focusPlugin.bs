@@ -196,7 +196,7 @@ namespace Rotor
             HID = focusable.HID
 
             ' Already focused
-            ' if focusable.HID = m.globalFocusHID and isFocused = true then return false
+            if focusable.HID = m.globalFocusHID and isFocused = true then return false
 
             enableNativeFocus = enableNativeFocus or focusable.enableNativeFocus = true
 
@@ -205,6 +205,11 @@ namespace Rotor
             if preventFocusOnDisabled
                 return false
             end if
+
+
+            ' Modify focus on focusable
+            focusable.applyFocus(isFocused, enableNativeFocus)
+            m.applyGroupFocus(focusable.HID)
 
 
             if m.globalFocusHID <> ""
@@ -225,9 +230,6 @@ namespace Rotor
                 end if
             end if
 
-            ' Modify focus on focusable
-            focusable.applyFocus(isFocused, enableNativeFocus)
-            m.applyGroupFocus(focusable.HID)
 
 
             m.storeGlobalFocusHID(isFocused ? HID : "", isFocused ? focusable.id : "")
@@ -751,6 +753,10 @@ namespace Rotor
             end function
 
             sub applyFocus(isFocused as boolean)
+                if m.isFocused = isFocused then return
+
+                m.isFocused = isFocused
+
                 if m.autoSetIsFocusedOnContext
                     m.widget.context.isFocused = isFocused
                 end if
@@ -894,6 +900,7 @@ namespace Rotor
             end sub
 
             sub applyFocus(isFocused as boolean, enableNativeFocus = false as boolean)
+                m.isFocused = isFocused
 
                 if m.autoSetIsFocusedOnContext
                     m.widget.context.isFocused = isFocused

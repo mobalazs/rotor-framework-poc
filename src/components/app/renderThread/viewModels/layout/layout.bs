@@ -250,7 +250,17 @@ namespace ViewModels
                         id: "pageMenu",
                         focus: {
                             group: {
-                                right: `page-${m.props.activePageKey}`
+                                right: `page-${m.props.activePageKey}`,
+                                onFocusChanged: sub(isFocused)
+
+                                    focusPageMenuAnimation = m.animator("focusPageMenuAnimation")
+                                    if isFocused
+                                        focusPageMenuAnimation.play()
+                                    else
+                                        focusPageMenuAnimation.reverse()
+                                    end if
+
+                                end sub
                             }
                         }
                     }
@@ -269,6 +279,75 @@ namespace ViewModels
 
             ' Notify ready beacon (ONCE)
             m.node.signalBeacon("AppLaunchComplete")
+
+
+            appTitleWidget = m.getWidget("appTitle")
+            targetWidgets = m.findWidgets("pageMenu/**/itemLabel")
+            targetWidgets.sortby("animationIndex")
+
+            ' m.animator("focusPageMenuAnimation").timeline({
+            '     direction: "reverse",
+            '     opacity: 0,
+            '     duration: 0.2
+            ' }).add({
+            '     targetWidgets: appTitleWidget,
+            '     y: -210
+            ' }).add({
+            '     targetWidgets: targetWidgets,
+            '     x: -210,
+            '     delay: function(t, i, l)
+            '         return i * 0.05
+            '     end function
+            ' }).getAnimation()
+
+            m.animator("focusPageMenuAnimation").timeline({
+                opacity: 0,
+                duration: 0.3
+            }).add({
+                targetWidgets: appTitleWidget,
+                direction: "reverse",
+                y: -210,
+                opacity: 0
+            }).add({
+                targetWidgets: targetWidgets,
+                direction: "reverse",
+                x: -210,
+                opacity: 0,
+                delay: function(t, i, l)
+                    return i * 0.05
+                end function
+            }).getAnimation()
+
+            ' m.animator("unFocusPageMenuAnimation").timeline({
+            '     opacity: 0,
+            '     duration: 0.3
+            ' }).add({
+            '     targetWidgets: appTitleWidget,
+            '     y: -210,
+            '     opacity: 0
+            ' }).add({
+            '     targetWidgets: targetWidgets,
+            '     x: -210,
+            '     opacity: 0,
+            '     delay: function(t, i, l)
+            '         return i * 0.05
+            '     end function
+            ' }).getAnimation()
+
+
+            ' aaa = m.animator("focusPageMenuAnimation")
+            ' bbb = m.animator("unFocusPageMenuAnimation")
+
+            ' ? aaa
+            ' ? bbb
+
+
+            ' ' bbb = m.animator("unFocusPageMenuAnimation")
+            ' ' print " /// [CUSTOM DEBUG] layout/layout.bs [344] :: bbb : "; bbb
+            ' ' aaa.instanceScope.animNode.control = "start"
+            ' ' bbb.start()
+
+            ' ' stop
 
         end sub
 
