@@ -33,17 +33,6 @@ namespace Rotor
                         end if
                     end sub
                 }
-                '     start: sub()
-                '         if m.ownerScope?.animators?[m.animatorId]?.animNode <> invalid
-                '             m.ownerScope.animators[m.animatorId].animNode.control = "start"
-                '         end if
-                '     end sub,
-                '     stop: sub()
-                '         if m.ownerScope?.animators?[m.animatorId]?.animNode <> invalid
-                '             m.ownerScope.animators[m.animatorId].animNode.control = "stop"
-                '         end if
-                '     end sub
-                ' }
             end if
 
             ' Register Animator by animatorId; Scoped where animation created.

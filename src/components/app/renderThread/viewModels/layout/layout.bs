@@ -254,6 +254,7 @@ namespace ViewModels
                                 onFocusChanged: sub(isFocused)
 
                                     focusPageMenuAnimation = m.animator("focusPageMenuAnimation")
+
                                     if isFocused
                                         focusPageMenuAnimation.play()
                                     else
