@@ -290,34 +290,30 @@ namespace ViewModels
 
 
             m.animator("focusPageMenuAnimation").timeline({
-                duration: 0.3,
-                easeFunction: "linear"
+                duration: 0.2
             }).add({
+                duration: 0.25,
                 targetWidgets: appTitleWidget,
                 direction: "reverse",
                 y: -150,
-                opacity: 0,
-                easeFunction: "easeOutInElastic"
+                opacity: 0
             }).add({
                 targetWidgets: [separatorContainer, pageMenuContainer],
                 direction: "reverse",
-                translateX: -150,
-                duration: 0.2
+                translateX: -150
             }).add({
                 targetWidgets: viewContainer,
                 direction: "reverse",
-                translation: [-150, -90],
-                duration: 0.2
+                translation: [-150, -90]
             }).add({
-                duration: 0.15,
+                duration: 0.3,
                 targetWidgets: pageMenuItemLabels,
                 direction: "reverse",
-                x: -210,
+                x: -50,
                 opacity: 0,
                 delay: function(t, i, l)
                     return i * 0.05
-                end function,
-                easeFunction: "easeOutBounce"
+                end function
             }).getAnimation()
 
             ' first page transition
