@@ -83,7 +83,7 @@ module.exports = function () {
 				text: 'RowList Example',
 			},
 			zoomListSample: {
-				text: 'RokuDev ZoomRowList',
+				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground1: {
@@ -134,7 +134,7 @@ module.exports = function () {
 				text: 'RowList Example',
 			},
 			zoomListSample: {
-				text: 'RokuDev ZoomRowList',
+				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground1: {
@@ -185,7 +185,7 @@ module.exports = function () {
 				text: 'RowList Example',
 			},
 			zoomListSample: {
-				text: 'RokuDev ZoomRowList',
+				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground1: {
@@ -236,7 +236,7 @@ module.exports = function () {
 				text: 'RowList Example',
 			},
 			zoomListSample: {
-				text: 'RokuDev ZoomRowList',
+				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground1: {
@@ -287,7 +287,7 @@ module.exports = function () {
 				text: 'RowList Example',
 			},
 			zoomListSample: {
-				text: 'RokuDev ZoomRowList',
+				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground1: {
@@ -338,7 +338,7 @@ module.exports = function () {
 				text: 'RowList Example',
 			},
 			zoomListSample: {
-				text: 'RokuDev ZoomRowList',
+				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground1: {
@@ -389,7 +389,7 @@ module.exports = function () {
 				text: 'RowList Example',
 			},
 			zoomListSample: {
-				text: 'RokuDev ZoomRowList',
+				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground1: {
@@ -440,7 +440,7 @@ module.exports = function () {
 				text: 'RowList Example',
 			},
 			zoomListSample: {
-				text: 'RokuDev ZoomRowList',
+				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground1: {
