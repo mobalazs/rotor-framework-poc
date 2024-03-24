@@ -11,7 +11,7 @@ namespace Models
             pageList: [
                 "home",
                 "movies",
-                "series",
+                ' "series",
                 "rowListExample",
                 "zoomListSample",
                 "playground1",
