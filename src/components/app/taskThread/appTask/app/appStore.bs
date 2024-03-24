@@ -6,7 +6,7 @@ namespace Models
         state = {
 
             activePageKey: "rowListExample",
-            loadingScreenMinTime: 1.5, ' sec
+            loadingScreenMinTime: 2, ' sec
 
             pageList: [
                 "home",
@@ -34,8 +34,8 @@ namespace Models
                     enableKeepAlive: false
                 },
                 rowListExample: {
-                    enablePrerender: false,
-                    enableKeepAlive: false
+                    enablePrerender: true,
+                    enableKeepAlive: true
                 },
                 zoomListSample: {
                     enablePrerender: false,
@@ -50,7 +50,7 @@ namespace Models
                     enableKeepAlive: false
                 },
                 settings: {
-                    enablePrerender: false,
+                    enablePrerender: true,
                     enableKeepAlive: true
                 }
             }

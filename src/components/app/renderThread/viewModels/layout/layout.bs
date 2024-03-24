@@ -233,7 +233,7 @@ namespace ViewModels
         sub proceedPageTransition()
 
             ' (1)
-            ' erase prev page if it shuld not be kept alice, based on config
+            ' erase prev page if it should not be kept alive, based on config
             prevPageKey = m.props?.prevActiveKey ?? ""
             if prevPageKey <> ""
                 pageSetting = m.props.pageSettings[prevPageKey]
@@ -242,11 +242,11 @@ namespace ViewModels
                 end if
             end if
 
-            ' (2) hide alive pages
+            ' (2) hide alive pages, visible active page
             viewcontainer = m.getWidget("viewContainer")
             for each childId in viewcontainer.children
                 childNode = viewcontainer.children[childId].node
-                childNode.visible = `page-${m.props.activePageKey}` = childId ' visible if equal
+                childNode.visible = LCase(`page-${m.props.activePageKey}`) = childId ' visible if equal
             end for
 
             ' If page does exist then make it visible, if does not exist then we need to create it.
