@@ -216,9 +216,9 @@ namespace Rotor
                 lastFocused = m.focusableStack.get(m.globalFocusHID)
                 if lastFocused <> invalid ' widget may have been removed recently
 
-                    if isFocused = true then lastFocused.applyFocus(false, enableNativeFocus)
+                    lastFocused.applyFocus(false, enableNativeFocus)
                     ancestorGroupsHIDlist = m.findAncestorGroups(m.globalFocusHID)
-                    if isFocused = true then m.applyGroupFocus(focusable.HID, ancestorGroupsHIDlist)
+                    m.applyGroupFocus(focusable.HID, ancestorGroupsHIDlist)
 
                     parentGroupHID = ancestorGroupsHIDlist[0]
                     if parentGroupHID <> invalid and parentGroupHID <> ""
