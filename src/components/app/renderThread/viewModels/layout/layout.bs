@@ -1,5 +1,5 @@
 ' You are not forced to use Frameworks's design system; Whats is more you can use them mixed.
-import "../../../common/httpLogic/design/design.bs"
+import "pkg:/assets/design/design.bs"
 
 namespace ViewModels
 

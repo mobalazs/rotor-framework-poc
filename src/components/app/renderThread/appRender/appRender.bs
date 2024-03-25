@@ -3,8 +3,8 @@
 import "pkg:/source/libs/rotorFramework/RotorFramework.bs"
 
 ' Import assets
-import "pkg:/assets/generated/theme.brs"
-import "pkg:/assets/generated/translation.brs"
+import "pkg:/assets/design/generated/theme.brs"
+import "pkg:/assets/design/generated/translation.brs"
 
 ' constants
 import "pkg:/components/app/common/intentTypes.bs"

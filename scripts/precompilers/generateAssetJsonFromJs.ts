@@ -3,7 +3,7 @@ const path = require('path');
 
 const rootDir = path.join(__dirname, '../..');
 const sourcePath = path.join(rootDir, 'assetsJs');
-const destinationPath = 'src/assets/generated';
+const destinationPath = 'src/assets/design/generated';
 
 const getThemes = require(path.join(sourcePath, 'themes'));
 const getTranslation = require(path.join(sourcePath, 'translation'));
