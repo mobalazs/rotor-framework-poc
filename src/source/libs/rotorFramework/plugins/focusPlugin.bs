@@ -52,15 +52,17 @@ namespace Rotor
 
         }
 
+        globalFocusHID = ""
+        globalFocusId = ""
+        measurementCheckHIDs = []
+        focusableStack = new Rotor.FocusPluginHelper.FocusableStack()
+        groupStack = new Rotor.FocusPluginHelper.GroupStack()
+        distanceCalculator = new Rotor.FocusPluginHelper.ClosestSegmentToPointCalculatorClass()
+        widgetTree as object
+        frameworkInstance as object
 
         sub init ()
-            m.globalFocusHID = ""
-            m.globalFocusId = ""
-            m.measurementCheckHIDs = []
             m.widgetTree = m.frameworkInstance.builder.widgetTree
-            m.focusableStack = new Rotor.FocusPluginHelper.FocusableStack()
-            m.groupStack = new Rotor.FocusPluginHelper.GroupStack()
-            m.distanceCalculator = new Rotor.FocusPluginHelper.ClosestSegmentToPointCalculatorClass()
         end sub
 
         sub storeGlobalFocusHID(HID as string, id as string)
@@ -505,10 +507,10 @@ namespace Rotor
 
         sub destroy()
             for each HID in m.groupStack.getAll()
-                m.remove(HID)
+                m.groupStack.remove(HID)
             end for
             for each HID in m.focusableStack.getAll()
-                m.remove(HID)
+                m.focusableStack.remove(HID)
             end for
             m.widgetTree = invalid
         end sub
@@ -622,6 +624,8 @@ namespace Rotor
             onFocusChanged as dynamic
             node as object
             widget as object
+            autoSetIsFocusedOnContext as boolean
+            staticDirection as object
 
             function getStaticNodeIdInDirection(direction as dynamic) as string
                 direction = m.staticDirection[direction]
@@ -661,7 +665,9 @@ namespace Rotor
             defaultFocusId as string
             lastFocusedHID as string
             enableSpatialEnter as boolean
+
             focusablesRef as object
+            groupsRef as object
 
             isFocusable = false
             isGroup = true
@@ -789,10 +795,6 @@ namespace Rotor
                 segments: {}
             }
             private bounding as object
-
-            override sub update(newConfig as object)
-                super.update(newConfig)
-            end sub
 
             sub refreshBounding()
                 b = m.node.sceneBoundingRect()

@@ -2,12 +2,14 @@ namespace ViewModels
 
     class LanguagePicker extends ViewModels.OptionList
 
+        userDispatcher as DispatcherFacade
+
         override sub onCreateView()
 
             m.userDispatcher = m.getDispatcher("user")
 
             m.userDispatcher.addListener({
-                shouldUpdate: function(props, newState) as object
+                shouldUpdate: function(props, newState)
                     return props.activeOptionKey <> newState.personalization.activeLanguageKey
                 end function,
                 mapStateToProps: sub(props, state)

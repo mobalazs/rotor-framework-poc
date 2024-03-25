@@ -1,21 +1,22 @@
 ' constants
-import "engine/constants.bs"
+import "pkg:/source/libs/RotorFramework/engine/constants.bs"
+import "pkg:/source/libs/RotorFramework/engine/interfaces.bs"
 
 ' engine
-import "engine/providers/dispatcherProvider.bs"
-import "engine/providers/dispatcherFacade.bs"
+import "pkg:/source/libs/RotorFramework/engine/providers/dispatcherProvider.bs"
+import "pkg:/source/libs/RotorFramework/engine/providers/dispatcherFacade.bs"
 
 ' base classes
-import "base/dispatcher.bs"
-import "base/dispatcherExternal.bs"
-import "base/baseReducer.bs"
-import "base/baseModel.bs"
-import "base/baseStack.bs"
+import "pkg:/source/libs/RotorFramework/base/dispatcher.bs"
+import "pkg:/source/libs/RotorFramework/base/dispatcherExternal.bs"
+import "pkg:/source/libs/RotorFramework/base/baseReducer.bs"
+import "pkg:/source/libs/RotorFramework/base/baseModel.bs"
+import "pkg:/source/libs/RotorFramework/base/baseStack.bs"
 
 ' utils
-import "utils/generalUtils.bs"
-import "utils/nodeUtils.bs"
-import "utils/arrayUtils.bs"
+import "pkg:/source/libs/rotorFramework/utils/generalUtils.bs"
+import "pkg:/source/libs/RotorFramework/utils/nodeUtils.bs"
+import "pkg:/source/libs/RotorFramework/utils/arrayUtils.bs"
 
 namespace Rotor
     class FrameworkTask
@@ -32,6 +33,10 @@ namespace Rotor
         threadType = Rotor.const.ThreadType.TASK
 
         keepAlive = true
+
+        dispatcherProvider as object
+        taskNode as object
+        port as object
 
         sub new(config = {} as object)
 

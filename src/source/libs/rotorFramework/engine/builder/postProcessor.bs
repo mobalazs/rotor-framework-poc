@@ -8,6 +8,8 @@ namespace Rotor.ViewBuilder
             m.createLifeCycleBuffers()
         end sub
 
+        frameworkInstance as object
+
         buffers = {}
 
         hookTypeIterationUsageFlags = {}
@@ -104,6 +106,8 @@ namespace Rotor.ViewBuilder
     end class
 
     class PostProcessor
+
+        frameworkInstance as object
 
         ' run plugins' and view builder's hooks
         sub run(postProcessBuffer as object)

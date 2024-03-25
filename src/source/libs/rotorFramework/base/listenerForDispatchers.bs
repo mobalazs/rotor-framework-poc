@@ -1,9 +1,7 @@
-interface Intent
-    type as string
-    payload as object
-end interface
 
 class ListenerForDispatchers
+
+    listeners as object
 
     sub notifyListeners(state as object)
 

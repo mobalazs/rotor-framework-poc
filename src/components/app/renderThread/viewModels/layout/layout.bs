@@ -1,9 +1,9 @@
 ' You are not forced to use Frameworks's design system; Whats is more you can use them mixed.
-import "pkg:/assets/design/design.bs"
-
 namespace ViewModels
 
     class LayoutViewModel extends ViewModel
+
+        appStoreDispatcher as DispatcherFacade
 
         pagesViewModels = {
             home: ViewModels.HomePage,
@@ -51,8 +51,8 @@ namespace ViewModels
                                 sgName: "Poster",
                                 zIndex: 0,
                                 fields: {
-                                    width: designResolution.w,
-                                    height: designResolution.h,
+                                    width: design.designResolution.w,
+                                    height: design.designResolution.h,
                                     uri: "#theme.backgrounds.leftBg.posterUrl",
                                     blendColor: "#theme.backgrounds.leftBg.blendColor"
                                 }
@@ -62,9 +62,9 @@ namespace ViewModels
                                 zIndex: 1,
                                 fields: {
                                     rotation: 3.141592,
-                                    translation: [designResolution.w, designResolution.h],
-                                    width: designResolution.w,
-                                    height: designResolution.h,
+                                    translation: [design.designResolution.w, design.designResolution.h],
+                                    width: design.designResolution.w,
+                                    height: design.designResolution.h,
                                     uri: "#theme.backgrounds.rightBg.posterUrl",
                                     blendColor: "#theme.backgrounds.rightBg.blendColor"
                                 }
@@ -74,7 +74,7 @@ namespace ViewModels
                         id: "separatorContainer",
                         sgName: "Group",
                         fields: {
-                            translation: [30, safeAreaOffsets.y]
+                            translation: [30, design.safeAreaOffsets.y]
                         },
                         children: [
                             {
@@ -114,7 +114,7 @@ namespace ViewModels
                         sgName: "Group",
                         focus: {
                             group: {
-                                onFocusChanged: sub(isFocused)
+                                onFocusChanged: sub(isFocused) 'type m as Interface.Widget
 
                                     if not m.props.activePageKey = "settings" ' keep menu on setting page
                                         if isFocused
@@ -154,7 +154,7 @@ namespace ViewModels
         override sub onCreateView()
 
             ' Get dispatcher facades
-            m.appStoreDispatcher = m.getDispatcher("appStore")
+            m.appStoreDispatcher = m.getDispatcher("appStore") as DispatcherFacade
 
             ' get initial state and map to props
             m.appStoreDispatcher.getState(sub(props, state)

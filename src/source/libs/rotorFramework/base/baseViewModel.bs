@@ -1,8 +1,8 @@
 ' namespace ViewModels
 
     class ViewModel extends Rotor.BaseWidget
-        isViewModel = true
 
+        isViewModel = true
         context = {}
 
         ' This ViewModel will be decorated by Rotor ViewBuilder Engine, for more information please check BaseWidget Class.

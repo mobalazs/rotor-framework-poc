@@ -1,11 +1,14 @@
 namespace Rotor.ViewBuilder
 
     class PluginHookClass
-        sub new(config)
-            m.append(config)
-        end sub
+
         pluginKey as string
-        ' handlerFn as function
+        handlerFn as function
+
+        sub new(config)
+            m.pluginKey = config.pluginKey
+            m.handlerFn = config.handlerFn
+        end sub
 
     end class
 
@@ -74,8 +77,8 @@ namespace Rotor.ViewBuilder
         end sub
 
         sub destroyPlugins()
-            if m.plugins.Count() > 0
-                for each plugin in m.plugins
+            if m.frameworkInstance.plugins.Count() > 0
+                for each plugin in m.frameworkInstance.plugins
                     plugin.frameworkInstance = invalid
                     destroy = plugin.destroy
                     if Rotor.Utils.isFunction(plugin.destroy)

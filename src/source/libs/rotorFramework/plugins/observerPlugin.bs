@@ -25,10 +25,8 @@ namespace Rotor
             end sub
         }
 
-        sub init()
-            m.observerStack = new Rotor.ObserverPluginHelper.ObserverStack()
-            m.helperInterfaceId = Rotor.ObserverPluginHelper.OBSERVER_HELPER_INTERFACE + "-" + m.key
-        end sub
+        observerStack = new Rotor.ObserverPluginHelper.ObserverStack()
+        helperInterfaceId = Rotor.ObserverPluginHelper.OBSERVER_HELPER_INTERFACE + "-" + m.key
 
         sub attach(node as object, config as object, listenerScope as object)
 
@@ -113,7 +111,7 @@ namespace Rotor
         end sub
 
         sub destroy()
-            for each id in m.attachmentStack.getAll()
+            for each id in m.observerStack.getAll()
                 m.detach(id)
             end for
         end sub
@@ -190,7 +188,9 @@ namespace Rotor
             fieldId as string
             infoFields as object
             value as dynamic
+            alwaysNotify as boolean
             once as boolean
+            callback as dynamic
 
             sub new(config as object, node as object, attachmentId as string, listenerScope as object, pluginKey as string)
 

@@ -4,42 +4,40 @@ namespace Rotor
 
         ' Public properties
 
-        id as string
-        children as object
+        public id as string
+        public children as object
+        public parent as object
 
-        context as object ' local widget context
-        props as object ' props populated by viewModel
-        sgName as string ' rosgNode name
-        zIndex as integer
+        public context as object ' local widget context
+        public props as object ' props populated by viewModel
+        public sgName as string ' rosgNode name
+        public zIndex as integer
 
-        onMountWidget as Function ' widget's lifecycle callback
-        onUpdateWidget as Function ' widget's lifecycle callback
-        onDestroyWidget as Function ' widget's lifecycle callback
+        public onMountWidget as function ' widget's lifecycle callback
+        public onUpdateWidget as function ' widget's lifecycle callback
+        public onDestroyWidget as function ' widget's lifecycle callback
 
         ' Public methods
 
-        getWidget as Function ' decorated by widget
-        findWidgets as Function ' decorated by widget
-        getChildrenWidgets as Function ' decorated by widget
-        getSubtreeClone as Function ' decorated by widget
-        render as Function ' decorated by widget
-        getDispatcher as Function ' decorated by widget
-        animator as Function ' decorated by widget
-
+        public getWidget as function
+        public findWidgets as function
+        public getChildrenWidgets as function
+        public getSubtreeClone as function
+        public render as function
+        public erase as function
+        public getDispatcher as function
+        public animator as function
+        public node as object
 
         ' Rotor engire properties
 
-        private HID as string ' used by rotor engine
-        private vmHID as string ' used by rotor engine
-        private isRootChild as boolean ' used by rotor engine
-        private childrenHIDhash as object ' used by rotor engine
-        private parentHID as string ' used by rotor engine
-
-
+        HID as string ' used by rotor engine
+        vmHID as string ' used by rotor engine
+        isRootChild as boolean ' used by rotor engine
+        childrenHIDhash as object ' used by rotor engine
+        parentHID as string ' used by rotor engine
+        isViewModel = false ' used by rotor engine
 
     end class
-
-    ' (1) builder.WidgetTreeBase.add
-    ' (2) builder.processor.createWidget
 
 end namespace

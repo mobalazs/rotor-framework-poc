@@ -2,6 +2,9 @@ namespace Reducers
 
     class PreloaderReducer extends Reducer
 
+        preloaderDispatcher as Dispatcher
+        appStoreDispatcher as Dispatcher
+
         sub logIntent(intent)
             print `[PRELOADER REDUCER][INFO] dispatcherId: ${m.ownerDispatcherId}, type: ${intent.type}`; intent?.payload?.preloadId <> invalid ? `, preloadId: ${intent.payload?.preloadId}` : ""
         end sub
@@ -10,19 +13,18 @@ namespace Reducers
             return [
 
                 ' (1) Logger middleware
-                function(intent, state) as Intent
+                function(intent as Interface.Intent, state as object) as Interface.Intent
                     m.logIntent(intent)
                     return intent ' NEXT
                 end function,
 
                 ' (2) Aynchronous resources
-                function(intent, state) as Intent
+                function(intent as Interface.Intent, state as object) as Interface.Intent
                     if intent.type = IntentType.PRELOADER.START_PRELOAD_RESOURCES
 
-                        m.preloaderDispatcher = m.getDispatcher("preloader")
-                        m.appStoreDispatcher = m.getDispatcher("appStore")
+                        m.preloaderDispatcher = m.getDispatcher("preloader") as Dispatcher
+                        m.appStoreDispatcher = m.getDispatcher("appStore") as Dispatcher
 
-                        ' m.preloadHomeFeed()
                         m.fetchResources()
 
                         return invalid
@@ -52,39 +54,6 @@ namespace Reducers
 
             return state
         end function
-
-
-
-        ' sub preloadHomeFeed()
-        '     ' (1) dispatch add item
-        '     m.dispatch({
-        '         type: IntentType.PRELOADER.ADD_ITEM,
-        '         payload: {
-        '             preloadId: "preloadHomeFeed"
-        '         }
-        '     })
-        '     ' (2) dispatch completed item
-        '     m.homeReaderDisparcher.addListener({
-        '         callbackWithState: sub(state)
-        '             if state.loading = false
-        '                 m.dispatch({
-        '                     type: IntentType.PRELOADER.COMPLETED_ITEM,
-        '                     payload: {
-        '                         preloadId: "preloadHomeFeed"
-        '                     }
-        '                 })
-        '             end if
-        '         end sub,
-        '         once: true
-        '     })
-        '     ' (3) start loading home feed
-        '     m.homeReaderDisparcher.dispatch({
-        '         type: IntentType.CONTENT_READER.START_LOADING
-        '     })
-
-        ' end sub
-
-
 
         sub fetchResources() ' simulation
 

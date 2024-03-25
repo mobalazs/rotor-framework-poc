@@ -5,6 +5,7 @@ class Reducer
 
     model as object
     middlewares = []
+    dispatch as Function
 
     getDispatcher as function
     ownerDispatcher as object
@@ -12,11 +13,11 @@ class Reducer
 
     sub new()
 
-        m.getDispatcher = function(dispatcherId as string) as object
+        m.getDispatcher = function(dispatcherId as string)
             return GetGlobalAA().rotor_framework_helper.frameworkInstance.dispatcherProvider.getFacade(dispatcherId, m)
         end function
 
-        m.dispatch = function(intent as object) as object
+        m.dispatch = function(intent as Interface.intent)
             return m.ownerDispatcher.dispatch(intent)
         end function
 
@@ -39,11 +40,11 @@ class Reducer
         mwCount = middlewares.Count()
         while intent <> invalid and mwIndex < mwCount
             middlewareFnScoped = middlewares[mwIndex]
-            m.middlewareFnScoped = middlewareFnScoped
-            intent = m.middlewareFnScoped(intent, state)
+            middlewareFnScoped = middlewareFnScoped
+            intent = middlewareFnScoped(intent, state)
             mwIndex++
         end while
-        m.middlewareFnScoped = invalid ' invalidate scoped fn
+        middlewareFnScoped = invalid ' invalidate scoped fn
         if intent = invalid then return invalid
 
         ' Resolve Reducer

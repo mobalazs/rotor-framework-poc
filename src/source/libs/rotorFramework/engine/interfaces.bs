@@ -1,0 +1,35 @@
+' namespace Rotor
+
+namespace Interface
+
+    interface Intent
+        type as string
+        payload as object
+    end interface
+
+    interface Widget
+        id as string
+        children as object
+
+        context as object ' local widget context
+        props as object ' props populated by viewModel
+        sgName as string ' rosgNode name
+        zIndex as integer
+
+        onMountWidget as Function ' widget's lifecycle callback
+        onUpdateWidget as Function ' widget's lifecycle callback
+        onDestroyWidget as Function ' widget's lifecycle callback
+
+        ' Public methods
+
+        getWidget as Function ' decorated by widget
+        findWidgets as Function ' decorated by widget
+        getChildrenWidgets as Function ' decorated by widget
+        getSubtreeClone as Function ' decorated by widget
+        render as Function ' decorated by widget
+        getDispatcher as Function ' decorated by widget
+        animator as Function ' decorated by widget
+    end interface
+
+
+end namespace

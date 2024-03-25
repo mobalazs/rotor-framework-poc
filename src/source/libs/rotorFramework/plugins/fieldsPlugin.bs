@@ -8,6 +8,8 @@ import "../base/basePlugin.bs"
 namespace Rotor
     class FieldsPlugin extends BasePlugin
 
+        frameworkInstance as object
+
         ' Constructor
         sub new(key = "fields" as string, params = invalid as object)
             super(key)

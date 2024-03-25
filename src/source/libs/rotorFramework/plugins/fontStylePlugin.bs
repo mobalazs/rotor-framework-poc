@@ -8,6 +8,8 @@ import "../base/basePlugin.bs"
 namespace Rotor
     class FontStylePlugin extends BasePlugin
 
+        frameworkInstance as object
+
         ' Constructor
         sub new(key = "fontStyle" as string)
             super(key)
@@ -66,16 +68,16 @@ namespace Rotor
                             end if
 
                             if source <> invalid
-                            assetValue = Rotor.Utils.getValueByKeyPath(source, matchKey)
+                                assetValue = Rotor.Utils.getValueByKeyPath(source, matchKey)
 
-                            if Rotor.Utils.isString(assetValue)
-                                replaceRegex = CreateObject("roRegex", sourceTypeOperator + matchKey, "ig")
-                                value = replaceRegex.ReplaceAll(value, assetValue)
-                            else
-                                value = assetValue
-                                exit for
+                                if Rotor.Utils.isString(assetValue)
+                                    replaceRegex = CreateObject("roRegex", sourceTypeOperator + matchKey, "ig")
+                                    value = replaceRegex.ReplaceAll(value, assetValue)
+                                else
+                                    value = assetValue
+                                    exit for
+                                end if
                             end if
-                        end if
 
                         end for
                     end if

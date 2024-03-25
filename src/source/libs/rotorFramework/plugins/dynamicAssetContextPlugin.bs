@@ -13,10 +13,12 @@ namespace Rotor
 
     class DynamicAssetContextPlugin extends BasePlugin
 
+        assetStore as object
+
         ' Constructor for the DynamicAssetPlugin class.
         sub new(key as string, params = invalid as object)
             super(key)
-            m.context = params?.assets ?? {}
+            m.assetStore = params?.assets ?? {}
         end sub
 
         ' Hooks for handling asset addition before widget mounting and updating.
@@ -51,7 +53,7 @@ namespace Rotor
         cache = {}
 
         sub setAssets(assets as object)
-            m.context = assets
+            m.assetStore = assets
             m.clearCache()
         end sub
 
@@ -76,7 +78,7 @@ namespace Rotor
                 if m.cache.DoesExist(keyPath)
                     newAsset = m.cache[keyPath]
                 else
-                    newAsset = Rotor.Utils.getCloneByKeyPath(m.context, keyPath)
+                    newAsset = Rotor.Utils.getCloneByKeyPath(m.assetStore, keyPath)
                 end if
                 Rotor.Utils.deepExtendAA(assets, newAsset)
             end for

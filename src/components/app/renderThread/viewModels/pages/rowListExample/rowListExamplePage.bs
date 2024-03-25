@@ -2,8 +2,9 @@ namespace ViewModels
 
     class RowListExamplePage extends ViewModel
 
-        override sub onCreateView()
+        rowListReaderDispatcher as object
 
+        override sub onCreateView()
             m.rowListReaderDispatcher = m.getDispatcher("rowListReader")
             m.rowListReaderDispatcher.addListener({
                 mapStateToProps: sub(props, state)
@@ -82,7 +83,7 @@ namespace ViewModels
                                     itemComponentName: "RowListExampleItem",
                                     numRows: 2,
 
-                                    itemSize: [1608, 300],
+                                    itemSize: [1700, 300],
                                     rowItemSize: [[200, 300]],
 
                                     itemSpacing: [0, 20],

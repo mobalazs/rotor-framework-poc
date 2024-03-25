@@ -9,7 +9,7 @@ class Model
     state as object
 
     sub destroy()
-        m.sate = invalid
+        m.state = invalid
     end sub
 
 end class

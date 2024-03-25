@@ -2,9 +2,11 @@ namespace ViewModels
 
     class ZoomListSamplePage extends ViewModel
 
+        zoomListReaderDispatcher as object
+
         override sub onCreateView()
 
-            m.zoomListReaderDispatcher = m.getDispatcher("zoomListReader")
+            m.zoomListReaderDispatcher = m.getDispatcher("zoomListReader") as Dispatcher
             m.zoomListReaderDispatcher.addListener({
                 mapStateToProps: sub(props, state)
                     props.zoomListContentNode = state.content

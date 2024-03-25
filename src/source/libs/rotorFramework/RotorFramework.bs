@@ -1,5 +1,6 @@
 ' constants
 import "engine/constants.bs"
+import "engine/interfaces.bs"
 
 ' engine
 import "engine/builder/builder.bs"
@@ -28,7 +29,6 @@ import "plugins/dynamicAssetContextPlugin.bs"
 import "plugins/observerPlugin.bs"
 import "plugins/focusPlugin.bs"
 import "plugins/onReadyExpression.bs"
-
 
 namespace Rotor
     class Framework
@@ -197,6 +197,7 @@ namespace Rotor
 
 
             m.taskNodes.Clear()
+            m.taskNodes = invalid
 
             rootNode.unobserveFieldScoped("rotorSync")
 
@@ -206,7 +207,6 @@ namespace Rotor
             m.dispatcherProvider.destroy()
 
             ' remove references
-            m.taskNode = invalid
             globalScope = GetGlobalAA()
             globalScope.rotor_framework_helper = {
                 frameworkInstance: invalid

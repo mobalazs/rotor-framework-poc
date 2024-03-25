@@ -12,7 +12,7 @@ namespace ViewModels
         override function template() as object
 
             focus = {
-                onFocusChanged: sub (isFocused as boolean) ' onSelected pass isFocused
+                onFocusChanged: sub (isFocused) ' onSelected pass isFocused
                     m.onUpdateView()
                     if isFocused = true and m.props.isAutoSelectOnFocusEnabled = true
                         m.context.notifySelection(m.props.optionKey, m.props.isActive)

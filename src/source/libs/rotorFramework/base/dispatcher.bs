@@ -7,12 +7,17 @@ end interface
 
 class Dispatcher extends ListenerForDispatchers
 
-    middlewares = []
-    isExternal = false
-    isDispatchingInProgress = false
-    dispatchQueue = []
+    public dispatcherId as string
+    private taskNode as object
+    private modelInstance as object
+    private reducerInstance as object
 
-    function new(dispatcherId = "" as string, modelInstance = invalid as object, reducerInstance = invalid as object) as object
+    private middlewares = []
+    private isExternal = false
+    private isDispatchingInProgress = false
+    private dispatchQueue = []
+
+    private function new(dispatcherId = "" as string, modelInstance = invalid as object, reducerInstance = invalid as object) as object
         super()
 
         if dispatcherId = "" then dispatcherId = Rotor.Utils.getUUIDHex()
@@ -37,7 +42,7 @@ class Dispatcher extends ListenerForDispatchers
         return dispatcherProvider.getFacade(dispatcherId)
     end function
 
-    sub exposeState()
+    private sub exposeState()
 
         newState = Rotor.Utils.createContentNode(m.modelInstance.state)
         m.taskNode.setField(m.dispatcherId, newState)
@@ -46,7 +51,7 @@ class Dispatcher extends ListenerForDispatchers
 
     listeners = []
 
-    sub dispatch(intent as Intent)
+    public sub dispatch(intent as Intent)
 
         if intent.Count() > 1 and intent.payload = invalid then throw "[WARNING] Intent payload is invalid."
 
@@ -73,7 +78,7 @@ class Dispatcher extends ListenerForDispatchers
 
     end sub
 
-    function getState(mapStateToProps = invalid as Dynamic, callerScope = invalid as object) as object
+    public function getState(mapStateToProps = invalid as Dynamic, callerScope = invalid as object) as object
 
         state = m.modelInstance.state
 

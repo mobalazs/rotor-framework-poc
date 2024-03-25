@@ -10,7 +10,7 @@ namespace Reducers
     override function applyMiddlewares()
         return [
             ' Logger middleware
-            function(intent, state) as Intent
+            function(intent as Interface.Intent, state) as Interface.Intent
                 m.logIntent(intent)
                 return intent ' NEXT
             end function

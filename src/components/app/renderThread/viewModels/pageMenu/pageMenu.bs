@@ -2,13 +2,15 @@ namespace ViewModels
 
     class PageMenu extends ViewModels.OptionList
 
+        appStoreDispatcher as DispatcherFacade
+
         override sub onCreateView()
 
             m.appStoreDispatcher = m.getDispatcher("appStore")
 
             ' LISTENER (Props will be set by mapStateToProps before callback fire)
             m.appStoreDispatcher.addListener({
-                shouldUpdate: function(props, newState) as object
+                shouldUpdate: function(props, newState)
                     return props.activeOptionKey <> newState.activePageKey
                 end function,
                 mapStateToProps: sub(props, state)

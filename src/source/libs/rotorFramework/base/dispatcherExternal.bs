@@ -1,10 +1,5 @@
 import "listenerForDispatchers.bs"
 
-interface Intent
-    type as string
-    payload as object
-end interface
-
 namespace Rotor
 
     class DispatcherExternal extends ListenerForDispatchers
@@ -26,7 +21,7 @@ namespace Rotor
         listeners = []
         isStateObserved = false
 
-        sub dispatch(intent as Intent)
+        sub dispatch(intent as object)
             if intent.Count() > 1 and intent.payload = invalid then throw { message: "[WARNING] Intent payload is invalid." }
             m.taskNode.setField("rotorSync", {
                 type: Rotor.const.ThreadSyncType.DISPATCH,

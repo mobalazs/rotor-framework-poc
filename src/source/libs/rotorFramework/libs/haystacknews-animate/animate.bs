@@ -88,7 +88,7 @@ namespace animate
             t = t - 1
             return -(2 ^ (10 * t) * sin((t - s) * (2 * _animate.utils.constants.pi) / p))
         end function
-        
+
         function easeOutElastic(t as Float) as Float
             if (t = 0)
                 return 0
@@ -100,7 +100,7 @@ namespace animate
             s = p / 4
             return 2 ^ (-10 * t) * sin((t - s) * (2 * _animate.utils.constants.pi) / p) + 1
         end function
-        
+
         function easeInOutElastic(t as Float) as Float
             if (t = 0)
                 return 0
@@ -118,7 +118,7 @@ namespace animate
                 return 0.5 * (2 ^ (-10 * t) * sin((t - s) * (2 * _animate.utils.constants.pi) / p)) + 1
             end if
         end function
-        
+
         function easeOutInElastic(t as Float) as Float
             if (t < 0.5)
                 return animate.penner.easeOutElastic(t * 2) / 2
@@ -480,6 +480,8 @@ namespace _animate
 
     class Timeline
         private nodeObject as object = {}
+
+        inheritableParams as object
 
         sub new(params as object)
             sequential = false

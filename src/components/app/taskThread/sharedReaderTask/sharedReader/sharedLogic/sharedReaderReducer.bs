@@ -5,7 +5,7 @@ namespace Reducers
     class SharedReaderReducer extends Reducer
 
         reducerParams as object
-
+        dispatch as function
         http = new HttpRouter()
 
         sub logIntent(intent)
