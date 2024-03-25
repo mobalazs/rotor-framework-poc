@@ -1,0 +1,43 @@
+' This file example for brighterscript-precompiled design system
+' You are not forced to use Rotor Frameworks's design system.
+
+' Frameworks's design system:
+' + Dynamic in runtime (not necessarily in most cases)
+' + Precompiled and plugin based usage are available at the same time with same pattern.
+' + You can build complex ui system in javascript. Example: "./assetsJs/themes.js"
+' - Code completion is not available in IDE.
+
+' BS design system:
+' + Code completion is available in IDE.
+' + However it has only precompiled usage, this is the most const-effective approach.
+
+
+
+' BS design system:
+namespace design
+
+	enum safeAreaOffsets
+		x = 90
+		y = 60
+    end enum
+
+	enum designResolution
+		w = 1920
+		h = 1080
+    end enum
+
+    enum colors
+		background = "0x351630FF"
+		background_2 = "0x0A000CFF"
+		primary = "0x7c3582FF"
+		primary_2 = "0xa15fa7FF"
+		secondary = "0xAAAAAAFF"
+		secondary_2 = "0xFFFFFFFF"
+		error = "0xB00020FF"
+		black = "0x000000FF"
+		white = "0xFFFFFFFF"
+    end enum
+
+
+
+end namespace

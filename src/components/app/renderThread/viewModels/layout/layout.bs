@@ -1,3 +1,5 @@
+' You are not forced to use Frameworks's design system; Whats is more you can use them mixed.
+import "../../../common/httpLogic/design/design.bs"
 
 namespace ViewModels
 
@@ -22,9 +24,9 @@ namespace ViewModels
                 ' You can set the id, but it is set automatically to the m.id
                 sgName: "Rectangle",
                 fields: {
-                    width: designResolution.w,
-                    height: designResolution.h,
-                    color: "0x000000FF"
+                    width: design.designResolution.w,
+                    height: design.designResolution.h,
+                    color: design.colors.black
                 },
                 children: [
                     {
