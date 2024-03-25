@@ -83,7 +83,7 @@ This project was created to prove the feasibility of a Roku-friendly reactive ap
 Documentation is coming soon...
 but you can find some very useful diagrams that try to describe the concepts.
 
-[Documentation](src/source/rotorFramework/README.md)
+[Documentation](src/source/libs/rotorFramework/README.md)
 
 
 ## Contribute
