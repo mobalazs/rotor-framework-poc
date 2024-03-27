@@ -236,19 +236,10 @@ module.exports = function () {
 					series: {
 						url: 'pkg:/assets/images/icons/ic_collections.png',
 					},
-					rowListExample: {
-						url: 'pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png',
-					},
 					zoomListSample: {
 						url: 'pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png',
 					},
-					playground1: {
-						url: 'pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png',
-					},
-					playground2: {
-						url: 'pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png',
-					},
-					playground3: {
+					playground: {
 						url: 'pkg:/assets/images/icons/ic_sentiment_satisfied_alt.png',
 					},
 					settings: {

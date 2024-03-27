@@ -25,21 +25,12 @@ function getAssets_translation() as Object
       "series": {
         "text": "Serien"
       },
-      "rowListExample": {
-        "text": "RowList Example"
-      },
       "zoomListSample": {
         "text": "The ZoomRowList",
         "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
-      "playground1": {
+      "playground": {
         "text": "Erfahrung 1"
-      },
-      "playground2": {
-        "text": "Erfahrung 2"
-      },
-      "playground3": {
-        "text": "Erfahrung 3"
       },
       "settings": {
         "text": "Einstellungen"
@@ -86,21 +77,12 @@ function getAssets_translation() as Object
       "series": {
         "text": "Series"
       },
-      "rowListExample": {
-        "text": "RowList Example"
-      },
       "zoomListSample": {
         "text": "The ZoomRowList",
         "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
-      "playground1": {
+      "playground": {
         "text": "Playground 1"
-      },
-      "playground2": {
-        "text": "Playground 2"
-      },
-      "playground3": {
-        "text": "Playground 3"
       },
       "settings": {
         "text": "Settings"
@@ -147,21 +129,12 @@ function getAssets_translation() as Object
       "series": {
         "text": "Series"
       },
-      "rowListExample": {
-        "text": "RowList Example"
-      },
       "zoomListSample": {
         "text": "The ZoomRowList",
         "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
-      "playground1": {
+      "playground": {
         "text": "Experiencia 1"
-      },
-      "playground2": {
-        "text": "Experiencia 2"
-      },
-      "playground3": {
-        "text": "Experiencia 3"
       },
       "settings": {
         "text": "Configuración"
@@ -208,21 +181,12 @@ function getAssets_translation() as Object
       "series": {
         "text": "Séries"
       },
-      "rowListExample": {
-        "text": "RowList Example"
-      },
       "zoomListSample": {
         "text": "The ZoomRowList",
         "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
-      "playground1": {
+      "playground": {
         "text": "Expérience 1"
-      },
-      "playground2": {
-        "text": "Expérience 2"
-      },
-      "playground3": {
-        "text": "Expérience 3"
       },
       "settings": {
         "text": "Paramètres"
@@ -269,21 +233,12 @@ function getAssets_translation() as Object
       "series": {
         "text": "Sorozatok"
       },
-      "rowListExample": {
-        "text": "RowList Example"
-      },
       "zoomListSample": {
         "text": "The ZoomRowList",
         "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
-      "playground1": {
+      "playground": {
         "text": "Élmény 1"
-      },
-      "playground2": {
-        "text": "Élmény 2"
-      },
-      "playground3": {
-        "text": "Élmény 3"
       },
       "settings": {
         "text": "Beállítások"
@@ -330,21 +285,12 @@ function getAssets_translation() as Object
       "series": {
         "text": "Serie TV"
       },
-      "rowListExample": {
-        "text": "RowList Example"
-      },
       "zoomListSample": {
         "text": "The ZoomRowList",
         "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
-      "playground1": {
+      "playground": {
         "text": "Esperienza 1"
-      },
-      "playground2": {
-        "text": "Esperienza 2"
-      },
-      "playground3": {
-        "text": "Esperienza 3"
       },
       "settings": {
         "text": "Impostazioni"
@@ -391,21 +337,12 @@ function getAssets_translation() as Object
       "series": {
         "text": "Series"
       },
-      "rowListExample": {
-        "text": "RowList Example"
-      },
       "zoomListSample": {
         "text": "The ZoomRowList",
         "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
-      "playground1": {
+      "playground": {
         "text": "Ervaring 1"
-      },
-      "playground2": {
-        "text": "Ervaring 2"
-      },
-      "playground3": {
-        "text": "Ervaring 3"
       },
       "settings": {
         "text": "Instellingen"
@@ -452,21 +389,12 @@ function getAssets_translation() as Object
       "series": {
         "text": "Seriale"
       },
-      "rowListExample": {
-        "text": "RowList Example"
-      },
       "zoomListSample": {
         "text": "The ZoomRowList",
         "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
-      "playground1": {
+      "playground": {
         "text": "Doświadczenie 1"
-      },
-      "playground2": {
-        "text": "Doświadczenie 2"
-      },
-      "playground3": {
-        "text": "Doświadczenie 3"
       },
       "settings": {
         "text": "Ustawienia"
@@ -513,21 +441,12 @@ function getAssets_translation() as Object
       "series": {
         "text": "Séries"
       },
-      "rowListExample": {
-        "text": "RowList Example"
-      },
       "zoomListSample": {
         "text": "The ZoomRowList",
         "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
-      "playground1": {
+      "playground": {
         "text": "Experiência 1"
-      },
-      "playground2": {
-        "text": "Experiência 2"
-      },
-      "playground3": {
-        "text": "Experiência 3"
       },
       "settings": {
         "text": "Configurações"
@@ -574,21 +493,12 @@ function getAssets_translation() as Object
       "series": {
         "text": "Serier"
       },
-      "rowListExample": {
-        "text": "RowList Example"
-      },
       "zoomListSample": {
         "text": "The ZoomRowList",
         "longTitle": "Integration of the official RokuDev ZoomRowList sample"
       },
-      "playground1": {
+      "playground": {
         "text": "Upplevelse 1"
-      },
-      "playground2": {
-        "text": "Upplevelse 2"
-      },
-      "playground3": {
-        "text": "Upplevelse 3"
       },
       "settings": {
         "text": "Inställningar"

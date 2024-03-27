@@ -1,8 +1,72 @@
 namespace ViewModels
 
-    class HomePage extends BasePage
+    class HomePage
 
+        override sub onCreateView()
 
+            m.rowListReaderDispatcher = m.getDispatcher("rowListReader")
+            m.rowListReaderDispatcher.addListener({
+                mapStateToProps: sub(props, state)
+                    props.rowListContentNode = state.content
+                end sub,
+                callback: m.onUpdateView ' Value can be a string as well, this value is equivalent with: "onUpdateView"
+            })
+
+        end sub
+
+        override sub afterViewMounted()
+            ' Start loading
+            m.rowListReaderDispatcher.dispatch({
+                type: IntentType.CONTENT_READER.START_LOADING
+            })
+        end sub
+
+        override sub onUpdateView()
+            m.updateHomeContent()
+        end sub
+
+        override sub onDestroyView()
+            m.rowListReaderDispatcher.destroy()
+        end sub
+
+        sub updateHomeContent()
+            m.render({
+                id: "rowListExample",
+                fields: {
+                    content: m.props.rowListContentNode
+                }
+            })
+            ' Another way, but less flexible in aspect of meaintenance:
+            ' m.children.rowListExample.node.content = m.props.rowListContentNode
+        end sub
+
+        override function template() as object
+            return {
+                focus: {
+                    group: {
+                        forwardFocusId: "rowListExample",
+                        back: "pageMenu"
+                    }
+                },
+                sgName: "Group",
+                children: [
+                    {
+                        id: "viewTitle",
+                        sgName: "Label",
+                        tr: "menuItems." + m.props.pageKey,
+                        theme: "fontStyles.H2",
+                        fontStyle: "@context.theme.fontStyles.H2",
+                        fields: {
+                            text: "@context.tr.menuItems." + m.props.pageKey + ".text"
+                        }
+                    },
+                    {
+                        '...
+                    }
+
+                ]
+            }
+        end function
 
     end class
 

@@ -1,6 +1,6 @@
 namespace ViewModels
 
-    class Playground1Page extends ViewModel
+    class PlaygroundPage extends ViewModel
 
         override function template() as object
             return {

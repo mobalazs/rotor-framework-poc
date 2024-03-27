@@ -10,12 +10,10 @@ namespace Models
 
             pageList: [
                 "home",
-                "movies",
+                ' "movies",
                 ' "series",
-                "rowListExample",
                 "zoomListSample",
-                "playground1",
-                "playground2",
+                "playground",
                 "settings"
             ],
 
@@ -25,27 +23,19 @@ namespace Models
                     enablePrerender: true,
                     enableKeepAlive: true
                 },
-                movies: {
-                    enablePrerender: false,
-                    enableKeepAlive: false
-                },
-                series: {
-                    enablePrerender: false,
-                    enableKeepAlive: false
-                },
-                rowListExample: {
-                    enablePrerender: true,
-                    enableKeepAlive: true
-                },
+                ' movies: {
+                '     enablePrerender: false,
+                '     enableKeepAlive: false
+                ' },
+                ' series: {
+                '     enablePrerender: false,
+                '     enableKeepAlive: false
+                ' },
                 zoomListSample: {
                     enablePrerender: false,
                     enableKeepAlive: false
                 },
-                playground1: {
-                    enablePrerender: false,
-                    enableKeepAlive: false
-                },
-                playground2: {
+                playground: {
                     enablePrerender: false,
                     enableKeepAlive: false
                 },

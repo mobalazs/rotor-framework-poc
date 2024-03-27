@@ -28,21 +28,12 @@ module.exports = function () {
 			series: {
 				text: 'Series',
 			},
-			rowListExample: {
-				text: 'RowList Example',
-			},
 			zoomListSample: {
 				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
-			playground1: {
+			playground: {
 				text: 'Playground 1',
-			},
-			playground2: {
-				text: 'Playground 2',
-			},
-			playground3: {
-				text: 'Playground 3',
 			},
 			settings: {
 				text: 'Settings',
@@ -79,21 +70,12 @@ module.exports = function () {
 			series: {
 				text: 'Series',
 			},
-			rowListExample: {
-				text: 'RowList Example',
-			},
 			zoomListSample: {
 				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
-			playground1: {
+			playground: {
 				text: 'Experiencia 1',
-			},
-			playground2: {
-				text: 'Experiencia 2',
-			},
-			playground3: {
-				text: 'Experiencia 3',
 			},
 			settings: {
 				text: 'Configuración',
@@ -130,21 +112,12 @@ module.exports = function () {
 			series: {
 				text: 'Séries',
 			},
-			rowListExample: {
-				text: 'RowList Example',
-			},
 			zoomListSample: {
 				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
-			playground1: {
+			playground: {
 				text: 'Expérience 1',
-			},
-			playground2: {
-				text: 'Expérience 2',
-			},
-			playground3: {
-				text: 'Expérience 3',
 			},
 			settings: {
 				text: 'Paramètres',
@@ -181,21 +154,12 @@ module.exports = function () {
 			series: {
 				text: 'Serien',
 			},
-			rowListExample: {
-				text: 'RowList Example',
-			},
 			zoomListSample: {
 				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
-			playground1: {
+			playground: {
 				text: 'Erfahrung 1',
-			},
-			playground2: {
-				text: 'Erfahrung 2',
-			},
-			playground3: {
-				text: 'Erfahrung 3',
 			},
 			settings: {
 				text: 'Einstellungen',
@@ -232,21 +196,12 @@ module.exports = function () {
 			series: {
 				text: 'Sorozatok',
 			},
-			rowListExample: {
-				text: 'RowList Example',
-			},
 			zoomListSample: {
 				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
-			playground1: {
+			playground: {
 				text: 'Élmény 1',
-			},
-			playground2: {
-				text: 'Élmény 2',
-			},
-			playground3: {
-				text: 'Élmény 3',
 			},
 			settings: {
 				text: 'Beállítások',
@@ -283,21 +238,12 @@ module.exports = function () {
 			series: {
 				text: 'Séries',
 			},
-			rowListExample: {
-				text: 'RowList Example',
-			},
 			zoomListSample: {
 				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
-			playground1: {
+			playground: {
 				text: 'Experiência 1',
-			},
-			playground2: {
-				text: 'Experiência 2',
-			},
-			playground3: {
-				text: 'Experiência 3',
 			},
 			settings: {
 				text: 'Configurações',
@@ -334,21 +280,12 @@ module.exports = function () {
 			series: {
 				text: 'Serie TV',
 			},
-			rowListExample: {
-				text: 'RowList Example',
-			},
 			zoomListSample: {
 				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
-			playground1: {
+			playground: {
 				text: 'Esperienza 1',
-			},
-			playground2: {
-				text: 'Esperienza 2',
-			},
-			playground3: {
-				text: 'Esperienza 3',
 			},
 			settings: {
 				text: 'Impostazioni',
@@ -385,21 +322,12 @@ module.exports = function () {
 			series: {
 				text: 'Series',
 			},
-			rowListExample: {
-				text: 'RowList Example',
-			},
 			zoomListSample: {
 				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
-			playground1: {
+			playground: {
 				text: 'Ervaring 1',
-			},
-			playground2: {
-				text: 'Ervaring 2',
-			},
-			playground3: {
-				text: 'Ervaring 3',
 			},
 			settings: {
 				text: 'Instellingen',
@@ -436,21 +364,12 @@ module.exports = function () {
 			series: {
 				text: 'Serier',
 			},
-			rowListExample: {
-				text: 'RowList Example',
-			},
 			zoomListSample: {
 				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
-			playground1: {
+			playground: {
 				text: 'Upplevelse 1',
-			},
-			playground2: {
-				text: 'Upplevelse 2',
-			},
-			playground3: {
-				text: 'Upplevelse 3',
 			},
 			settings: {
 				text: 'Inställningar',
@@ -487,21 +406,12 @@ module.exports = function () {
 			series: {
 				text: 'Seriale',
 			},
-			rowListExample: {
-				text: 'RowList Example',
-			},
 			zoomListSample: {
 				text: 'The ZoomRowList',
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
-			playground1: {
+			playground: {
 				text: 'Doświadczenie 1',
-			},
-			playground2: {
-				text: 'Doświadczenie 2',
-			},
-			playground3: {
-				text: 'Doświadczenie 3',
 			},
 			settings: {
 				text: 'Ustawienia',

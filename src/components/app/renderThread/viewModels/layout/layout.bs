@@ -9,10 +9,8 @@ namespace ViewModels
             home: ViewModels.HomePage,
             movies: ViewModels.MoviesPage,
             series: ViewModels.SeriesPage,
-            rowListExample: ViewModels.RowListExamplePage,
             zoomListSample: ViewModels.ZoomListSamplePage,
-            playground1: ViewModels.Playground1Page,
-            playground2: ViewModels.Playground2Page,
+            playground: ViewModels.PlaygroundPage,
             settings: ViewModels.SettingsPage
         }
 
