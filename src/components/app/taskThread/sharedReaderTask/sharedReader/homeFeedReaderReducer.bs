@@ -3,12 +3,12 @@ import "sharedLogic/sharedReaderReducer.bs"
 
 namespace Reducers
 
-    class RowListReaderReducer extends SharedReaderReducer
+    class HomeFeedReaderReducer extends SharedReaderReducer
 
         ' logic on top of the basic reducer class
         reducerParams = {
-            url: "https://rotor-sample.b-cdn.net/mockups/feed/rowListSample_feed.json",
-            useMockup: false
+            url: "https://rotor-sample.b-cdn.net/mockups/feed/home_feed.json",
+            useMockup: true
         }
 
         override function parser(data) as object

@@ -4,7 +4,7 @@ namespace ViewModels
 
         override sub onCreateView()
 
-            m.zoomListReaderDispatcher = m.getDispatcher("zoomListReader")
+            m.zoomListReaderDispatcher = m.getDispatcher("zoomListReaderDispatcher")
             m.zoomListReaderDispatcher.addListener({
                 mapStateToProps: sub(props, state)
                     props.zoomListContentNode = state.content

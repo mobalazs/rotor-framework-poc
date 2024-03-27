@@ -7,7 +7,7 @@ import "pkg:/components/app/common/intentTypes.bs"
 ' Import Models and Reducers
 import "sharedReader/sharedLogic/sharedReaderModel.bs"
 import "sharedReader/zoomListReaderReducer.bs"
-import "sharedReader/rowListReaderReducer.bs"
+import "sharedReader/homeFeedReaderReducer.bs"
 
 sub init()
     m.top.functionName = "task"
@@ -18,14 +18,14 @@ sub task()
 
     ' * CREATE DISPATCHERS (Owned by this Task)
 
+    homeFeedModel = new Models.SharedReaderModel()
+    homeFeedReaderReducer = new Reducers.HomeFeedReaderReducer()
+    m.homeFeedReaderDispatcher = new Dispatcher("homeFeedDispatcher", homeFeedModel, homeFeedReaderReducer)
+
     ' Create shared content reader dispatcher
     zoomListModel = new Models.SharedReaderModel()
     zoomListReaderReducer = new Reducers.ZoomListReaderReducer()
-    m.zoomListReaderDispatcher = new Dispatcher("zoomListReader", zoomListModel, zoomListReaderReducer)
-
-    rowListModel = new Models.SharedReaderModel()
-    rowListReaderReducer = new Reducers.RowListReaderReducer()
-    m.rowListReaderDispatcher = new Dispatcher("rowListReader", rowListModel, rowListReaderReducer)
+    m.zoomListReaderDispatcher = new Dispatcher("zoomListReaderDispatcher", zoomListModel, zoomListReaderReducer)
 
     m.appFw.sync() ' main loop of multi-thread MVI
 end sub

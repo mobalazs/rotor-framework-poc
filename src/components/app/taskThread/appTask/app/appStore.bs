@@ -40,7 +40,7 @@ namespace Models
                     enableKeepAlive: false
                 },
                 settings: {
-                    enablePrerender: true,
+                    enablePrerender: false,
                     enableKeepAlive: true
                 }
             }

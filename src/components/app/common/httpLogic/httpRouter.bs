@@ -24,7 +24,7 @@ class HttpRouter
 
                 mockupMap: {
                     "https://rotor-sample.b-cdn.net/mockups/feed/dummy_feed.json": "pkg:/assets/mockups/feed/dummy_feed.json",
-                    "https://rotor-sample.b-cdn.net/mockups/feed/rowListSample_feed.json": "pkg:/assets/mockups/feed/rowListSample_feed.json"
+                    "https://rotor-sample.b-cdn.net/mockups/feed/home_feed.json": "pkg:/assets/mockups/feed/home_feed.json"
                 },
 
                 get: function(url)
