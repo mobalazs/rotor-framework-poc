@@ -9,7 +9,7 @@ namespace Reducers
         http = new HttpRouter()
 
         sub logIntent(intent)
-            print `[CONTENT_READER REDUCER][INFO] dispatcherId: ${m.ownerDispatcherId}, type: ${intent.type}`
+            Rotor.Utils.BasicLogger(`[CONTENT_READER REDUCER][INFO] dispatcherId: ${m.ownerDispatcherId}, type: ${intent.type}`)
         end sub
 
         override function applyMiddlewares()

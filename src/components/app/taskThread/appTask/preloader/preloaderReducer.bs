@@ -5,7 +5,7 @@ namespace Reducers
         homeReaderDisparcher as Dispatcher
 
         sub logIntent(intent)
-            print `[PRELOADER REDUCER][INFO] dispatcherId: ${m.ownerDispatcherId}, type: ${intent.type}`; intent?.payload?.preloadId <> invalid ? `, preloadId: ${intent.payload?.preloadId}` : ""
+            Rotor.Utils.BasicLogger(`[PRELOADER REDUCER][INFO] dispatcherId: ${m.ownerDispatcherId}, type: ${intent.type}` + (intent?.payload?.preloadId = invalid ? "" : `, preloadId: ${intent.payload?.preloadId}`))
         end sub
 
         override function applyMiddlewares() as object

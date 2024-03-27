@@ -4,7 +4,7 @@ namespace Reducers
     class AppStoreReducer extends Reducer
 
     sub logIntent(intent)
-        print `[APP_STORE REDUCER][INFO] dispatcherId: ${m.ownerDispatcherId}, type: ${intent.type}`; intent?.payload?.activePageKey <> invalid ? `, activePageKey: ${intent.payload?.activePageKey}` : ""
+        Rotor.Utils.BasicLogger(`[APP_STORE REDUCER][INFO] dispatcherId: ${m.ownerDispatcherId}, type: ${intent.type}` + (intent?.payload?.activePageKey <> invalid ? `, activePageKey: ${intent.payload?.activePageKey}` : ""))
     end sub
 
     override function applyMiddlewares()
