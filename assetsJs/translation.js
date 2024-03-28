@@ -33,7 +33,7 @@ module.exports = function () {
 				longTitle: 'Integration of the official RokuDev ZoomRowList sample',
 			},
 			playground: {
-				text: 'Playground 1',
+				text: 'Playground',
 			},
 			settings: {
 				text: 'Settings',

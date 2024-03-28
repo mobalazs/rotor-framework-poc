@@ -8,9 +8,6 @@ namespace ViewModels
             return {
                 sgName: "Group",
                 theme: "buttons.simpleButton",
-                fields: {
-                    translation: m.props.translation ?? [0, 0]
-                },
                 focus: {
                     isEnabled: true,
                     onFocusChanged: sub (isFocused as boolean)

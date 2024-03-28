@@ -1,0 +1,86 @@
+
+namespace ViewModels
+
+    class TeaserSlot extends ViewModel
+
+        override sub onCreateView()
+
+        end sub
+
+        override sub afterViewMounted()
+
+        end sub
+
+        override sub onUpdateView()
+
+            isFeatured = m.props?.rowType = "featured"
+            m.children.covers.children.featuredCover.node.visible = isFeatured
+            m.children.covers.children.defaultCover.node.visible = not isFeatured
+
+            posterUrl = m.props?.tileContentNode?.previewPosterUrl ?? ""
+            if m.children.teaserPoster.node.uri = posterUrl
+                ' poster status wont fire again if uri not changed (we have repeated images because of mockup data)
+                m.node.slotStatus = "ready"
+            else
+                m.children.teaserPoster.node.uri = posterUrl
+            end if
+
+        end sub
+
+        override function template() as object
+            return {
+                sgName: "Group",
+                fields: {
+                    opacity: 0, ' as default
+                    slotStatus: ""
+                },
+                children: [
+                    {
+                        id: "teaserPoster",
+                        sgName: "Poster",
+                        fields: {
+                            uri: m.props?.tileContentNode?.previewPosterUrl ?? "",
+                            height: design.designResolution.h,
+                            width: design.designResolution.w
+                        },
+                        observer: {
+                            fieldId: "loadStatus",
+                            callback: sub(payload)
+                                if payload.loadStatus = "ready"
+                                    m.parent.node.slotStatus = "ready"
+                                end if
+                            end sub
+                        }
+                    },
+                    {
+                        id: "covers",
+                        children: [
+                            {
+                                id: "featuredCover",
+                                sgName: "Poster",
+                                fields: {
+                                    width: design.designResolution.w,
+                                    height: design.designResolution.h,
+                                    uri: "#theme.backgrounds.leftBg.posterUrl",
+                                    blendColor: "#theme.backgrounds.leftBg.blendColor"
+                                }
+                            },
+                            {
+                                id: "defaultCover",
+                                sgName: "Poster",
+                                fields: {
+                                    width: design.designResolution.w,
+                                    height: design.designResolution.h,
+                                    uri: "#theme.backgrounds.teaserDefaultCoveUrl.posterUrl",
+                                    blendColor: "#theme.backgrounds.leftBg.blendColor"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        end function
+
+    end class
+
+end namespace

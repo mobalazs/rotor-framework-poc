@@ -8,7 +8,7 @@ namespace ViewModels
         pagesViewModels = {
             home: ViewModels.HomePage,
             movies: ViewModels.MoviesPage,
-            series: ViewModels.SeriesPage,
+            ' series: ViewModels.SeriesPage,
             zoomListSample: ViewModels.ZoomListSamplePage,
             playground: ViewModels.PlaygroundPage,
             settings: ViewModels.SettingsPage
@@ -32,25 +32,12 @@ namespace ViewModels
                         sgName: "Group",
                         children: [
                             {
-                                id: "decor",
-                                zIndex: 2,
-                                sgName: "Poster",
-                                fields: {
-                                    uri: "#theme.backgrounds.decor.posterUrl",
-                                    blendColor: "#theme.backgrounds.decor.blendColor",
-                                    translation: "#theme.backgrounds.decor.translation",
-                                    opacity: "#theme.backgrounds.decor.opacity",
-                                    rotation: "#theme.backgrounds.decor.rotation",
-                                    width: "#theme.backgrounds.decor.width",
-                                    height: "#theme.backgrounds.decor.height"
-                                }
-                            }, {
                                 id: "leftBg",
                                 sgName: "Poster",
                                 zIndex: 0,
                                 fields: {
-                                    width: designResolution.w,
-                                    height: designResolution.h,
+                                    width: design.designResolution.w,
+                                    height: design.designResolution.h,
                                     uri: "#theme.backgrounds.leftBg.posterUrl",
                                     blendColor: "#theme.backgrounds.leftBg.blendColor"
                                 }
@@ -69,12 +56,37 @@ namespace ViewModels
                             }
                         ]
                     }, {
+                        id: "viewContainer",
+                        sgName: "Group",
+                        focus: {
+                            group: {
+                                left: "pageMenu"
+                            }
+                        },
+                        fields: {
+                            translation: [360, 150]
+                        }
+                    }, {
                         id: "separatorContainer",
                         sgName: "Group",
                         fields: {
                             translation: [30, safeAreaOffsets.y]
                         },
                         children: [
+                            {
+                                id: "decor",
+                                zIndex: 2,
+                                sgName: "Poster",
+                                fields: {
+                                    uri: "#theme.backgrounds.decor.posterUrl",
+                                    blendColor: "#theme.backgrounds.decor.blendColor",
+                                    translation: "#theme.backgrounds.decor.translation",
+                                    opacity: "#theme.backgrounds.decor.opacity",
+                                    rotation: "#theme.backgrounds.decor.rotation",
+                                    width: "#theme.backgrounds.decor.width",
+                                    height: "#theme.backgrounds.decor.height"
+                                }
+                            },
                             {
                                 id: "gradientBg",
                                 sgName: "Poster",
@@ -132,17 +144,6 @@ namespace ViewModels
                             id: "pageMenu",
                             viewModel: ViewModels.PageMenu
                         }]
-                    }, {
-                        id: "viewContainer",
-                        sgName: "Group",
-                        focus: {
-                            group: {
-                                left: "pageMenu"
-                            }
-                        },
-                        fields: {
-                            translation: [360, 150]
-                        }
                     }
                 ]
             }

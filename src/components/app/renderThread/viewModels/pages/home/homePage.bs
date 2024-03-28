@@ -1,43 +1,45 @@
 namespace ViewModels
 
-    class HomePage
+    class HomePage extends ViewModel
 
         override sub onCreateView()
 
-            m.rowListReaderDispatcher = m.getDispatcher("rowListReader")
-            m.rowListReaderDispatcher.addListener({
+            m.homeFeedDispatcher = m.getDispatcher("homeFeedDispatcher")
+            m.homeFeedDispatcher.addListener({
                 mapStateToProps: sub(props, state)
                     props.rowListContentNode = state.content
                 end sub,
                 callback: m.onUpdateView ' Value can be a string as well, this value is equivalent with: "onUpdateView"
             })
 
+            ' POC provide sample for preloading data. In this case you can get state immediately.
+            state = m.homeFeedDispatcher.getState()
+            m.props.content = state.content
         end sub
 
         override sub afterViewMounted()
-            ' Start loading
-            m.rowListReaderDispatcher.dispatch({
-                type: IntentType.CONTENT_READER.START_LOADING
-            })
+            ' Start loading if not available (in a more complex samlpe we can check if content has expired.)
+            if m.props.content = invalid
+                m.homeFeedDispatcher.dispatch({
+                    type: IntentType.CONTENT_READER.START_LOADING
+                })
+            else
+                m.onUpdateView()
+            end if
         end sub
 
-        override sub onUpdateView()
-            m.updateHomeContent()
+        override sub onUpdateView(rowIndex = 0, colIndex = 0)
+            m.render({
+                id: "homeTeaser",
+                props: {
+                    tileContentNode: m.props.content.getChild(rowIndex).getChild(colIndex), ' todo
+                    rowType: m.props.content.getChild(rowIndex).rowType
+                }
+            })
         end sub
 
         override sub onDestroyView()
-            m.rowListReaderDispatcher.destroy()
-        end sub
-
-        sub updateHomeContent()
-            m.render({
-                id: "rowListExample",
-                fields: {
-                    content: m.props.rowListContentNode
-                }
-            })
-            ' Another way, but less flexible in aspect of meaintenance:
-            ' m.children.rowListExample.node.content = m.props.rowListContentNode
+            m.homeFeedDispatcher.destroy()
         end sub
 
         override function template() as object
@@ -51,19 +53,38 @@ namespace ViewModels
                 sgName: "Group",
                 children: [
                     {
-                        id: "viewTitle",
-                        sgName: "Label",
-                        tr: "menuItems." + m.props.pageKey,
-                        theme: "fontStyles.H2",
-                        fontStyle: "@context.theme.fontStyles.H2",
+                        id: "homeTeaser",
+                        viewModel: ViewModels.Teaser
+                    },
+                    {
+                        viewModel: ViewModels.SimpleButton,
+                        focus: {
+                            onSelected: sub()
+                                m.parent.onUpdateView(0, 0)
+                            end sub
+                        },
                         fields: {
-                            text: "@context.tr.menuItems." + m.props.pageKey + ".text"
+                            translation: [0, 300]
                         }
                     },
                     {
-                        '...
+                        viewModel: ViewModels.SimpleButton,
+                        focus: {
+                            onSelected: sub()
+                                m.parent.onUpdateView(1, 0)
+                            end sub
+                        },
+                        fields: {
+                            translation: [0, 400]
+                        }
                     }
-
+                    ' {
+                    '     id: "homeCarousel",
+                    '     viewModel: ViewModels.Carousel,
+                    '     props: {
+                    '         content: m.props.content
+                    '     }
+                    ' }
                 ]
             }
         end function

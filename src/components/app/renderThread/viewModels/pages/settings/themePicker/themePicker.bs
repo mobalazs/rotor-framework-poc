@@ -46,10 +46,10 @@ namespace ViewModels
 
             subTree1 = m.getSubtreeClone("./**/backgrounds/leftBg", ["theme", "fields.blendColor", "fields.uri", "fields.translation"])
             subTree2 = m.getSubtreeClone("./**/backgrounds/rightBg", ["theme", "fields.blendColor", "fields.uri", "fields.translation"])
-            subTree3 = m.getSubtreeClone("./**/backgrounds/decor", ["theme", "fields"])
             subTree4 = m.getSubtreeClone("./**/pageMenu", ["theme", "fields.color", "fields.blendColor"])
             subTree5 = m.getSubtreeClone("./**/separatorContainer", ["theme", "fields.color", "fields.blendColor"])
-            subTree6 = m.getSubtreeClone("./**/viewcontainer", ["theme", "fields.blendColor", "fields.blendColor", "fields.color", "fields.uri"])
+            subTree3 = m.getSubtreeClone("./**/separatorContainer/decor", ["fields"])
+            subTree6 = m.getSubtreeClone("./**/viewcontainer", ["theme", "fields.blendColor", "fields.blendColor", "fields.color"])
             m.render([subTree1, subTree2, subTree3, subTree4, subTree5, subTree6])
         end sub
 

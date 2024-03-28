@@ -50,8 +50,32 @@ namespace Rotor
                 ownerScope: ownerScope,
 
                 create: function(params)
-                    m.ownerScope = animate.create(params)
-                    return m.ownerScope
+
+                    targets = function(widgets)
+                        preparedNodes = []
+                        for each widget in Rotor.Utils.ensureArray(widgets)
+                            node = widget.node
+                            node.id = `${widget.id}-${widget.HID}`
+                            preparedNodes.push(node)
+                        end for
+                        return preparedNodes
+                    end function(params.targetWidgets)
+                    params.delete("targetWidgets")
+
+                    ' Reverse if normal; normal if reverse, dont touch if alternate
+                    reverseParams = Rotor.Utils.deepCopy(params)
+                    if reverseParams.direction = invalid  or reverseParams.direction = "normal"
+                        reverseParams.direction = "reverse"
+                    else if reverseParams?.direction = "reverse"
+                        reverseParams.direction = "normal"
+                    end if
+
+                    params.targets = targets
+                    m.ownerScope.animators[m.animatorId].animNode = animate.create(params)
+
+                    reverseParams.targets = targets
+                    m.ownerScope.animators[m.animatorId].animReverseNode = animate.create(reverseParams)
+                    return m
                 end function,
 
                 timeline: function(params)

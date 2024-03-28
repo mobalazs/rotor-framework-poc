@@ -85,7 +85,7 @@ namespace Rotor.ViewBuilder
             })
         end if
 
-        if isChanged = true and Rotor.Utils.isFunction(widget.onUpdateWidget)
+        if isChanged = true and (Rotor.Utils.isFunction(widget.onUpdateWidget) or (widget?.isViewModel = true))
             postProcessBuffer.add({
                 hookType: Rotor.const.LifeCycleHookType.UPDATED,
                 widget: widget

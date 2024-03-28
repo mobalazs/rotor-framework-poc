@@ -30,6 +30,7 @@ import "../viewModels/pages/settings/settingWrapper.bs"
 import "../viewModels/pages/settings/themePicker/themePicker.bs"
 import "../viewModels/pages/settings/themePicker/themePickerItem.bs"
 
+import "../viewModels/browser/teaser/teaser.bs"
 
 
 sub init()

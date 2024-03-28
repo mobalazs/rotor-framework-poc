@@ -32,6 +32,7 @@ namespace Reducers
                             intent = {
                                 type: IntentType.CONTENT_READER.DATA_RECEIVED,
                                 payload: {
+                                    timestamp: response.headersarray[16].date,
                                     data: response.json
                                 }
                             }

@@ -50,6 +50,7 @@ namespace Rotor
             node = widget.node
             ' Apply custom fields to the node.
             Rotor.Utils.setCustomFields(node, parsedFields, true)
+            ' Rotor.Utils.setCustomFields(node, parsedFields, true, true)
         end sub
 
         ' /**

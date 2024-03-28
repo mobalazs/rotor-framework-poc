@@ -8,44 +8,39 @@ namespace Reducers
         ' logic on top of the basic reducer class
         reducerParams = {
             url: "https://rotor-sample.b-cdn.net/mockups/feed/home_feed.json",
-            useMockup: true
+            useMockup: true,
+            expiration: -1
         }
 
         override function parser(data) as object
             createContentNode = Rotor.Utils.createContentNode
 
-            content = createContentNode({
-                state: data.Count() > 0 ? "operational" : "down"
+            feedContent = createContentNode({
+                status: data.Count() > 0 ? "operational" : "down"
             })
 
-            index = 0
-            rows = []
-            for each rowKey in data
-
-                ' items in a row
-                items = []
-                for each item in data[rowKey]
-                    intemContentNode = createContentNode({
-                        posterUrl: item.posterUrl
-                    })
-                    items.push(intemContentNode)
-                end for
-
-                ' create row
-                rowContentNode = createContentNode({
-                    title: rowKey,
-                    rowKey: rowKey,
-                    sort: index
-                })
-                rowContentNode.appendChildren(items)
-                rows.push(rowContentNode)
-
-                index++
+            contentTable = {}
+            for each contentItemData in data.contents
+                contentTable[contentItemData.contentId] = contentItemData
             end for
 
-            content.appendChildren(rows)
+            data.rows.SortBy("sort")
+            for each rowItemData in data.rows
+                rowNode = createContentNode({
+                    rowType: rowItemData. rowType,
+                    title: rowItemData.title
+                })
 
-            return content
+                for each contentId in rowItemData.contentList
+                    tileData = contentTable[contentId]
+                    tileContentNode = createContentNode(tileData)
+                    rowNode.appendChild(tileContentNode)
+                end for
+
+                feedContent.appendChild(rowNode)
+            end for
+
+            return feedContent
         end function
 
 

@@ -185,6 +185,9 @@ namespace Rotor.ViewBuilder
                 if widget.onUpdateWidget <> invalid
                     widget.onUpdateWidget()
                 end if
+                if widget?.isViewModel = true
+                    widget.onUpdateView()
+                end if
                 ' Note thet onUpdateView is nota called automatically.
 
             else if process.hookType = Rotor.const.LifeCycleHookType.DELETE_WIDGET

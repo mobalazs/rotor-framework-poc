@@ -1,0 +1,109 @@
+import "teaserSlot.bs"
+
+namespace ViewModels
+
+    enum TeaserSlotType
+        TEASER_SLOT_A = "teaser_slot_a"
+        TEASER_SLOT_B = "teaser_slot_b"
+    end enum
+
+    class Teaser extends ViewModel
+
+        override sub onCreateView()
+
+            m.currentSlotType = TeaserSlotType.TEASER_SLOT_A
+
+        end sub
+
+        override sub afterViewMounted()
+
+            ' Get widgets to work on
+            m.slotAWidget = m.getWidget("slotA")
+            m.slotBWidget = m.getWidget("slotB")
+
+
+            ' setup animations
+
+            m.animator(`${TeaserSlotType.TEASER_SLOT_A}`).create({
+                duration: 1,
+                opacity: 1,
+                targetWidgets: m.slotAWidget
+            })
+
+            m.animator(`${TeaserSlotType.TEASER_SLOT_B}`).create({
+                duration: 1,
+                opacity: 1,
+                targetWidgets: m.slotBWidget
+            })
+
+        end sub
+
+        override sub onUpdateView()
+            ' This is where we change slot
+            nextSlotWidget = m.currentSlotType = TeaserSlotType.TEASER_SLOT_A ? m.slotBWidget : m.slotAWidget
+            nextSlotWidget.render({
+                props: {
+                    rowType: m.props.rowType,
+                    tileContentNode: m.props.tileContentNode
+                }
+            })
+        end sub
+
+        override sub onDestroyView()
+            m.slotAWidget = invalid
+            m.slotBWidget = invalid
+            m.coverBg = invalid
+        end sub
+
+        override function template() as object
+            return {
+                sgName: "Group",
+                fields: {
+                    inheritParentTransform: false ' full screen
+                },
+                children: [
+                    {
+                        id: "slotA",
+                        viewModel: ViewModels.TeaserSlot,
+                        observer: {
+                            fieldId: "slotStatus",
+                            callback: sub(payload)
+                                if payload.slotStatus = "ready" ' parent is the root widget of this subTree => viewModel
+                                    m.parent.runAnimations(TeaserSlotType.TEASER_SLOT_A)
+                                end if
+                            end sub
+                        }
+                    },
+                    {
+                        id: "slotB",
+                        viewModel: ViewModels.TeaserSlot,
+                        observer: {
+                            fieldId: "slotStatus",
+                            callback: sub(payload)
+                                if payload.slotStatus = "ready"
+                                    m.parent.runAnimations(TeaserSlotType.TEASER_SLOT_B)
+                                end if
+                            end sub
+                        }
+                    }
+                ]
+            }
+        end function
+
+
+        ' custom methods
+
+        sub runAnimations(readySlotType as string)
+
+            currentSlot = m.currentSlotType
+
+            m.animator(`${readySlotType}`).play()
+            m.animator(`${currentSlot}`).reverse()
+
+            m.currentSlotType = readySlotType
+
+        end sub
+
+    end class
+
+end namespace

@@ -107,12 +107,16 @@ function getAssets_theme() as Object
         "posterUrl": "pkg:/assets/images/bgGradient.png",
         "blendColor": "0x0A000CFF"
       },
+      "teaserDefaultCoveUrl": {
+        "posterUrl": "pkg:/assets/images/teaserDefaultCoveUrl.png",
+        "blendColor": "0x0A000CFF"
+      },
       "decor": {
         "blendColor": "0x0A000CFF",
         "posterUrl": "https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6302119-png.png",
         "translation": [
-          0,
-          50
+          -160,
+          -10
         ],
         "opacity": 0.3,
         "rotation": 0,
@@ -359,12 +363,16 @@ function getAssets_theme() as Object
         "posterUrl": "pkg:/assets/images/bgGradient.png",
         "blendColor": "0x0F1A17FF"
       },
+      "teaserDefaultCoveUrl": {
+        "posterUrl": "pkg:/assets/images/teaserDefaultCoveUrl.png",
+        "blendColor": "0x0F1A17FF"
+      },
       "decor": {
         "blendColor": "0x0F1A17FF",
         "posterUrl": "https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6440165-png.png",
         "translation": [
-          -90,
-          50
+          -140,
+          30
         ],
         "opacity": 0.7,
         "rotation": 0,
@@ -611,12 +619,16 @@ function getAssets_theme() as Object
         "posterUrl": "pkg:/assets/images/bgGradient.png",
         "blendColor": "0x0A1323FF"
       },
+      "teaserDefaultCoveUrl": {
+        "posterUrl": "pkg:/assets/images/teaserDefaultCoveUrl.png",
+        "blendColor": "0x0A1323FF"
+      },
       "decor": {
         "blendColor": "0x0A1323FF",
         "posterUrl": "https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6458017-png.png",
         "translation": [
-          0,
-          20
+          -30,
+          -40
         ],
         "opacity": 0.6,
         "rotation": 0,
@@ -863,17 +875,21 @@ function getAssets_theme() as Object
         "posterUrl": "pkg:/assets/images/bgGradient.png",
         "blendColor": "0x1E0E16FF"
       },
+      "teaserDefaultCoveUrl": {
+        "posterUrl": "pkg:/assets/images/teaserDefaultCoveUrl.png",
+        "blendColor": "0x1E0E16FF"
+      },
       "decor": {
         "blendColor": "0x1E0E16FF",
         "posterUrl": "https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6283207-png.png",
         "translation": [
-          1300,
-          450
+          -40,
+          600
         ],
         "opacity": 0.5,
         "rotation": 0,
-        "width": 600,
-        "height": 600
+        "width": 400,
+        "height": 400
       }
     },
     "menu": {
@@ -1115,12 +1131,16 @@ function getAssets_theme() as Object
         "posterUrl": "pkg:/assets/images/bgGradient.png",
         "blendColor": "0x1F1A0CFF"
       },
+      "teaserDefaultCoveUrl": {
+        "posterUrl": "pkg:/assets/images/teaserDefaultCoveUrl.png",
+        "blendColor": "0x1F1A0CFF"
+      },
       "decor": {
         "blendColor": "0xCCCCCC99",
         "posterUrl": "https://rotor-sample.b-cdn.net/images/themeDecor/image-from-rawpixel-id-6283277-png.png",
         "translation": [
-          85,
-          1030
+          55,
+          970
         ],
         "opacity": 1,
         "rotation": 1.570796,

@@ -92,20 +92,20 @@ namespace ViewModels
                                     ' Note that how observer works, and 2 different ways how to access another node using node tree.
                                     {
                                         fieldId: "scrollingStatus",
-                                        callback: sub(widget, payload)
+                                        callback: sub(payload)
                                             ' maintenance-friendly way of accessing another widget and node
                                             m.getWidget("../scrollingStatusLabel").node.text = `scrollingStatus is: ${payload.scrollingStatus.toStr()}`
                                         end sub
                                     },
                                     {
                                         fieldId: "rowItemFocused",
-                                        callback: sub(widget, payload)
+                                        callback: sub(payload)
                                             m.parent.children["rowItemFocusedLabel"].node.text = `rowItemFocused is: ${payload.rowItemFocused[0].toStr()} ${payload.rowItemFocused[1].toStr()}`
                                         end sub
                                     },
                                     {
                                         fieldId: "rowFocused",
-                                        callback: sub(widget, payload)
+                                        callback: sub(payload)
                                             m.parent.children.rowFocusedLabel.node.text = `rowFocused is: ${payload.rowFocused.toStr()}`
 
                                         end sub

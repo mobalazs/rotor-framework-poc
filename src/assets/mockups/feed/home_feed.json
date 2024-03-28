@@ -1,166 +1,107 @@
 {
-	"featuredContent": [
+	"rows": [
 		{
-			"title": "Popeye the Sailor meets Sinbad the Sailor 1",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the featured content 1.",
-			"rating": 7.8
+			"sort": 1,
+			"rowType": "featured",
+			"title": "Featured Shorts Movies",
+			"contentList": [
+				"testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1"
+			]
 		},
 		{
-			"title": "Popeye the Sailor meets Sinbad the Sailor 2",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the featured content 2.",
-			"rating": 7.8
+			"sort": 3,
+			"rowType": "default",
+			"title": "Row3 Title",
+			"contentList": [
+				"testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1"
+			]
 		},
 		{
-			"title": "Popeye the Sailor meets Sinbad the Sailor 3",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the featured content 3.",
-			"rating": 7.8
+			"sort": 4,
+			"rowType": "default",
+			"title": "Row4 Title",
+			"contentList": [
+				"testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1"
+			]
 		},
 		{
-			"title": "Popeye the Sailor meets Sinbad the Sailor 4",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the featured content 4.",
-			"rating": 7.8
+			"sort": 5,
+			"rowType": "default",
+			"title": "Row5 Title",
+			"contentList": [
+				"testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1"
+			]
 		},
 		{
-			"title": "Popeye the Sailor meets Sinbad the Sailor 5",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the featured content 5.",
-			"rating": 7.8
+			"sort": 6,
+			"rowType": "default",
+			"title": "Row6 Title",
+			"contentList": [
+				"testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1"
+			]
 		},
 		{
-			"title": "Popeye the Sailor meets Sinbad the Sailor 6",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the featured content 6.",
-			"rating": 7.8
+			"sort": 7,
+			"rowType": "default",
+			"title": "Row7 Title",
+			"contentList": [
+				"testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1"
+			]
 		},
 		{
-			"title": "Popeye the Sailor meets Sinbad the Sailor 7",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the featured content 7.",
-			"rating": 7.8
+			"sort": 8,
+			"rowType": "default",
+			"title": "Row8 Title",
+			"contentList": [
+				"testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1"
+			]
 		},
 		{
-			"title": "Popeye the Sailor meets Sinbad the Sailor 8",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the featured content 8.",
-			"rating": 7.8
+			"sort": 9,
+			"rowType": "default",
+			"title": "Row9 Title",
+			"contentList": [
+				"testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1"
+			]
 		},
 		{
-			"title": "Popeye the Sailor meets Sinbad the Sailor 9",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the featured content 9.",
-			"rating": 7.8
+			"sort": 10,
+			"rowType": "default",
+			"title": "Row10 Title",
+			"contentList": [
+				"testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1"
+			]
 		},
 		{
-			"title": "Popeye the Sailor meets Sinbad the Sailor 10",
-			"type": "series",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the featured content 2.",
-			"rating": 8.1
+			"sort": 11,
+			"rowType": "default",
+			"title": "Row11 Title",
+			"contentList": [
+				"testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1"
+			]
+		},
+		{
+			"sort": 2,
+			"rowType": "default",
+			"title": "Trending",
+			"contentList": [
+				"testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1", "testContent1"
+			]
 		}
 	],
-	"personalizedRecommendations": [
+	"contents": [
 		{
-			"title": "Personalized Recommendation 1",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the personalized recommendation 1.",
-			"rating": 7.8
-		},
-		{
-			"title": "Personalized Recommendation 2",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the personalized recommendation 2.",
-			"rating": 7.8
-		},
-		{
-			"title": "Personalized Recommendation 3",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the personalized recommendation 3.",
-			"rating": 7.8
-		},
-		{
-			"title": "Personalized Recommendation 4",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the personalized recommendation 4.",
-			"rating": 7.8
-		},
-		{
-			"title": "Personalized Recommendation 5",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the personalized recommendation 5.",
-			"rating": 7.8
-		},
-		{
-			"title": "Personalized Recommendation 6",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the personalized recommendation 6.",
-			"rating": 7.8
-		},
-		{
-			"title": "Personalized Recommendation 7",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the personalized recommendation 7.",
-			"rating": 7.8
-		},
-		{
-			"title": "Personalized Recommendation 8",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the personalized recommendation 8.",
-			"rating": 7.8
-		},
-		{
-			"title": "Personalized Recommendation 9",
-			"type": "movie",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the personalized recommendation 9.",
-			"rating": 7.8
-		},
-		{
-			"title": "Personalized Recommendation 10",
-			"type": "series",
-			"posterUrl": "https://rotor-sample.b-cdn.net/images/Popeye_Meets_Sinbad.jpg",
-			"manifest": "https://vz-294d587c-ef1.b-cdn.net/469cf257-9829-4088-b33a-96d2287721f7/playlist.m3u8",
-			"description": "Description of the personalized recommendation 2.",
-			"rating": 8.1
+			"contentId": "testContent1",
+			"title": "Big Buck Bunny",
+			"contentType": "short",
+
+			"previewPosterUrl": "https://vz-294d587c-ef1.b-cdn.net/2f2db2db-7e2e-4dbe-b3e0-aac4cfdb5988/thumbnail_82d1047f.jpg",
+			"previewManifestUrl": "https://vz-294d587c-ef1.b-cdn.net/2f2db2db-7e2e-4dbe-b3e0-aac4cfdb5988/playlist.m3u8",
+
+			"thumbnailUrl": "https://rotor-sample.b-cdn.net/images/content/thumbnail-default_size/big_buck_bunny-200x300.jpg",
+			"manifestUrl": "https://vz-294d587c-ef1.b-cdn.net/821e6eea-f50a-428a-b9f7-71657984bb67/playlist.m3u8",
+
+			"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 		}
 	]
 }

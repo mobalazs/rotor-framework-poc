@@ -112,7 +112,7 @@ namespace ViewModels
                     ' Roku need time to render changes on screen ("One second left..." text)
                     ' What we're doing here is completely native and a generic approach in Rotor Builder.
                     fieldId: "renderTracking",
-                    callback: sub(widget, payload)
+                    callback: sub(payload)
                         if payload?.renderTracking = "full"
 
                             ' We're in scope of lastMomentLabel, but we need the loadingSceen viewModel to proceed rendering

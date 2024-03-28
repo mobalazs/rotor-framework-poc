@@ -99,7 +99,11 @@ namespace Rotor.ViewBuilder
             widget.onCreateView()
             template = widget.template()
             if template <> invalid and template.Count() > 0
-                config.append(template)
+                templateChildren = template.children
+                template.delete("children")
+                config = Rotor.Utils.deepExtendAA(config, template)
+                config.children = templateChildren
+                ' config.append(template)
                 config.id = widget.id ' widget id has the highest pripriority
             end if
         end if
@@ -113,6 +117,7 @@ namespace Rotor.ViewBuilder
         Rotor.Utils.deepExtendAA(widget.context, config.context ?? {})
 
         ' Create node
+        if Rotor.Utils.isString(config.sgNode) then config.sgName = config.sgNode ' both key is available
         sgName = Rotor.Utils.isString(config.sgName) ? config.sgName : "Group"
         widget.node = CreateObject("roSGNode", sgName)
         widget.sgName = sgName

@@ -5,8 +5,8 @@ namespace Models
 
         state = {
 
-            activePageKey: "rowListExample",
-            loadingScreenMinTime: 2, ' sec
+            activePageKey: "home",
+            loadingScreenMinTime: 0, ' sec
 
             pageList: [
                 "home",

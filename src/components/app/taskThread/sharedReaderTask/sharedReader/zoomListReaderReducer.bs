@@ -15,7 +15,7 @@ namespace Reducers
             createContentNode = Rotor.Utils.createContentNode
 
             content = createContentNode({
-                state: data.Count() > 0 ? "operational" : "down"
+                status: data.Count() > 0 ? "operational" : "down"
             })
 
             numRows = 9
